@@ -1,21 +1,13 @@
-﻿@model CategoryNameModel[]
+﻿
 @{
     ViewData["Title"] = "Edit";
 }
 
 <h1 class="text-center">Edit Category</h1>
-<div asp-validation-summary="All" class="text-danger text-center"></div>
-<div class="row mx-auto mt-5">
-    <div class="col-lg-2">
-        <select name="category" id="selCategory" class="form-control">
-            @foreach (var category in Model)
-            {
-                <option value="@category.Name">@category.Name</option>
-            }
-        </select>
-    </div>
-</div>
+<div asp-validation-summary="All" class="text-danger text-center mx-auto empty"></div>
 
-<div id="editCategory">
-    <div class="text-center">Choose category</div>
+<vc:categories></vc:categories>
+
+<div id="editCategory" class="mx-auto">
+
 </div>

@@ -34,11 +34,10 @@ namespace BookStore.Web.Controllers
 
         public IActionResult Edit()
         {
-            var categoryNames = this.categoryService.AllCategories();
-
-            return View(categoryNames);
+            return View();
         }
 
+        [ValidateModelState]
         [HttpPost]
         public IActionResult Edit(CategoryNameAndIdModel model)
         {

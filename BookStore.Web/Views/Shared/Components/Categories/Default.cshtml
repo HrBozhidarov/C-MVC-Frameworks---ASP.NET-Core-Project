@@ -1,0 +1,13 @@
+﻿@model CategoryNameModel[]
+
+<div class="row mx-auto mt-5">
+    <div class="col-lg-2">
+        <select name="category" id="selCategory" class="form-control">
+            @foreach (var category in Model)
+            {
+                <option value="@category.Name">@category.Name</option>
+            }
+        </select>
+    </div>
+</div>
+

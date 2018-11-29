@@ -6,8 +6,9 @@ namespace BookStore.Web.Components.Categories
 {
     public class EditCategoryViewComponent : ViewComponent
     {
-        private readonly ICategoryService categoryService;
         private const string ErrorMessagge = "Category is not found.";
+
+        private readonly ICategoryService categoryService;
 
         public EditCategoryViewComponent(ICategoryService categoryService)
         {

@@ -1,0 +1,29 @@
+@using Microsoft.AspNetCore.Identity
+@using BookStore.Models
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post" id="logoutForm">
+        <ul class="navbar-nav right-side">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle waves-effect waves-light" id="navbarDropdownMenuLink-4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <i class="fa fa-user"></i> Profile
+                </a>
+                <div class="dropdown-menu dropdown-menu-right dropdown-info" aria-labelledby="navbarDropdownMenuLink-4">
+                    <a class="dropdown-item waves-effect waves-light" asp-area="Identity" asp-page="/Account/Manage/Index">My account</a>
+                    <button type="submit" class="btn btn-link navbar-btn navbar-link dropdown-item waves-effect waves-light">Logout</button>
+                </div>
+            </li>
+        </ul>
+    </form>
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li class="nav-link mr-3"><a asp-area="Identity" asp-page="/Account/Register">Register</a></li>
+        <li class="nav-link"><a asp-area="Identity" asp-page="/Account/Login">Login</a></li>
+    </ul>
+}

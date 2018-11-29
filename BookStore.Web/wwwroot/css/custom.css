@@ -1,0 +1,114 @@
+﻿.bg-cover {
+    background-image: url('../../images/002.jpg');
+    /* Full height */
+    height: 100%;
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 500px;
+}
+
+.bold {
+    font-weight: bold;
+    font-size: 50px;
+}
+
+.jumbotron {
+    padding-top: 100px;
+    padding-bottom: 100px
+}
+
+.pading-left-riht-zero {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+#navbarDropdownMenuLink-4 {
+    color: #28c491
+}
+
+a {
+    color: #28c491;
+    text-decoration: none;
+}
+
+    a:hover {
+        color: #28c491;
+        text-decoration: none;
+    }
+
+#navBarHome {
+    color: #28c491;
+}
+
+#navbarDropdown {
+    color: #28c491;
+}
+
+#navbarDropdownBook {
+    color: #28c491;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    border: 0;
+    width: 100%;
+    color: #28c491;
+}
+
+body {
+    font-size: 20px;
+}
+
+ul li.list-group-item a {
+    padding: 0px;
+    font-size: 20px;
+    border: 0px;
+}
+
+ul li.list-group-item:hover {
+    background-color: #f8f9fa;
+}
+
+div image {
+    height: 210px;
+}
+
+input.bg-color {
+    color: white;
+    background-color: #28c491;
+}
+
+.form-control:focus {
+    border-color: rgba(126, 239, 104, 0.8);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(126, 239, 104, 0.6);
+    outline: 0 none;
+}
+
+hr {
+    height: 2px;
+    background-color: #7EEF68;
+}
+
+@media only screen and (min-width: 300px) {
+    #groupBook {
+        width: 70%;
+        text-align: center;
+        margin: auto;
+    }
+
+    div div div img {
+        width: 100%;
+        text-align: center;
+        margin: auto;
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    div div div img, #groupBook {
+        width: 100%;
+        text-align: unset;
+    }
+}

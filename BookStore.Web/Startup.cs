@@ -17,7 +17,7 @@ using AutoMapper;
 using BookStore.Web.Middlewares.ExtensionMiddleware;
 using BookStore.Services.Contracts;
 using BookStore.Services;
-using BookStore.Common;
+using BookStore.Common.AutomapperProfiles;
 
 namespace BookStore.Web
 {
@@ -44,6 +44,7 @@ namespace BookStore.Web
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddTransient<ICategoryService, CategoryService>();
+            services.AddTransient<IAuthorService, AuthorService>();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -65,6 +66,7 @@ namespace BookStore.Web
             Mapper.Initialize(cfg =>
             {
                 cfg.AddProfile<CategoryProfile>();
+                cfg.AddProfile<AuthorProfile>();
             });
 
             services.AddAutoMapper();

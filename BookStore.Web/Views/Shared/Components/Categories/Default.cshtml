@@ -1,13 +1,22 @@
 ﻿@model CategoryNameModel[]
 
-<div class="row mx-auto mt-5">
-    <div class="col-lg-2">
-        <select name="category" id="selCategory" class="form-control">
-            @foreach (var category in Model)
-            {
-                <option value="@category.Name">@category.Name</option>
-            }
-        </select>
+@if (Model.Length == 0)
+{
+    <div class="text-center mt-5">
+        <div class="text-danger text-center">No Categories, you have to add or you can`t edit.</div>
+        <a href="/authors/create" class="btn btn-danger text-center mt-3">Create</a>
     </div>
-</div>
-
+}
+else
+{
+    <div class="row mx-auto mt-5">
+        <div class="col-lg-2">
+            <select name="category" id="selCategory" class="form-control">
+                @foreach (var category in Model)
+                {
+                    <option value="@category.Name">@category.Name</option>
+                }
+            </select>
+        </div>
+    </div>
+}

@@ -50,9 +50,9 @@ namespace BookStore.Web.Controllers
             return Redirect("/");
         }
 
-        public IActionResult EditCategory(string category)
+        public IActionResult EditCategory(string dataName)
         {
-            return ViewComponent("EditCategory", category);
+            return ViewComponent("EditCategory", dataName);
         }
     }
 }

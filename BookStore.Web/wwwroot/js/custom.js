@@ -1,26 +1,53 @@
 ﻿$(document).ready(function () {
-    let pathname = window.location.pathname;
+    const pathCategories = "/categories/edit";
+    const pathAuthor = "/authors/edit";
+    const ajaxCategoryRequest = '/categories/editcategory';
+    const ajaxAuthorRequest = '/authors/editauthor';
+    const authorId = "#eidtAuthor";
+    const categoryId = "#editCategory";
+    const passDataCategoryId = '#selCategory';
+    const passDataAuthorId = '#selAuthor';
 
-    if (pathname.toLowerCase() === "/categories/edit") {
+    let path = window.location.pathname.toLowerCase();
+    let id = "";
+    let currentRequest = "";
+    let currentPassId = "";
+
+    switch (path) {
+        case pathCategories:
+            id = categoryId;
+            currentRequest = ajaxCategoryRequest;
+            currentPassId = passDataCategoryId;
+            break;
+        case pathAuthor:
+            id = authorId;
+            currentRequest = ajaxAuthorRequest;
+            currentPassId = passDataAuthorId;
+            break;
+    }
+
+    if (id !== "") {
         ChooseCategory();
     }
 
-    $('#selCategory').on("change", ChooseCategory)
+    $(currentPassId).on("change", ChooseCategory)
 
     function ChooseCategory() {
+        //$(".empty").hide(7000);
 
-        $(".empty").hide(7000);
+        alert("here");
 
-        $("#editCategory").hide(500);
+        $(id).hide(500);
 
-        let selectedName = $('#selCategory').find(":selected").text();
+        let selectedName = $(currentPassId).find(":selected").text();
 
         $.ajax({
-            url: '/categories/editcategory',
-            data: { category: selectedName },
+            url: currentRequest,
+            data: { dataName: selectedName },
             type: 'GET',
             success: function (data) {
-                $('#editCategory').show(1000).html(data);
+
+                $(id).show(1000).html(data);
             },
             error: function () {
                 alert('Error occurred');

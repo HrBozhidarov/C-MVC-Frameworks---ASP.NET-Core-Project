@@ -54,6 +54,16 @@
                             <a asp-area="Books" asp-controller="Books" asp-action="Edit" class="dropdown-item">Edit</a>
                         </div>
                     </li>
+
+                    <li class="nav-item dropdown mr-3">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBook" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Author
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownBook">
+                            <a asp-area="" asp-controller="Authors" asp-action="Create" class="dropdown-item">Create</a>
+                            <a asp-area="" asp-controller="Authors" asp-action="Edit" class="dropdown-item">Edit</a>
+                        </div>
+                    </li>
                 }
             </ul>
 

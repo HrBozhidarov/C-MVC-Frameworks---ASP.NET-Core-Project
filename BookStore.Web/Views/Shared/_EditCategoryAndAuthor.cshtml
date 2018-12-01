@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewData["Title"] = "Edit";
+}
+
+@{
+    var title = Context.Request.Path.Value.ToLower() == "/categories/edit" ? "Edit Category" : "Edit Author";
+}
+
+<h1 class="text-center">@title</h1>
+
+<div asp-validation-summary="All" class="text-danger text-center mx-auto empty"></div>
+
+@if (title == "Edit Category")
+{
+    <vc:categories></vc:categories>
+}
+else
+{
+   <vc:authors></vc:authors>
+}
+
+<div id="editCategory" class="mx-auto">
+
+</div>

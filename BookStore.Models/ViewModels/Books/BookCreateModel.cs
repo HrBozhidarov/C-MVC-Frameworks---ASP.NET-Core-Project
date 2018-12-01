@@ -29,6 +29,7 @@ namespace BookStore.Models.ViewModels.Books
         public DateTime ReleaseDate { get; set; }
 
         [Required]
+        [RegularExpression(@"[a-zA-Z]+")]
         public string Authors { get; set; }
 
         public string[] Categories { get; set; }

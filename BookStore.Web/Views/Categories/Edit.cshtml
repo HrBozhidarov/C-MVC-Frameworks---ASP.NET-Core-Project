@@ -4,6 +4,7 @@
 }
 
 <h1 class="text-center">Edit Category</h1>
+
 <div asp-validation-summary="All" class="text-danger text-center mx-auto empty"></div>
 
 <vc:categories></vc:categories>
@@ -11,3 +12,7 @@
 <div id="editCategory" class="mx-auto">
 
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

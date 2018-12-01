@@ -1,0 +1,22 @@
+﻿@model NameAuthorModel[]
+
+@if (Model.Length == 0)
+{
+    <div class="text-center mt-5">
+        <div class="text-danger text-center">No authors, you have to add or you can`t edit.</div>
+        <a href="/authors/create" class="btn btn-danger text-center mt-3">Create</a>
+    </div>
+}
+else
+{
+    <div class="row mx-auto mt-5">
+        <div class="col-lg-2">
+            <select name="author" id="selAuthor" class="form-control">
+                @foreach (var author in Model)
+                {
+                    <option value="@author.Name">@author.Name</option>
+                }
+            </select>
+        </div>
+    </div>
+}

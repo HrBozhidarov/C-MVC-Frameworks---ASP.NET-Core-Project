@@ -7,7 +7,7 @@ namespace BookStore.Services.Contracts
 {
     public interface IAuthorService
     {
-        void Create(string authorName, string details);
+        bool Create(string authorName, string details);
 
         bool Edit(int id, string authorName, string details);
 

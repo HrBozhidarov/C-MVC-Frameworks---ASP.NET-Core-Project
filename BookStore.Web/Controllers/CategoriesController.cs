@@ -10,6 +10,7 @@ namespace BookStore.Web.Controllers
     public class CategoriesController : Controller
     {
         private const string EditErrorMessage = "Yours id is invalid.";
+        private const string CreateErrorMessage = "Name of the category exists.";
 
         private readonly ICategoryService categoryService;
 
@@ -27,7 +28,12 @@ namespace BookStore.Web.Controllers
         [HttpPost]
         public IActionResult Create(CategoryNameModel model)
         {
-            this.categoryService.Create(model.Name);
+            if (!this.categoryService.Create(model.Name))
+            {
+                ModelState.AddModelError("", CreateErrorMessage);
+
+                return View(model);
+            }
 
             return Redirect("/");
         }

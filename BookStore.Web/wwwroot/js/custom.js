@@ -33,9 +33,9 @@
     $(currentPassId).on("change", ChooseCategory)
 
     function ChooseCategory() {
-        //$(".empty").hide(7000);
-
-        alert("here");
+        $(document).ajaxComplete(function () {
+            $.validator.unobtrusive.parse(document);
+        });
 
         $(id).hide(500);
 

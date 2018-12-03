@@ -23,7 +23,7 @@ namespace BookStore.Services
             this.mapper = mapper;
         }
 
-        public void Create(string authorName, string details)
+        public bool Create(string authorName, string details)
         {
             if (!this.db.Authors.Any(a => a.Name == authorName))
             {
@@ -34,7 +34,11 @@ namespace BookStore.Services
                 });
 
                 this.db.SaveChanges();
+
+                return true;
             }
+
+            return false;
         }
 
         public bool Edit(int id, string authorName, string details)

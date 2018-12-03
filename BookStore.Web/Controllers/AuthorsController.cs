@@ -13,6 +13,9 @@ namespace BookStore.Web.Controllers
     [Authorize(Roles = "Admin")]
     public class AuthorsController : Controller
     {
+        private const string CreateErrorMessage = "This author name exists.";
+        private const string EditErrorMessage = "This author id is invalid.";
+
         private readonly IAuthorService authorService;
 
         public AuthorsController(IAuthorService authorService)
@@ -31,8 +34,8 @@ namespace BookStore.Web.Controllers
         {
             if (!this.authorService.Edit(model.Id, model.Name, model.Details))
             {
-                ModelState.AddModelError("", "test");
-                return RedirectToAction("Edit");
+                ModelState.AddModelError("", EditErrorMessage);
+                return RedirectToAction(nameof(Edit));
             }
 
             return Redirect("/");
@@ -48,7 +51,11 @@ namespace BookStore.Web.Controllers
         [HttpPost]
         public IActionResult Create(CreateAuthorModel model)
         {
-            this.authorService.Create(model.Name, model.Details);
+            if (!this.authorService.Create(model.Name, model.Details))
+            {
+                ModelState.AddModelError("", CreateErrorMessage);
+                return View();
+            }
 
             return Redirect("/");
         }

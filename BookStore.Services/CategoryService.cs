@@ -22,7 +22,7 @@ namespace BookStore.Services
             this.mapper = mapper;
         }
 
-        public void Create(string categoryName)
+        public bool Create(string categoryName)
         {
             if (!this.db.Categories.Any(c => c.Name == categoryName))
             {
@@ -32,7 +32,11 @@ namespace BookStore.Services
                 });
 
                 this.db.SaveChanges();
+
+                return true;
             }
+
+            return false;
         }
 
         public bool Edit(int id, string categoryName)

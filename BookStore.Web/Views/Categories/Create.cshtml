@@ -9,17 +9,14 @@
 <div class="row justify-content-center">
     <div class="col-lg-4 text-center">
         <hr />
-        <form method="post">
+        <form asp-action="Create" method="post">
             <div class="form-group">
                 <label asp-for="Name">Category</label>
                 <input class="form-control" asp-for="Name" />
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <input type="submit" class="btn bg-color" value="Create"/>
         </form>
         <hr />
     </div>
 </div>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}

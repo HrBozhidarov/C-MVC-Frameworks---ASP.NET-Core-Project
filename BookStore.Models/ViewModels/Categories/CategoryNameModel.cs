@@ -8,8 +8,7 @@ namespace BookStore.Models.ViewModels.Categories
     public class CategoryNameModel
     {
         [Required]
-        [MinLength(3)]
-        [MaxLength(30)]
+        [StringLength(30, MinimumLength = 3)]
         public string Name { get; set; }
     }
 }

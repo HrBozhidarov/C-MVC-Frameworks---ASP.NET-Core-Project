@@ -11,10 +11,12 @@
             <div class="form-group">
                 <label asp-for="Name">Category</label>
                 <input class="form-control" asp-for="Name" />
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Details">Category</label>
                 <textarea class="form-control" rows="7" asp-for="Details">@Model.Details</textarea>
+                <span asp-validation-for="Details" class="text-danger"></span>
             </div>
             <input type="submit" class="btn bg-color" value="Edit" />
         </form>

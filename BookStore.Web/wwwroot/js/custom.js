@@ -26,6 +26,8 @@
             break;
     }
 
+    $('.show').hide().show(1000);
+
     if (id !== "") {
         ChooseCategory();
     }

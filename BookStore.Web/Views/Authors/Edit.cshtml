@@ -1,14 +1,8 @@
-﻿
+﻿@model EditModel
 @{
     ViewData["Title"] = "Edit";
 }
 
 <h1 class="text-center">Edit Author</h1>
 
-<div asp-validation-summary="All" class="text-danger text-center mx-auto empty"></div>
-
-<vc:authors></vc:authors>
-
-<div id="eidtAuthor" class="mx-auto">
-
-</div>
+<partial name="_EditAuthorBookCategoryPartial" model="Model" />

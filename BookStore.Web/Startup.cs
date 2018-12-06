@@ -18,6 +18,7 @@ using BookStore.Web.Middlewares.ExtensionMiddleware;
 using BookStore.Services.Contracts;
 using BookStore.Services;
 using BookStore.Common.AutomapperProfiles;
+using Newtonsoft.Json.Serialization;
 
 namespace BookStore.Web
 {
@@ -74,7 +75,11 @@ namespace BookStore.Web
             services.AddMvc(options =>
             {
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+            .AddJsonOptions(options =>
+            options.SerializerSettings.ContractResolver = new DefaultContractResolver());
+
+            services.AddKendo();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

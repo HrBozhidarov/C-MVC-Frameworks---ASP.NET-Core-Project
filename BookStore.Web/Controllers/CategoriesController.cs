@@ -1,13 +1,15 @@
-﻿using BookStore.Models.ViewModels.Categories;
+﻿using BookStore.Models.ViewModels;
+using BookStore.Models.ViewModels.Categories;
 using BookStore.Services.Contracts;
 using BookStore.Web.Filters.Action;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace BookStore.Web.Controllers
 {
     [Authorize(Roles = "Admin")]
-    public class CategoriesController : Controller
+    public class CategoriesController : BaseController
     {
         private const string EditErrorMessage = "Yours id is invalid.";
         private const string CreateErrorMessage = "Name of the category exists.";
@@ -40,7 +42,16 @@ namespace BookStore.Web.Controllers
 
         public IActionResult Edit()
         {
-            return View();
+            var model = this.GetModel(
+                "Categories",
+                "categories",
+                "Name",
+                "GetCategories",
+                "Categories",
+                "ChooseCategory",
+                "editCategory");
+
+            return View(model);
         }
 
         [ValidateModelState]
@@ -59,6 +70,18 @@ namespace BookStore.Web.Controllers
         public IActionResult EditCategory(string dataName)
         {
             return ViewComponent("EditCategory", dataName);
+        }
+
+        public JsonResult GetCategories(string text)
+        {
+            var categories = this.categoryService.AllCategories();
+
+            if (!string.IsNullOrEmpty(text?.ToLower()))
+            {
+                categories = categories.Where(p => p.Name.ToLower().Contains(text?.ToLower())).ToArray();
+            }
+
+            return Json(categories);
         }
     }
 }

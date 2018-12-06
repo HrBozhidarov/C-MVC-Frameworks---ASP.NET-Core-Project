@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace BookStore.Web.Controllers
 {
     [Authorize(Roles = "Admin")]
-    public class AuthorsController : Controller
+    public class AuthorsController : BaseController
     {
         private const string CreateErrorMessage = "This author name exists.";
         private const string EditErrorMessage = "This author id is invalid.";
@@ -25,7 +25,16 @@ namespace BookStore.Web.Controllers
 
         public IActionResult Edit()
         {
-            return View();
+            var model = this.GetModel(
+                "Authors",
+                "authors",
+                "Name",
+                "GetAuthors",
+                "Authors",
+                "ChooseCategory",
+                "eidtAuthor");
+
+            return View(model);
         }
 
         [ValidateModelState]
@@ -63,6 +72,18 @@ namespace BookStore.Web.Controllers
         public IActionResult EditAuthor(string dataName)
         {
             return ViewComponent("EditAuthor", dataName);
+        }
+
+        public JsonResult GetAuthors(string text)
+        {
+            var authors = this.authorService.AllAuthors();
+
+            if (!string.IsNullOrEmpty(text?.ToLower()))
+            {
+                authors = authors.Where(a => a.Name.ToLower().Contains(text?.ToLower())).ToArray();
+            }
+
+            return Json(authors);
         }
     }
 }

@@ -20,6 +20,11 @@ namespace BookStore.Web.Components.Authors
 
         public async Task<IViewComponentResult> InvokeAsync(string authorName)
         {
+            if (authorName == null)
+            {
+                authorName = this.authorService.AllAuthors()?.FirstOrDefault()?.Name;
+            }
+
             var author = this.authorService.GetAuthorByName(authorName);
 
             if (author == null)

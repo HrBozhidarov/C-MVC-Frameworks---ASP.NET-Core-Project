@@ -1,5 +1,6 @@
 ﻿using BookStore.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BookStore.Web.Components.Categories
@@ -17,6 +18,11 @@ namespace BookStore.Web.Components.Categories
 
         public async Task<IViewComponentResult> InvokeAsync(string categoryName)
         {
+            if (categoryName == null)
+            {
+                categoryName = this.categoryService.AllCategories()?.FirstOrDefault()?.Name;
+            }
+
             var category = this.categoryService.GetCategoryByName(categoryName);
 
             if (category == null)

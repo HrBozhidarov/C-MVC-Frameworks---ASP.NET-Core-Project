@@ -28,6 +28,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Areas\Books\Views\Shared\_Layout.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Areas\Books\Views\_ViewImports.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

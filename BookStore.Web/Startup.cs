@@ -46,6 +46,7 @@ namespace BookStore.Web
 
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<IAuthorService, AuthorService>();
+            services.AddTransient<IBookService, BookService>();
 
             services.Configure<IdentityOptions>(options =>
             {

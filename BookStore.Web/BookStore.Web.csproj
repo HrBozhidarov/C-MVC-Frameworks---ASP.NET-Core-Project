@@ -20,7 +20,6 @@
     <Folder Include="Areas\Books\Data\" />
     <Folder Include="Areas\Books\Models\" />
     <Folder Include="Areas\Identity\Services\" />
-    <Folder Include="wwwroot\lib\kendo-ui\" />
   </ItemGroup>
 
   <ItemGroup>

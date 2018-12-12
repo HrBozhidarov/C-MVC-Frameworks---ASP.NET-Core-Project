@@ -1,6 +1,7 @@
 ﻿using BookStore.Models.ViewModels.Books;
 using BookStore.Services.Contracts;
 using BookStore.Web.Filters.Action;
+using ImageMagick;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -15,16 +16,16 @@ namespace BookStore.Web.Areas.Book.Controllers
     [Authorize(Roles = "Admin")]
     public class BooksController : BaseController
     {
-        private const string ExtentionJpg = ".jpg";
-        private const string ExtentionPng = ".png";
-        private const string ErrorMessageExtention = "The file have to be with extention png or jpg.";
-        private const string ErrorMessageSizeImg = "Picture is too large or too small, it can be between 15000 and 64000 bytes.";
-        private const string ErrorMessageNoCategoryOrAuthorh = "You have not introduce author or category.";
-        private const string FolderName = "Img";
-        private const string ParentFolder = "images";
         private const int MaxAllowableSize = 65000;
         private const int MinAllowableSize = 5000;
         private const int NumberOnFolder = 20;
+        private const string ExtentionJpg = ".jpg";
+        private const string ExtentionPng = ".png";
+        private const string ErrorMessageExtention = "The file have to be with extention png or jpg.";
+        private const string ErrorMessageNoCategoryOrAuthorh = "You have not introduce author or category.";
+        private const string FolderName = "Img";
+        private const string ParentFolder = "images";
+        private const string ErrorMessageSizeImg = "Picture is too large or too small, it can be between 15000 and 64000 bytes.";
 
         private readonly IBookService bookService;
         private readonly ICategoryService categoryService;
@@ -37,6 +38,20 @@ namespace BookStore.Web.Areas.Book.Controllers
             this.categoryService = categoryService;
             this.authorService = authorService;
             this.environment = environment;
+        }
+
+        public IActionResult Edit()
+        {
+            var model = this.GetModel(
+               "Categories",
+               "categories",
+               "Name",
+               "GetCategories",
+               "Categories",
+               "ChooseCategory",
+               "editCategory");
+
+            return View(model);
         }
 
         public IActionResult Create()
@@ -109,9 +124,21 @@ namespace BookStore.Web.Areas.Book.Controllers
                 Directory.CreateDirectory(path);
             }
 
-            using (FileStream fs = new FileStream(imgUrl, FileMode.Create))
+            var imgBytesArray = new byte[0];
+
+            using (var memoryStream = new MemoryStream())
             {
-                model.Image.CopyTo(fs);
+                model.Image.CopyTo(memoryStream);
+                imgBytesArray = memoryStream.ToArray();
+            }
+
+            using (MagickImage image = new MagickImage(imgBytesArray))
+            {
+                MagickGeometry size = new MagickGeometry(154, 230);   
+
+                image.Resize(size);
+
+                image.Write(imgUrl);
             }
         }
     }

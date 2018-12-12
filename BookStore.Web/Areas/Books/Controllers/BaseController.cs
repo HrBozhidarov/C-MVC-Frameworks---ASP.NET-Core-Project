@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BookStore.Models.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,25 @@ namespace BookStore.Web.Areas.Book.Controllers
     [Area("Books")]
     public class BaseController : Controller
     {
+        protected EditModel GetModel(
+            string smallTitle,
+            string collectionName,
+            string textFieldAndValue,
+            string action,
+            string controller,
+            string eventFunction,
+            string id)
+        {
+            return new EditModel
+            {
+                SmallTitle = smallTitle,
+                CollectionName = collectionName,
+                TextFieldAndValue = textFieldAndValue,
+                Action = action,
+                Controller = controller,
+                EventFunction = eventFunction,
+                Id = id
+            };
+        }
     }
 }

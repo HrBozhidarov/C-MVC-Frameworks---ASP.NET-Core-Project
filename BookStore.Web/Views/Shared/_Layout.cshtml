@@ -11,12 +11,9 @@
         <link rel="stylesheet" href="~/css/custom.css" />
         <link href="~/css/fontawesome/css/all.css" rel="stylesheet" />
 
-        <link rel="stylesheet" href="~/lib/kendo-ui/styles/kendo.bootstrap.min.css" />
-        <link rel="stylesheet" href="~/lib/kendo-ui/styles/kendo.common-bootstrap.min.css" />
         <link rel="stylesheet" href="~/lib/kendo-ui/styles/kendo.common.min.css" />
+        <link rel="stylesheet" href="~/lib/kendo-ui/styles/kendo.bootstrap.min.css" />
         <link rel="stylesheet" href="~/lib/kendo-ui/styles/kendo.default.mobile.min.css" />
-        @*<link rel="stylesheet" href="~/lib/kendo-ui/styles/kendo.common-nova.min.css" />
-        <link rel="stylesheet" href="~/lib/kendo-ui/styles/kendo.nova.min.css" />*@
     </environment>
     <environment include="Development">
         <script src="~/lib/kendo-ui/js/jquery.min.js"></script>
@@ -80,16 +77,17 @@
             </ul>
 
             <partial name="_LoginPartial" />
+
         </div>
     </nav>
     <partial name="_CookieConsentPartial" />
 
-    <div class="container-fluid body-content pading-left-riht-zero mb-5 mx-auto">
+    <div class="container body-content pading-left-riht-zero mb-5 mx-auto">
         @RenderBody()
     </div>
     <br />
     <footer class="mt-5">
-        <div class="container-fluid">
+        <div class="container">
             <div class="p-2 text-center">
                 &copy; CopyRight Sanity Web Design Studios 2018. All rights reserved.
             </div>
@@ -103,28 +101,6 @@
         <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
         @*<script src="~/js/Test.js"></script>*@
         <script src="~/js/custom.js"></script>
-
-        <script>
-            $(document).ready(function () {
-                var required = $("#required").data("kendoMultiSelect");
-                var optional = $("#optional").data("kendoMultiSelect");
-
-                $("#get").click(function () {
-                    alert("Attendees:\n\nRequired: " + required.value() + "\nOptional: " + optional.value());
-                });
-            });
-        </script>
-        <style>
-            .demo-section label {
-                display: block;
-                margin: 15px 0 5px 0;
-            }
-
-            #get {
-                float: right;
-                margin: 25px auto 0;
-            }
-        </style>
     </environment>
     <environment exclude="Development">
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"

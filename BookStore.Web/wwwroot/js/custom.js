@@ -4,10 +4,14 @@
 
 const pathCategories = "/categories/edit";
 const pathAuthor = "/authors/edit";
+const pathBook = "books/books/edit";
+const ajaxBookRequest = '/books/books/editbook';
 const ajaxCategoryRequest = '/categories/editcategory';
 const ajaxAuthorRequest = '/authors/editauthor';
+const bookId = "#editBook";
 const authorId = "#eidtAuthor";
 const categoryId = "#editCategory";
+const passDataBookId = '#selBook';
 const passDataCategoryId = '#selCategory';
 const passDataAuthorId = '#selAuthor';
 
@@ -15,7 +19,6 @@ var path = window.location.pathname.toLowerCase();
 var id = "";
 var currentRequest = "";
 var currentPassId = "";
-var defaultEditValue = "";
 
 function ChooseCategory() {
     initializePath();
@@ -42,7 +45,6 @@ function initializePath() {
             id = categoryId;
             currentRequest = ajaxCategoryRequest;
             currentPassId = passDataCategoryId;
-            defaultEditValue = "Romance"
             break;
         case pathAuthor:
             id = authorId;

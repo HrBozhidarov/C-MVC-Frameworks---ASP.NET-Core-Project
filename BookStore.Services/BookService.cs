@@ -1,4 +1,5 @@
-﻿using BookStore.Data;
+﻿using AutoMapper.QueryableExtensions;
+using BookStore.Data;
 using BookStore.Models;
 using BookStore.Models.ViewModels.Books;
 using BookStore.Services.Contracts;
@@ -37,12 +38,15 @@ namespace BookStore.Services
                 return false;
             }
 
+            var imgPathAndName = imgUrl.Split(@"\", StringSplitOptions.RemoveEmptyEntries);
+            var imgPath = $"images/{imgPathAndName[imgPathAndName.Length - 2]}/{imgPathAndName[imgPathAndName.Length - 1]}";
+
             var book = new Book
             {
                 Description = description,
                 Title = title,
                 Price = price,
-                Img = imgUrl,
+                Img = imgPath,
                 ReleaseDate = releaseDate
             };
 
@@ -84,7 +88,7 @@ namespace BookStore.Services
 
         public BookDisplayModel[] GetAllBooks()
         {
-            throw new NotImplementedException();
+            return this.db.Books.ProjectTo<BookDisplayModel>().ToArray();
         }
     }
 }

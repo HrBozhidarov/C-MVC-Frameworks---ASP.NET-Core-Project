@@ -6,9 +6,11 @@ namespace BookStore.Models.ViewModels.Books
 {
     public class BookDisplayModel
     {
+        public int Id { get; set; }
+
         public string Title { get; set; }
 
-        public string Author { get; set; }
+        public string Authors { get; set; }
 
         public decimal Price { get; set; }
 

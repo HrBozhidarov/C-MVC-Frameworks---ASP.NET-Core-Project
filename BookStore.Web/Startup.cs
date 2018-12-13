@@ -69,6 +69,7 @@ namespace BookStore.Web
             {
                 cfg.AddProfile<CategoryProfile>();
                 cfg.AddProfile<AuthorProfile>();
+                cfg.AddProfile<BookProfile>();
             });
 
             services.AddAutoMapper();

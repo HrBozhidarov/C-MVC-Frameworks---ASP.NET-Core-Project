@@ -1,4 +1,8 @@
-﻿@{
+﻿@using X.PagedList.Mvc.Core;
+@using X.PagedList.Mvc.Common;
+@using X.PagedList;
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -80,373 +84,19 @@
     </div>
     <div class="col-lg-9">
         <div class="row">
-            <div class="row" data-gutter="15">
+            <div class="row" data-gutter="15" style="width:100%">
 
-
-                <div class="col-sm-4 col-md-3 col-xs-6">
-                    <div class="product max-height-custom">
-
-                        <ul class="product-labels">
-                            <!--
-                            <li>-40%</li>
-                            <li>препоръчано</li>
-                            -->
-                        </ul>
-                        <div class="product-img-wrap text-center">
-                            <a href="/216383-Зимна-песен.html" onclick="onProductClick('216383','Зимна песен','','','','0','Книга','/216383-Зимна-песен.html'); return !ga.loaded;">
-                                <img src="~/images/Img1/d178c23d-b871-4651-ba8f-f9c61a2b15eb.jpg" />
-                            </a>
-                        </div>
-                        <a class="product-link" href="#"></a>
-                        <div class="product-caption">
-                            <ul class="product-caption-rating">
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                            </ul>
-                            <h5 class="product-caption-title"><a href="/216383-Зимна-песен.html">Зимна песен</a></h5>
-                            <h6 class="product-caption-author">С. Джей-Джоунс</h6>
-
-                            <div class="product-caption-discount">
-                                <h4 class="text-red">18.00 лв.</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-4 col-md-3 col-xs-6">
-                    <div class="product max-height-custom">
-
-                        <ul class="product-labels">
-                            <!--
-                            <li>-40%</li>
-                            <li>препоръчано</li>
-                            -->
-                        </ul>
-                        <div class="product-img-wrap text-center">
-                            <a href="/216367-Пепел-от-диаманти.html" onclick="onProductClick('216367','Пепел от диаманти','','','','1','Книга','/216367-Пепел-от-диаманти.html'); return !ga.loaded;">
-                                <img src="https://i3.helikon.bg/products/6367/21/216367/216367z.jpg" data-src="https://i3.helikon.bg/products/6367/21/216367/216367z.jpg" alt="Пепел от диаманти" class="custom-responsive-style loaded" data-was-processed="true">
-                            </a>
-                        </div>
-                        <a class="product-link" href="#"></a>
-                        <div class="product-caption">
-                            <ul class="product-caption-rating">
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                            </ul>
-                            <h5 class="product-caption-title"><a href="/216367-Пепел-от-диаманти.html">Пепел от диаманти</a></h5>
-                            <h6 class="product-caption-author">Даниел Стийл</h6>
-
-                            <div class="product-caption-discount">
-                                <h4 class="text-red">16.99 лв.</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-4 col-md-3 col-xs-6">
-                    <div class="product max-height-custom">
-
-                        <ul class="product-labels">
-                            <!--
-                            <li>-40%</li>
-                            <li>препоръчано</li>
-                            -->
-                        </ul>
-                        <div class="product-img-wrap text-center">
-                            <a href="/216379-Миналото-не-забравя.html" onclick="onProductClick('216379','Миналото не забравя','','','','2','Книга','/216379-Миналото-не-забравя.html'); return !ga.loaded;">
-                                <img src="https://i.helikon.bg/products/helikon_na_big.jpg" data-src="https://i.helikon.bg/products/helikon_na_big.jpg" alt="Миналото не забравя" class="custom-responsive-style loaded" data-was-processed="true">
-                            </a>
-                        </div>
-                        <a class="product-link" href="#"></a>
-                        <div class="product-caption">
-                            <ul class="product-caption-rating">
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                            </ul>
-                            <h5 class="product-caption-title"><a href="/216379-Миналото-не-забравя.html">Миналото не забравя</a></h5>
-                            <h6 class="product-caption-author">Габриела Улберг Вестин</h6>
-
-                            <div class="product-caption-discount">
-                                <h4 class="text-red">17.00 лв.</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-4 col-md-3 col-xs-6">
-                    <div class="product max-height-custom">
-
-                        <ul class="product-labels">
-                            <!--
-                            <li>-40%</li>
-                            <li>препоръчано</li>
-                            -->
-                        </ul>
-                        <div class="product-img-wrap text-center">
-                            <a href="/216380-Миналото-не-забравя.html" onclick="onProductClick('216380','Миналото не забравя','','','','3','Книга','/216380-Миналото-не-забравя.html'); return !ga.loaded;">
-                                <img src="https://i1.helikon.bg/products/6380/21/216380/216380z.jpg" data-src="https://i1.helikon.bg/products/6380/21/216380/216380z.jpg" alt="Миналото не забравя" class="custom-responsive-style loaded" data-was-processed="true">
-                            </a>
-                        </div>
-                        <a class="product-link" href="#"></a>
-                        <div class="product-caption">
-                            <ul class="product-caption-rating">
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                            </ul>
-                            <h5 class="product-caption-title"><a href="/216380-Миналото-не-забравя.html">Миналото не забравя</a></h5>
-                            <h6 class="product-caption-author">Габриела Улберг Вестин</h6>
-
-                            <div class="product-caption-discount">
-                                <h4 class="text-red">17.00 лв.</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-4 col-md-3 col-xs-6">
-                    <div class="product max-height-custom">
-
-                        <ul class="product-labels">
-                            <!--
-                            <li>-40%</li>
-                            <li>препоръчано</li>
-                            -->
-                        </ul>
-                        <div class="product-img-wrap text-center">
-                            <a href="/216343-Красива-мистерия.html" onclick="onProductClick('216343','Красива мистерия','','','','4','Книга','/216343-Красива-мистерия.html'); return !ga.loaded;">
-                                <img src="https://i3.helikon.bg/products/6343/21/216343/216343z.jpg" data-src="https://i3.helikon.bg/products/6343/21/216343/216343z.jpg" alt="Красива мистерия" class="custom-responsive-style loaded" data-was-processed="true">
-                            </a>
-                        </div>
-                        <a class="product-link" href="#"></a>
-                        <div class="product-caption">
-                            <ul class="product-caption-rating">
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                            </ul>
-                            <h5 class="product-caption-title"><a href="/216343-Красива-мистерия.html">Красива мистерия</a></h5>
-                            <h6 class="product-caption-author">Луиз Пени</h6>
-
-                            <div class="product-caption-discount">
-                                <h4 class="text-red">16.99 лв.</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-4 col-md-3 col-xs-6">
-                    <div class="product max-height-custom">
-
-                        <ul class="product-labels">
-                            <!--
-                            <li>-40%</li>
-                            <li>препоръчано</li>
-                            -->
-                        </ul>
-                        <div class="product-img-wrap text-center">
-                            <a href="/216323-Невидимият-живот-на-Еуридисе-Гузмао.html" onclick="onProductClick('216323','Невидимият живот на Еуридисе Гузмао','','','','5','Книга','/216323-Невидимият-живот-на-Еуридисе-Гузмао.html'); return !ga.loaded;">
-                                <img src="https://i4.helikon.bg/products/6323/21/216323/216323z.jpg" data-src="https://i4.helikon.bg/products/6323/21/216323/216323z.jpg" alt="Невидимият живот на Еуридисе Гузмао" class="custom-responsive-style loaded" data-was-processed="true">
-                            </a>
-                        </div>
-                        <a class="product-link" href="#"></a>
-                        <div class="product-caption">
-                            <ul class="product-caption-rating">
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                            </ul>
-                            <h5 class="product-caption-title"><a href="/216323-Невидимият-живот-на-Еуридисе-Гузмао.html">Невидимият живот на Еуридисе Гузмао</a></h5>
-                            <h6 class="product-caption-author">Марта Баталя</h6>
-
-                            <div class="product-caption-discount">
-                                <h4 class="text-red">15.00 лв.</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-4 col-md-3 col-xs-6">
-                    <div class="product max-height-custom">
-
-                        <ul class="product-labels">
-                            <!--
-                            <li>-40%</li>
-                            <li>препоръчано</li>
-                            -->
-                        </ul>
-                        <div class="product-img-wrap text-center">
-                            <a href="/216274-Коледна-тайна.html" onclick="onProductClick('216274','Коледна тайна','','','','6','Книга','/216274-Коледна-тайна.html'); return !ga.loaded;">
-                                <img src="https://i3.helikon.bg/products/6274/21/216274/216274z.jpg" data-src="https://i3.helikon.bg/products/6274/21/216274/216274z.jpg" alt="Коледна тайна" class="custom-responsive-style loaded" data-was-processed="true">
-                            </a>
-                        </div>
-                        <a class="product-link" href="#"></a>
-                        <div class="product-caption">
-                            <ul class="product-caption-rating">
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                            </ul>
-                            <h5 class="product-caption-title"><a href="/216274-Коледна-тайна.html">Коледна тайна</a></h5>
-                            <h6 class="product-caption-author">Карън Суон</h6>
-
-                            <div class="product-caption-discount">
-                                <h4 class="text-red">17.90 лв.</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-4 col-md-3 col-xs-6">
-                    <div class="product max-height-custom">
-
-                        <ul class="product-labels">
-                            <!--
-                            <li>-40%</li>
-                            <li>препоръчано</li>
-                            -->
-                        </ul>
-                        <div class="product-img-wrap text-center">
-                            <a href="/216283-Златният-Стеф-Къри.html" onclick="onProductClick('216283','Златният Стеф Къри','','','','7','Книга','/216283-Златният-Стеф-Къри.html'); return !ga.loaded;">
-                                <img src="https://i4.helikon.bg/products/6283/21/216283/216283z.jpg" data-src="https://i4.helikon.bg/products/6283/21/216283/216283z.jpg" alt="Златният Стеф Къри" class="custom-responsive-style loaded" data-was-processed="true">
-                            </a>
-                        </div>
-                        <a class="product-link" href="#"></a>
-                        <div class="product-caption">
-                            <ul class="product-caption-rating">
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                            </ul>
-                            <h5 class="product-caption-title"><a href="/216283-Златният-Стеф-Къри.html">Златният Стеф Къри</a></h5>
-                            <h6 class="product-caption-author">Маркъс Томпсън</h6>
-
-                            <div class="product-caption-discount">
-                                <h4 class="text-red">16.90 лв.</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-4 col-md-3 col-xs-6">
-                    <div class="product max-height-custom">
-
-                        <ul class="product-labels">
-                            <!--
-                            <li>-40%</li>
-                            <li>препоръчано</li>
-                            -->
-                        </ul>
-                        <div class="product-img-wrap text-center">
-                            <a href="/216305-Кървави-книги-Т.6.html" onclick="onProductClick('216305','Кървави книги Т.6','','','','8','Книга','/216305-Кървави-книги-Т.6.html'); return !ga.loaded;">
-                                <img src="https://i3.helikon.bg/products/6305/21/216305/216305z.jpg" data-src="https://i3.helikon.bg/products/6305/21/216305/216305z.jpg" alt="Кървави книги Т.6" class="custom-responsive-style loaded" data-was-processed="true">
-                            </a>
-                        </div>
-                        <a class="product-link" href="#"></a>
-                        <div class="product-caption">
-                            <ul class="product-caption-rating">
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                            </ul>
-                            <h5 class="product-caption-title"><a href="/216305-Кървави-книги-Т.6.html">Кървави книги Т.6</a></h5>
-                            <h6 class="product-caption-author">Клайв Баркър</h6>
-
-                            <div class="product-caption-discount">
-                                <h4 class="text-red">14.00 лв.</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-4 col-md-3 col-xs-6">
-                    <div class="product max-height-custom">
-
-                        <ul class="product-labels">
-                            <!--
-                            <li>-40%</li>
-                            <li>препоръчано</li>
-                            -->
-                        </ul>
-                        <div class="product-img-wrap text-center">
-                            <a href="/216306-Фантастични-животни:-Престъпленията-на-Гриндевалд.html" onclick="onProductClick('216306','Фантастични животни: Престъпленията на Гриндевалд','','','','9','Книга','/216306-Фантастични-животни:-Престъпленията-на-Гриндевалд.html'); return !ga.loaded;">
-                                <img src="https://i4.helikon.bg/products/6306/21/216306/216306z.jpg" data-src="https://i4.helikon.bg/products/6306/21/216306/216306z.jpg" alt="Фантастични животни: Престъпленията на Гриндевалд" class="custom-responsive-style loaded" data-was-processed="true">
-                            </a>
-                        </div>
-                        <a class="product-link" href="#"></a>
-                        <div class="product-caption">
-                            <ul class="product-caption-rating">
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                            </ul>
-                            <h5 class="product-caption-title"><a href="/216306-Фантастични-животни:-Престъпленията-на-Гриндевалд.html">Фантастични животни: Престъпленията на Гриндевалд</a></h5>
-                            <h6 class="product-caption-author">Дж. К. Роулинг</h6>
-
-                            <div class="product-caption-discount">
-                                <h4 class="text-red">19.90 лв.</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-4 col-md-3 col-xs-6">
-                    <div class="product max-height-custom">
-
-                        <ul class="product-labels">
-                            <!--
-                            <li>-40%</li>
-                            <li>препоръчано</li>
-                            -->
-                        </ul>
-                        <div class="product-img-wrap text-center">
-                            <a href="/216234-Академия-за-магьосници.html" onclick="onProductClick('216234','Академия за магьосници','','','','10','Книга','/216234-Академия-за-магьосници.html'); return !ga.loaded;">
-                                <img src="~/images/Img6/1775bb87-9703-47c1-8ba9-6f4b5165fcb8.jpg" />
-                            </a>
-                        </div>
-                        <a class="product-link" href="#"></a>
-                        <div class="product-caption">
-                            <ul class="product-caption-rating">
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                                <li><i class="far fa-star"></i></li>
-                            </ul>
-                            <h5 class="product-caption-title"><a href="/216234-Академия-за-магьосници.html">Академия за магьосници</a></h5>
-                            <h6 class="product-caption-author">Ел Феъри</h6>
-
-                            <div class="product-caption-discount">
-                                <h4 class="text-red">21.99 лв.</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                @*<div class="col-sm-4 col-md-3 col-xs-6">
+                @foreach (var book in ViewBag.Books)
+                {
+                    <div class="col-sm-4 col-md-3 col-xs-6">
                         <div class="product max-height-custom">
-
-                            <ul class="product-labels">
-
-                            </ul>
+                            <ul class="product-labels"></ul>
                             <div class="product-img-wrap text-center">
-                                <a href="/216259-Огледалата-на-града.html" onclick="onProductClick('216259','Огледалата на града','','','','11','Книга','/216259-Огледалата-на-града.html'); return !ga.loaded;">
-                                    <img src="https://i2.helikon.bg/products/6259/21/216259/216259z.jpg" data-src="https://i2.helikon.bg/products/6259/21/216259/216259z.jpg" alt="Огледалата на града" class="custom-responsive-style loaded" data-was-processed="true">
+                                <a asp-area="Books" asp-controller="Books" asp-action="Details" asp-route-id="@book.Id">
+                                    <img src=@book.ImgUrl />
                                 </a>
                             </div>
-                            <a class="product-link" href="#"></a>
+
                             <div class="product-caption">
                                 <ul class="product-caption-rating">
                                     <li><i class="far fa-star"></i></li>
@@ -455,20 +105,42 @@
                                     <li><i class="far fa-star"></i></li>
                                     <li><i class="far fa-star"></i></li>
                                 </ul>
-                                <h5 class="product-caption-title"><a href="/216259-Огледалата-на-града.html">Огледалата на града</a></h5>
-                                <h6 class="product-caption-author">Елиф Шафак</h6>
+                                <h5 class="product-caption-title"> <a class="product-link" asp-area="Books" asp-controller="Books" asp-action="Details" asp-route-id="@book.Id">@book.Title</a></h5>
+                                <h6 class="product-caption-author">@book.Authors</h6>
 
                                 <div class="product-caption-discount">
-                                    <h4 class="text-red">19.90 лв.</h4>
+                                    <h4 class="text-red">@book.Price $</h4>
                                 </div>
                             </div>
                         </div>
-                    </div>*@
+                    </div>
+                }
 
             </div>
         </div>
     </div>
 </div>
 
+@{
+    var leftTo = @"<i class=""fa fa-chevron-left""></i>";
+    var rightTo = @"<i class=""fa fa-chevron-right""></i>";
+}
 
+<div class="row mt-5">
+    <div class="col-md-12 col-12">
+        @Html.PagedListPager((IPagedList)ViewBag.Books, page => Url.Action("Index", "Home", new { page = page }),
+            new PagedListRenderOptions
+            {
+                MaximumPageNumbersToDisplay = 1,
+                UlElementClasses= new string[] { "pagination", "flex-wrap"},
+                LinkToPreviousPageFormat = @leftTo,
+                LinkToFirstPageFormat = "First",
+                LinkToLastPageFormat = "Last",
+                DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+                LiElementClasses = new string[] { "page-item" },
+                PageClasses = new string[] { "page-link", "mx-1" },
+                LinkToNextPageFormat = @rightTo,
+            })
+    </div>
+</div>
 

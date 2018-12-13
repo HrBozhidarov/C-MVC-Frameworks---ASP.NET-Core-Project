@@ -22,6 +22,15 @@
     <Folder Include="Areas\Books\Data\" />
     <Folder Include="Areas\Books\Models\" />
     <Folder Include="Areas\Identity\Services\" />
+    <Folder Include="wwwroot\images\Img1\" />
+    <Folder Include="wwwroot\images\Img2\" />
+    <Folder Include="wwwroot\images\Img3\" />
+    <Folder Include="wwwroot\images\Img4\" />
+    <Folder Include="wwwroot\images\Img5\" />
+    <Folder Include="wwwroot\images\Img6\" />
+    <Folder Include="wwwroot\images\Img7\" />
+    <Folder Include="wwwroot\images\Img8\" />
+    <Folder Include="wwwroot\images\Img9\" />
     <Folder Include="wwwroot\lib\kendo-ui\" />
   </ItemGroup>
 

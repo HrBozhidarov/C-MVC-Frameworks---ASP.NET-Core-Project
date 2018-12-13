@@ -298,6 +298,10 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     padding-left: 15px;
 }
 
+.pagination-container ul {
+    float: right;
+}
+
 #left-menu .list-group-item {
     padding: 0px 0px;
 }
@@ -317,3 +321,5 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
         display: none;
     }
 }
+
+

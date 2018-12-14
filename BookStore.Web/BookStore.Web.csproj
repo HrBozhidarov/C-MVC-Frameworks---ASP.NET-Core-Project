@@ -22,15 +22,6 @@
     <Folder Include="Areas\Books\Data\" />
     <Folder Include="Areas\Books\Models\" />
     <Folder Include="Areas\Identity\Services\" />
-    <Folder Include="wwwroot\images\Img1\" />
-    <Folder Include="wwwroot\images\Img2\" />
-    <Folder Include="wwwroot\images\Img3\" />
-    <Folder Include="wwwroot\images\Img4\" />
-    <Folder Include="wwwroot\images\Img5\" />
-    <Folder Include="wwwroot\images\Img6\" />
-    <Folder Include="wwwroot\images\Img7\" />
-    <Folder Include="wwwroot\images\Img8\" />
-    <Folder Include="wwwroot\images\Img9\" />
     <Folder Include="wwwroot\lib\kendo-ui\" />
   </ItemGroup>
 
@@ -59,6 +50,9 @@
     </Content>
     <Content Update="Areas\Identity\Views\_ViewStart.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="wwwroot\images\Img0\c8003a24-11b0-459d-a11c-622ed0a6a7c1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\js\custom.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

@@ -10,12 +10,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using X.PagedList;
 
 namespace BookStore.Web.Areas.Book.Controllers
 {
-    [Authorize(Roles = "Admin")]
     public class BooksController : BaseController
     {
+        private const int ItemsPerPage = 6;
         private const int MaxAllowableSize = 65000;
         private const int MinAllowableSize = 5000;
         private const int NumberOnFolder = 20;
@@ -40,6 +41,23 @@ namespace BookStore.Web.Areas.Book.Controllers
             this.environment = environment;
         }
 
+        public IActionResult Details(int id)
+        {
+            return View();
+        }
+
+        public IActionResult All(int? page)
+        {
+            var books = bookService.GetAllBooks();
+
+            var pageNumber = page ?? 1;
+            var onePageOfBooks = books.ToPagedList(pageNumber, ItemsPerPage);
+
+            ViewBag.Books = onePageOfBooks;
+            return View();
+        }
+
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit()
         {
             var model = this.GetModel(
@@ -54,6 +72,7 @@ namespace BookStore.Web.Areas.Book.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             var categories = this.categoryService.AllCategories().Select(x => x.Name).ToList();
@@ -68,10 +87,18 @@ namespace BookStore.Web.Areas.Book.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Admin")]
         [ValidateModelState]
         [HttpPost]
         public IActionResult Create(BookCreateModel model)
         {
+            if (!this.bookService.IfIsbnExists(model.Isbn))
+            {
+                ModelState.AddModelError("", "Isbn is invalid or exists.");
+
+                return View(model);
+            }
+
             var fileName = model.Image.FileName;
 
             var extention = Path.GetExtension(fileName);
@@ -99,6 +126,7 @@ namespace BookStore.Web.Areas.Book.Controllers
             var isSeccess = this.bookService.Create(
                 model.Title,
                 model.Price,
+                model.Isbn,
                 imgUrl,
                 model.Description,
                 model.ReleaseDate,

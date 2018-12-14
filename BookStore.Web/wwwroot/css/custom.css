@@ -13,6 +13,20 @@
     font-weight: bold;
     font-size: 50px;
 }
+emg-fluid-user-section .emg-fluid-notification {
+    position: absolute;
+    display: none;
+    left: 13px;
+    top: 0;
+    min-width: 17px;
+    height: 17px;
+    line-height: 17px;
+    font-size: 10px;
+    font-weight: bold;
+    text-align: center;
+    background-color: #f0280a;
+    border-radius: 50%;
+}
 
 /*div > div > div > a.break-word {
     word-break: break-all;

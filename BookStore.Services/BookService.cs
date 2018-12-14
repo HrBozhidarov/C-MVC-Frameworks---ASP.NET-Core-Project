@@ -22,6 +22,7 @@ namespace BookStore.Services
         public bool Create(
             string title,
             decimal price,
+            string isbn,
             string imgUrl,
             string description,
             DateTime releaseDate,
@@ -44,6 +45,7 @@ namespace BookStore.Services
             var book = new Book
             {
                 Description = description,
+                Isbn = isbn,
                 Title = title,
                 Price = price,
                 Img = imgPath,
@@ -89,6 +91,21 @@ namespace BookStore.Services
         public BookDisplayModel[] GetAllBooks()
         {
             return this.db.Books.ProjectTo<BookDisplayModel>().ToArray();
+        }
+
+        public bool IfIsbnExists(string isbn)
+        {
+            if (isbn == null)
+            {
+                return false;
+            }
+
+            if (this.db.Books.Any(x => x.Isbn == isbn))
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

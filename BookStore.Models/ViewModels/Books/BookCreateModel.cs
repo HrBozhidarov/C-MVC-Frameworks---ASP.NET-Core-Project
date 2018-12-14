@@ -17,6 +17,10 @@ namespace BookStore.Models.ViewModels.Books
         public decimal Price { get; set; }
 
         [Required]
+        [RegularExpression(@"[0-9]{13}")]
+        public string Isbn { get; set; }
+
+        [Required]
         [DataType(DataType.Upload)]
         public IFormFile Image { get; set; }
 

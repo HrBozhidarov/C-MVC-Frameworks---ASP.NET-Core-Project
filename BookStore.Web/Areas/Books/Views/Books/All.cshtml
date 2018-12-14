@@ -1,0 +1,99 @@
+﻿@using X.PagedList.Mvc.Core;
+@using X.PagedList.Mvc.Common;
+@using X.PagedList;
+@{
+    ViewData["Title"] = "All";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>All</h2>
+
+<div class="row justify-content-center">
+    <div class="col-md-6 col-sm-6 col-xs-7 col-8">
+        <form role="search" method="post" class="form search-form w-100 mx-auto mt-3 mb-5" action="#">
+            <div class="input-group">
+                <input name="s" type="text" class="form-control" placeholder="Search in this site">
+                <span class="input-group-btn ">
+                    <button type="submit" value="Search" class="btn btn-success"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;</button>
+                </span>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row mt-5" id="unique-row">
+    <div id="left-menu" class="col-md-3">
+        <h2 class="mb-3">The Latest</h2>
+        <ul class="list-group mb-3">
+            <li class="list-group-item"><a href="#" class="btn w-100" role="button">New Release</a></li>
+        </ul>
+        <h2 class="mb-10">Categories</h2>
+        <ul class="list-group">
+            <li class="list-group-item"><a href="#" class="btn w-100" role="button">All</a></li>
+            <li class="list-group-item"><a href="#" class="btn w-100" role="button">Fiction</a></li>
+            <li class="list-group-item"><a href="#" class="btn w-100" role="button">Romance</a></li>
+            <li class="list-group-item"><a href="#" class="btn w-100" role="button">Adventure</a></li>
+            <li class="list-group-item"><a href="#" class="btn w-100" role="button">Thriller</a></li>
+        </ul>
+    </div>
+    <div class="col-lg-9">
+        <div class="row">
+            <div class="row" data-gutter="15" style="width:100%">
+
+                @foreach (var book in ViewBag.Books)
+                {
+                    <div class="col-sm-4 col-md-3 col-xs-6">
+                        <div class="product max-height-custom">
+                            <ul class="product-labels"></ul>
+                            <div class="product-img-wrap text-center">
+                                <a asp-area="Books" asp-controller="Books" asp-action="Details" asp-route-id="@book.Id">
+                                    <img src=@("/"+book.ImgUrl) />
+                                </a>
+                            </div>
+
+                            <div class="product-caption">
+                                <ul class="product-caption-rating">
+                                    <li><i class="far fa-star"></i></li>
+                                    <li><i class="far fa-star"></i></li>
+                                    <li><i class="far fa-star"></i></li>
+                                    <li><i class="far fa-star"></i></li>
+                                    <li><i class="far fa-star"></i></li>
+                                </ul>
+                                <h5 class="product-caption-title"> <a class="product-link" asp-area="Books" asp-controller="Books" asp-action="Details" asp-route-id="@book.Id">@book.Title</a></h5>
+                                <h6 class="product-caption-author">@book.Authors</h6>
+
+                                <div class="product-caption-discount">
+                                    <h4 class="text-red">@book.Price $</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@{
+    var leftTo = @"<i class=""fa fa-chevron-left""></i>";
+    var rightTo = @"<i class=""fa fa-chevron-right""></i>";
+}
+
+<div class="row mt-5">
+    <div class="col-md-12 col-12">
+        @Html.PagedListPager((IPagedList)ViewBag.Books, page => Url.Action("All", "Books", new { page = page }),
+            new PagedListRenderOptions
+            {
+                MaximumPageNumbersToDisplay = 1,
+                UlElementClasses= new string[] { "pagination", "flex-wrap"},
+                LinkToPreviousPageFormat = @leftTo,
+                LinkToFirstPageFormat = "First",
+                LinkToLastPageFormat = "Last",
+                DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+                LiElementClasses = new string[] { "page-item" },
+                PageClasses = new string[] { "page-link", "mx-1" },
+                LinkToNextPageFormat = @rightTo,
+            })
+    </div>
+</div>

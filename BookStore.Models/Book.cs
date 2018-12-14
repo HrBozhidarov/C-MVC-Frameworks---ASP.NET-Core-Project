@@ -25,6 +25,8 @@ namespace BookStore.Models
 
         public string Description { get; set; }
 
+        public string Isbn { get; set; }
+
         public DateTime ReleaseDate { get; set; }
 
         public ICollection<Comment> Comments { get; set; }

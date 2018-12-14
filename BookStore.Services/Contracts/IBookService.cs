@@ -9,6 +9,7 @@ namespace BookStore.Services.Contracts
     {
         bool Create(string title,
             decimal price,
+            string isbn,
             string imgUrl,
             string description,
             DateTime releaseDate,
@@ -18,5 +19,7 @@ namespace BookStore.Services.Contracts
         int CountOfAllBooks();
 
         BookDisplayModel[] GetAllBooks();
+
+        bool IfIsbnExists(string isbn);
     }
 }

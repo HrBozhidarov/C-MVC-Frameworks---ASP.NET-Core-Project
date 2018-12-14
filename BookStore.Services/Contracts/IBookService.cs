@@ -21,5 +21,7 @@ namespace BookStore.Services.Contracts
         BookDisplayModel[] GetAllBooks();
 
         bool IfIsbnExists(string isbn);
+
+        DetailsBookModel GetDetailsBookById(int id);
     }
 }

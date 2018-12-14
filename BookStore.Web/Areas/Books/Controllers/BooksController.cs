@@ -43,7 +43,14 @@ namespace BookStore.Web.Areas.Book.Controllers
 
         public IActionResult Details(int id)
         {
-            return View();
+            var book = this.bookService.GetDetailsBookById(id);
+
+            if (book == null)
+            {
+                return NotFound();
+            }
+
+            return View(book);
         }
 
         public IActionResult All(int? page)
@@ -162,7 +169,7 @@ namespace BookStore.Web.Areas.Book.Controllers
 
             using (MagickImage image = new MagickImage(imgBytesArray))
             {
-                MagickGeometry size = new MagickGeometry(154, 230);   
+                MagickGeometry size = new MagickGeometry(154, 230);
 
                 image.Resize(size);
 

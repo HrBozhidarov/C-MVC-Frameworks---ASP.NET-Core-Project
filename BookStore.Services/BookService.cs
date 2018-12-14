@@ -1,4 +1,5 @@
-﻿using AutoMapper.QueryableExtensions;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using BookStore.Data;
 using BookStore.Models;
 using BookStore.Models.ViewModels.Books;
@@ -13,10 +14,12 @@ namespace BookStore.Services
     public class BookService : IBookService
     {
         private readonly BookStoreContext db;
+        private readonly IMapper mapper;
 
-        public BookService(BookStoreContext db)
+        public BookService(BookStoreContext db, IMapper mapper)
         {
             this.db = db;
+            this.mapper = mapper;
         }
 
         public bool Create(
@@ -81,6 +84,16 @@ namespace BookStore.Services
             this.db.SaveChanges();
 
             return true;
+        }
+
+        public DetailsBookModel GetDetailsBookById(int id)
+        {
+            if (!this.db.Books.Any(x => x.Id == id))
+            {
+                return null;
+            }
+
+            return mapper.Map<DetailsBookModel>(this.db.Books.First(x => x.Id == id));
         }
 
         public int CountOfAllBooks()

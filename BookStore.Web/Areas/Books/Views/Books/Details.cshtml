@@ -4,5 +4,19 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+<div class="row">
+    <div class="col-lg-12">
+        <span class="title-details">@Model.Title</span> <span class="author-details">by @(string.Join(", ", Model.Authors))</span>
+    </div>
+</div>
+<hr />
+<div class="row">
+    <div class="col-lg-2">
 
+    </div>
+
+    <div class="col-lg-2">
+
+    </div>
+
+</div>

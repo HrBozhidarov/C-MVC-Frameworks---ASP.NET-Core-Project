@@ -47,100 +47,15 @@
     </a>
 </div>
 
-<div id="colapse-categories" class="pos-f-t">
-    <div class="collapse" id="navbarToggleExternalContent">
-        <div class="bg-dark p-4">
-            <ul class="list-group">
-                <li class="list-group-item"><a href="#" class="btn w-100" role="button">New Release</a></li>
-                <li class="list-group-item"><a href="#" class="btn w-100" role="button">All</a></li>
-                <li class="list-group-item"><a href="#" class="btn w-100" role="button">Fiction</a></li>
-                <li class="list-group-item"><a href="#" class="btn w-100" role="button">Romance</a></li>
-                <li class="list-group-item"><a href="#" class="btn w-100" role="button">Adventure</a></li>
-                <li class="list-group-item"><a href="#" class="btn w-100" role="button">Thriller</a></li>
-            </ul>
+<div class="row mx-3 my-5">
+    <div class="col-lg-12 mx-auto">
+        <div id="slider-index-one" class="my-5">
+
         </div>
-    </div>
-    <nav class="navbar navbar-dark bg-dark">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </nav>
-</div>
+        <div id="slider-index-two" class="my-5">
 
-<div class="row mt-5" id="unique-row">
-    <div id="left-menu" class="col-md-3">
-        <h2 class="mb-3">The Latest</h2>
-        <ul class="list-group mb-3">
-            <li class="list-group-item"><a href="#" class="btn w-100" role="button">New Release</a></li>
-        </ul>
-        <h2 class="mb-10">Categories</h2>
-        <ul class="list-group">
-            <li class="list-group-item"><a href="#" class="btn w-100" role="button">All</a></li>
-            <li class="list-group-item"><a href="#" class="btn w-100" role="button">Fiction</a></li>
-            <li class="list-group-item"><a href="#" class="btn w-100" role="button">Romance</a></li>
-            <li class="list-group-item"><a href="#" class="btn w-100" role="button">Adventure</a></li>
-            <li class="list-group-item"><a href="#" class="btn w-100" role="button">Thriller</a></li>
-        </ul>
-    </div>
-    <div class="col-lg-9">
-        <div class="row">
-            <div class="row" data-gutter="15" style="width:100%">
-
-                @foreach (var book in ViewBag.Books)
-                {
-                    <div class="col-sm-4 col-md-3 col-xs-6">
-                        <div class="product max-height-custom">
-                            <ul class="product-labels"></ul>
-                            <div class="product-img-wrap text-center">
-                                <a asp-area="Books" asp-controller="Books" asp-action="Details" asp-route-id="@book.Id">
-                                    <img src=@book.ImgUrl />
-                                </a>
-                            </div>
-
-                            <div class="product-caption">
-                                <ul class="product-caption-rating">
-                                    <li><i class="far fa-star"></i></li>
-                                    <li><i class="far fa-star"></i></li>
-                                    <li><i class="far fa-star"></i></li>
-                                    <li><i class="far fa-star"></i></li>
-                                    <li><i class="far fa-star"></i></li>
-                                </ul>
-                                <h5 class="product-caption-title"> <a class="product-link" asp-area="Books" asp-controller="Books" asp-action="Details" asp-route-id="@book.Id">@book.Title</a></h5>
-                                <h6 class="product-caption-author">@book.Authors</h6>
-
-                                <div class="product-caption-discount">
-                                    <h4 class="text-red">@book.Price $</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                }
-
-            </div>
         </div>
     </div>
 </div>
 
-@{
-    var leftTo = @"<i class=""fa fa-chevron-left""></i>";
-    var rightTo = @"<i class=""fa fa-chevron-right""></i>";
-}
-
-<div class="row mt-5">
-    <div class="col-md-12 col-12">
-        @Html.PagedListPager((IPagedList)ViewBag.Books, page => Url.Action("Index", "Home", new { page = page }),
-            new PagedListRenderOptions
-            {
-                MaximumPageNumbersToDisplay = 1,
-                UlElementClasses= new string[] { "pagination", "flex-wrap"},
-                LinkToPreviousPageFormat = @leftTo,
-                LinkToFirstPageFormat = "First",
-                LinkToLastPageFormat = "Last",
-                DisplayEllipsesWhenNotShowingAllPageNumbers = true,
-                LiElementClasses = new string[] { "page-item" },
-                PageClasses = new string[] { "page-link", "mx-1" },
-                LinkToNextPageFormat = @rightTo,
-            })
-    </div>
-</div>
-
+<script src="~/js/setting-slick.js"></script>

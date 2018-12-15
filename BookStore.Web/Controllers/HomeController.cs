@@ -7,13 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 using BookStore.Web.Models;
 using BookStore.Services.Contracts;
 using X.PagedList;
+using BookStore.Models.ViewModels.Books;
 
 namespace BookStore.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private const int ItemsPerPage = 1;
-
         private readonly IBookService bookService;
 
         public HomeController(IBookService bookService)
@@ -21,14 +20,8 @@ namespace BookStore.Web.Controllers
             this.bookService = bookService;
         }
 
-        public IActionResult Index(int? page)
+        public IActionResult Index()
         {
-            var books = bookService.GetAllBooks();
-
-            var pageNumber = page ?? 1;
-            var onePageOfBooks = books.ToPagedList(pageNumber, ItemsPerPage);
-
-            ViewBag.Books = onePageOfBooks;
             return View();
         }
 
@@ -55,6 +48,13 @@ namespace BookStore.Web.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [HttpPost]
+        [IgnoreAntiforgeryToken]
+        public PartialViewResult SliderPictures([FromBody]BookDisplayModel[] books)
+        {
+            return PartialView("_IndexSliderPartial", books);
         }
     }
 }

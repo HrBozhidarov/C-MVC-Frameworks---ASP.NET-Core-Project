@@ -1,0 +1,31 @@
+﻿@model BookDisplayModel[]
+
+@foreach (var book in Model)
+{
+    <div class="col-sm-4 col-md-3 col-xs-6">
+        <div class="product max-height-custom">
+            <ul class="product-labels"></ul>
+            <div class="product-img-wrap text-center">
+                <a asp-area="Books" asp-controller="Books" asp-action="Details" asp-route-id="@book.Id">
+                    <img src="@book.ImgUrl" />
+                </a>
+            </div>
+
+            <div class="product-caption">
+                <ul class="product-caption-rating">
+                    <li><i class="far fa-star"></i></li>
+                    <li><i class="far fa-star"></i></li>
+                    <li><i class="far fa-star"></i></li>
+                    <li><i class="far fa-star"></i></li>
+                    <li><i class="far fa-star"></i></li>
+                </ul>
+                <h5 class="product-caption-title"><a class="product-link" asp-area="Books" asp-controller="Books" asp-action="Details" asp-route-id="@book.Id">@book.Title</a></h5>
+                <h6 class="product-caption-author">@book.Authors</h6>
+
+                <div class="product-caption-discount">
+                    <h4 class="text-red">@book.Price.ToString("F2") $</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+}

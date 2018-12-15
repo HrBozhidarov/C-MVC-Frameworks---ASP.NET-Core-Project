@@ -22,6 +22,11 @@
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="ReleaseDate"></label>
+                <input class="form-control" asp-for="ReleaseDate" />
+                <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="Isbn"></label>
                 <input class="form-control" asp-for="Isbn" />
                 <span asp-validation-for="Isbn" class="text-danger"></span>
@@ -39,21 +44,21 @@
             <div>
                 <label for="Authors">Authors</label>
                 @(Html.Kendo().MultiSelect()
-                                                 .Name("Authors")
-                                                 .AutoClose(false)
-                                                 .Placeholder("Select authors...")
-                                                 .BindTo(Model.Authors)
-                                                 .Value(new string[] { }))
+                                                         .Name("Authors")
+                                                         .AutoClose(false)
+                                                         .Placeholder("Select authors...")
+                                                         .BindTo(Model.Authors)
+                                                         .Value(new string[] { }))
 
             </div>
             <div class="mb-3">
                 <label for="Categories">Categories</label>
                 @(Html.Kendo().MultiSelect()
-                                                 .Name("Categories")
-                                                 .AutoClose(false)
-                                                 .Placeholder("Select categories...")
-                                                 .BindTo(Model.Categories)
-                                                 .Value(new string[] { }))
+                                                         .Name("Categories")
+                                                         .AutoClose(false)
+                                                         .Placeholder("Select categories...")
+                                                         .BindTo(Model.Categories)
+                                                         .Value(new string[] { }))
 
             </div>
 

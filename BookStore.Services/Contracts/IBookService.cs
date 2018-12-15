@@ -23,5 +23,9 @@ namespace BookStore.Services.Contracts
         bool IfIsbnExists(string isbn);
 
         DetailsBookModel GetDetailsBookById(int id);
+
+        BookDisplayModel[] GetBooksInAscOrderByDate(int numberOfBooks);
+
+        BookDisplayModel[] GetBooksInDescOrderByDate(int numberOfBooks);
     }
 }

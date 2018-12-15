@@ -4,6 +4,7 @@ using BookStore.Data;
 using BookStore.Models;
 using BookStore.Models.ViewModels.Books;
 using BookStore.Services.Contracts;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -93,7 +94,9 @@ namespace BookStore.Services
                 return null;
             }
 
-            return mapper.Map<DetailsBookModel>(this.db.Books.First(x => x.Id == id));
+            var book = this.db.Books.Include(x=>x.BooksAuthors).ThenInclude(x=>x.Author).Include(x=>x.BooksCategories).ThenInclude(x=>x.Category).First(x => x.Id == id);
+
+            return mapper.Map<DetailsBookModel>(book);
         }
 
         public int CountOfAllBooks()
@@ -119,6 +122,16 @@ namespace BookStore.Services
             }
 
             return true;
+        }
+
+        public BookDisplayModel[] GetBooksInDescOrderByDate(int numberOfBooks)
+        {
+            return this.db.Books.OrderByDescending(x => x.ReleaseDate).Take(numberOfBooks).ProjectTo<BookDisplayModel>().ToArray();
+        }
+
+        public BookDisplayModel[] GetBooksInAscOrderByDate(int numberOfBooks)
+        {
+            return this.db.Books.OrderBy(x => x.ReleaseDate).Take(numberOfBooks).ProjectTo<BookDisplayModel>().ToArray();
         }
     }
 }

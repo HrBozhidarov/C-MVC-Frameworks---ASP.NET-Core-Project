@@ -19,7 +19,7 @@ namespace BookStore.Web.Controllers
             this.bookService = bookService;
         }
 
-        [HttpGet("/api/[controller]/desc")]
+        [HttpGet("desc")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         public ActionResult<IEnumerable<BookDisplayModel>> GetOnlyEightBooksInDescOrder()
@@ -34,7 +34,7 @@ namespace BookStore.Web.Controllers
             return books;
         }
 
-        [HttpGet("/api/[controller]/asc")]
+        [HttpGet("asc")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         public ActionResult<IEnumerable<BookDisplayModel>> GetOnlyEightBooksInAscOrder()
@@ -44,6 +44,20 @@ namespace BookStore.Web.Controllers
             if (books.Length == 0)
             {
                 return NotFound();
+            }
+
+            return books;
+        }
+
+        [ProducesResponseType(200)]
+        public ActionResult<IEnumerable<BookDisplayModel>> Search(string search)
+        {
+            var count = this.bookService.CountOfAllBooks();
+            var books = this.bookService.GetBooksInAscOrderByDate(count);
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                books = books.Where(x => x.Title.ToLower().Contains(search?.ToLower())).ToArray();
             }
 
             return books;

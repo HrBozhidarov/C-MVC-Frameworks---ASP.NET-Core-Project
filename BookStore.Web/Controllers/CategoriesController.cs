@@ -1,10 +1,12 @@
 ﻿using BookStore.Models.ViewModels;
+using BookStore.Models.ViewModels.Books;
 using BookStore.Models.ViewModels.Categories;
 using BookStore.Services.Contracts;
 using BookStore.Web.Filters.Action;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using X.PagedList;
 
 namespace BookStore.Web.Controllers
 {
@@ -15,10 +17,12 @@ namespace BookStore.Web.Controllers
         private const string CreateErrorMessage = "Name of the category exists.";
 
         private readonly ICategoryService categoryService;
+        private readonly IBookService bookService;
 
-        public CategoriesController(ICategoryService categoryService)
+        public CategoriesController(ICategoryService categoryService, IBookService bookService)
         {
             this.categoryService = categoryService;
+            this.bookService = bookService;
         }
 
         public IActionResult Create()
@@ -82,6 +86,11 @@ namespace BookStore.Web.Controllers
             }
 
             return Json(categories);
+        }
+
+        private BookDisplayModel[] GetBooksForCategory(string category)
+        {
+            return this.bookService.GetBooksByCategoryName(category);
         }
     }
 }

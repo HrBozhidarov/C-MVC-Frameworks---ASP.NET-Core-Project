@@ -27,5 +27,11 @@ namespace BookStore.Services.Contracts
         BookDisplayModel[] GetBooksInAscOrderByDate(int numberOfBooks);
 
         BookDisplayModel[] GetBooksInDescOrderByDate(int numberOfBooks);
+
+        BookDisplayModel[] GetBooksByCategoryName(string categoryName);
+
+        BookDisplayModel[] GetBooksByNamePart(string name);
+
+        bool IfBookTitleContainsSearchResult(string name);
     }
 }

@@ -14,6 +14,8 @@ namespace BookStore.Services
 {
     public class BookService : IBookService
     {
+        private const string AllCategoriesName = "all";
+
         private readonly BookStoreContext db;
         private readonly IMapper mapper;
 
@@ -94,7 +96,7 @@ namespace BookStore.Services
                 return null;
             }
 
-            var book = this.db.Books.Include(x=>x.BooksAuthors).ThenInclude(x=>x.Author).Include(x=>x.BooksCategories).ThenInclude(x=>x.Category).First(x => x.Id == id);
+            var book = this.db.Books.Include(x => x.BooksAuthors).ThenInclude(x => x.Author).Include(x => x.BooksCategories).ThenInclude(x => x.Category).First(x => x.Id == id);
 
             return mapper.Map<DetailsBookModel>(book);
         }
@@ -132,6 +134,39 @@ namespace BookStore.Services
         public BookDisplayModel[] GetBooksInAscOrderByDate(int numberOfBooks)
         {
             return this.db.Books.OrderBy(x => x.ReleaseDate).Take(numberOfBooks).ProjectTo<BookDisplayModel>().ToArray();
+        }
+
+        public BookDisplayModel[] GetBooksByCategoryName(string categoryName)
+        {
+            if (categoryName.ToLower() == AllCategoriesName)
+            {
+                return this.GetAllBooks();
+            }
+
+            return this.db.BooksCategories
+                .Include(x => x.Book)
+                .Include(x => x.Category)
+                .Where(x => x.Category.Name.ToLower() == categoryName.ToLower())
+                .Select(x => x.Book)
+                .ProjectTo<BookDisplayModel>()
+                .ToArray();
+        }
+
+        public bool IfBookTitleContainsSearchResult(string name)
+        {
+            return this.db.Books.Any(x => x.Title.Contains(name));
+        }
+
+        public BookDisplayModel[] GetBooksByNamePart(string name)
+        {
+            var books = this.db.Books.Where(x => x.Title.Contains(name)).ProjectTo<BookDisplayModel>().ToArray();
+
+            if (books.Length == 0)
+            {
+                books = this.GetAllBooks();
+            }
+
+            return books;
         }
     }
 }

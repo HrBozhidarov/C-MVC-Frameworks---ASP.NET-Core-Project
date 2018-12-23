@@ -20,6 +20,8 @@ namespace BookStore.Web.Areas.Book.Controllers
         private const int MaxAllowableSize = 65000;
         private const int MinAllowableSize = 5000;
         private const int NumberOnFolder = 20;
+        private const string AllCategoriesName = "all";
+        private const string NewReleaseCategoriesName = "newRelease";
         private const string ExtentionJpg = ".jpg";
         private const string ExtentionPng = ".png";
         private const string ErrorMessageExtention = "The file have to be with extention png or jpg.";
@@ -41,6 +43,55 @@ namespace BookStore.Web.Areas.Book.Controllers
             this.environment = environment;
         }
 
+        public IActionResult Search(string search, int? page)
+        {
+            if (!this.bookService.IfBookTitleContainsSearchResult(search))
+            {
+                this.ViewData["search"] = "Search \"Not found!\"";
+            }
+            else
+            {
+                this.ViewData["search"] = $"Search for \"{search}\"";
+            }
+
+            var books = this.bookService.GetBooksByNamePart(search);
+
+            var pageNumber = page ?? 1;
+            var onePageOfBooks = books.ToPagedList(pageNumber, ItemsPerPage);
+
+            ViewBag.Books = onePageOfBooks;
+            return View();
+        }
+
+        public IActionResult Category(string category, int? page)
+        {
+            if (!this.categoryService.IfCategoryExists(category) && (category != AllCategoriesName))
+            {
+                return NotFound();
+            }
+
+            var books = this.GetBooksByCategory(category);
+
+            var pageNumber = page ?? 1;
+            var onePageOfBooks = books.ToPagedList(pageNumber, ItemsPerPage);
+
+            ViewBag.Books = onePageOfBooks;
+            return View();
+        }
+
+        public IActionResult NewRelease(int? page)
+        {
+            var countOfBooks = this.bookService.CountOfAllBooks();
+
+            var books = this.bookService.GetBooksInDescOrderByDate(countOfBooks);
+
+            var pageNumber = page ?? 1;
+            var onePageOfBooks = books.ToPagedList(pageNumber, ItemsPerPage);
+
+            ViewBag.Books = onePageOfBooks;
+            return View();
+        }
+
         public IActionResult Details(int id)
         {
             var book = this.bookService.GetDetailsBookById(id);
@@ -51,17 +102,6 @@ namespace BookStore.Web.Areas.Book.Controllers
             }
 
             return View(book);
-        }
-
-        public IActionResult All(int? page)
-        {
-            var books = bookService.GetAllBooks();
-
-            var pageNumber = page ?? 1;
-            var onePageOfBooks = books.ToPagedList(pageNumber, ItemsPerPage);
-
-            ViewBag.Books = onePageOfBooks;
-            return View();
         }
 
         [Authorize(Roles = "Admin")]
@@ -175,6 +215,11 @@ namespace BookStore.Web.Areas.Book.Controllers
 
                 image.Write(imgUrl);
             }
+        }
+
+        private BookDisplayModel[] GetBooksByCategory(string category)
+        {
+            return this.bookService.GetBooksByCategoryName(category);
         }
     }
 }

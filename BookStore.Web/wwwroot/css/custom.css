@@ -42,6 +42,10 @@
     }
 }*/
 
+li.selected {
+    background-color: darkslategray;
+}
+
 nav, footer {
     background-color: darkslategray;
 }
@@ -432,3 +436,64 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
         justify-content: center
     }
 }
+
+@media (min-width: 1200px) {
+    div.input-group span.k-widget.k-autocomplete.k-header.k-autocomplete-clearable.k-state-default {
+        width: 91%;
+    }
+}
+
+@media (min-width: 200px) {
+    div.input-group span.k-widget.k-autocomplete.k-header.k-autocomplete-clearable.k-state-default {
+        width: 60%;
+    }
+}
+
+@media (min-width: 270px) {
+    div.input-group span.k-widget.k-autocomplete.k-header.k-autocomplete-clearable.k-state-default {
+        width: 65%;
+    }
+}
+
+@media (min-width: 324px) {
+    div.input-group span.k-widget.k-autocomplete.k-header.k-autocomplete-clearable.k-state-default {
+        width: 75%;
+    }
+}
+
+@media (min-width: 400px) {
+    div.input-group span.k-widget.k-autocomplete.k-header.k-autocomplete-clearable.k-state-default {
+        width: 80%;
+    }
+}
+
+@media (min-width: 600px) {
+    div.input-group span.k-widget.k-autocomplete.k-header.k-autocomplete-clearable.k-state-default {
+        width: 81%;
+    }
+}
+
+@media (min-width: 767px) {
+    div.input-group span.k-widget.k-autocomplete.k-header.k-autocomplete-clearable.k-state-default {
+        width: 86%;
+    }
+}
+
+@media (min-width: 995px) {
+    div.input-group span.k-widget.k-autocomplete.k-header.k-autocomplete-clearable.k-state-default {
+        width: 90%;
+    }
+}
+
+div.input-group span.k-widget.k-autocomplete.k-header.k-autocomplete-clearable.k-state-default {
+    border-color: none;
+}
+
+    div.input-group span.k-widget.k-autocomplete.k-header.k-autocomplete-clearable.k-state-default > input {
+        height: 87%;
+    }
+
+    div.input-group span.k-widget.k-autocomplete.k-header.k-autocomplete-clearable.k-state-default.k-autocomplete.k-state-focused {
+        border-color: none;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(126, 239, 104, 0.6);
+    }

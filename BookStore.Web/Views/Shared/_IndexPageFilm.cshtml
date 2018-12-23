@@ -1,0 +1,120 @@
+﻿@model string
+
+@inject BookStore.Services.Contracts.ICategoryService categoryService
+
+<div class="row justify-content-center">
+    <div class="col-md-6 col-sm-6 col-xs-7 col-8">
+        <form role="search" class="form search-form w-100 mx-auto mt-3 mb-5" action="/books/books/search">
+            <div class="input-group">
+                @(Html.Kendo().AutoComplete()
+                              .Name("search")
+                              .DataTextField("Title")
+                              .Filter("contains")
+                              .MinLength(3)
+                              .Placeholder("Search")
+                              .DataSource(source =>
+                              {
+                                  source
+                                      .Read(read =>
+                                      {
+                                          read.Action("Search", "ApiBooks")
+                                          .Data("onAdditionalData");
+                                      })
+                                      .ServerFiltering(true);
+                              })
+                )
+                <span class="input-group-btn ">
+                    <button type="submit" value="Search" class="btn btn-success"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;</button>
+                </span>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function onAdditionalData() {
+        return {
+            search: $("#search").val()
+        };
+    }
+</script>
+
+
+<div id="colapse-categories" class="pos-f-t">
+    <div class="collapse" id="navbarToggleExternalContent">
+        <div class="bg-dark p-4">
+            <ul class="list-group">
+                <li class="list-group-item"><a id="newRelease1" asp-area="Books" asp-controller="Books" asp-action="NewRelease" class="btn w-100" role="button">New Release</a></li>
+                <li class="list-group-item"><a id="all1" asp-area="Books" asp-controller="Books" asp-action="Category" asp-route-category="all" class="btn w-100" role="button">All</a></li>
+
+                @foreach (var categoryName in @categoryService.AllCategories().Select(x => x.Name))
+                {
+                    <li class="list-group-item"><a id="@(categoryName.ToLower()+"1")" asp-area="Books" asp-controller="Books" asp-action="Category" asp-route-category="@categoryName" class="btn w-100" role="button">@categoryName</a></li>
+                }
+            </ul>
+        </div>
+    </div>
+    <nav class="navbar navbar-dark bg-dark">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </nav>
+</div>
+
+<div class="row mt-5" id="unique-row">
+    <div id="left-menu" class="col-md-3">
+        <h2 class="mb-3">The Latest</h2>
+        <ul class="list-group mb-3">
+            <li class="list-group-item"><a id="newRelease" asp-area="Books" asp-controller="Books" asp-action="NewRelease" class="btn w-100" role="button">New Release</a></li>
+        </ul>
+        <h2 class="mb-10">Categories</h2>
+        <ul class="list-group">
+            <li class="list-group-item"><a id="all" asp-area="Books" asp-controller="Books" asp-action="Category" asp-route-category="all" class="btn w-100" role="button">All</a></li>
+
+            @foreach (var categoryName in @categoryService.AllCategories().Select(x => x.Name))
+            {
+                <li class="list-group-item"><a id="@categoryName.ToLower()" asp-area="Books" asp-controller="Books" asp-action="Category" asp-route-category="@categoryName" class="btn w-100" role="button">@categoryName</a></li>
+            }
+        </ul>
+    </div>
+    <div class="col-lg-9">
+        <h2>@Model</h2>
+        <hr />
+        <div class="row mx-auto">
+            <div class="row mx-auto" data-gutter="15" style="width:100%">
+
+                @foreach (var book in ViewBag.Books)
+                {
+                    <div class="col-sm-4 col-md-3 col-xs-6">
+                        <div class="product max-height-custom">
+                            <ul class="product-labels"></ul>
+                            <div class="product-img-wrap text-center">
+                                <a asp-area="Books" asp-controller="Books" asp-action="Details" asp-route-id="@book.Id">
+                                    <img src=@("/"+book.ImgUrl) />
+                                </a>
+                            </div>
+
+                            <div class="product-caption">
+                                <ul class="product-caption-rating">
+                                    <li><i class="far fa-star"></i></li>
+                                    <li><i class="far fa-star"></i></li>
+                                    <li><i class="far fa-star"></i></li>
+                                    <li><i class="far fa-star"></i></li>
+                                    <li><i class="far fa-star"></i></li>
+                                </ul>
+                                <h5 class="product-caption-title"> <a class="product-link" asp-area="Books" asp-controller="Books" asp-action="Details" asp-route-id="@book.Id">@book.Title</a></h5>
+                                <h6 class="product-caption-author">@book.Authors</h6>
+
+                                <div class="product-caption-discount">
+                                    <h4 class="text-red">@book.Price $</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+

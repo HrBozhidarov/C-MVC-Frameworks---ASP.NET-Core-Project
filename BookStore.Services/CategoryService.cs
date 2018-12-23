@@ -57,12 +57,17 @@ namespace BookStore.Services
 
         public bool IfCategoryExists(string categoryName)
         {
-            if (this.db.Categories.Any(x => x.Name == categoryName))
+            if (string.IsNullOrEmpty(categoryName))
             {
-                return true;
+                return false;
             }
 
-            return false;
+            if (!this.db.Categories.Any(x => x.Name == categoryName))
+            {
+                return false;
+            }
+
+            return true;
         }
 
         public CategoryNameModel[] AllCategories()

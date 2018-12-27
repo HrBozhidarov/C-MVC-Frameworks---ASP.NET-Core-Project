@@ -1,8 +1,16 @@
 ﻿$(document).on('ready', function () {
-    let url = "/api/apibooks/asc";
-    let url1 = "/api/apibooks/desc";
+    const detailsPath = "/books/books/details";
+
     let firstSliderId = "#slider-index-one";
     let secondSliderId = "#slider-index-two";
+    let detailsSliderId = "#slider-details";
+    let url = "/api/apibooks/asc";
+    let url1 = "/api/apibooks/desc";
+    let detailsUrl = "/api/apibooks/ascWithouthCurrent?id="+window.location.pathname.split("/").reverse()[0];
+
+    if (window.location.pathname.toLocaleLowerCase().startsWith(detailsPath)) {
+        ajaxRequest(detailsUrl, detailsSliderId);
+    }
 
     ajaxRequest(url1, secondSliderId);
     ajaxRequest(url, firstSliderId);

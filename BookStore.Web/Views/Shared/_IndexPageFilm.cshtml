@@ -2,7 +2,7 @@
 
 @inject BookStore.Services.Contracts.ICategoryService categoryService
 
-<div class="row justify-content-center">
+<div class="row justify-content-center mx-auto">
     <div class="col-md-6 col-sm-6 col-xs-7 col-8">
         <form role="search" class="form search-form w-100 mx-auto mt-3 mb-5" action="/books/books/search">
             <div class="input-group">
@@ -61,8 +61,8 @@
     </nav>
 </div>
 
-<div class="row mt-5" id="unique-row">
-    <div id="left-menu" class="col-md-3">
+<div class="row mt-5 mx-auto" id="unique-row">
+    <div id="left-menu" class="col-md-3 mx-auto">
         <h2 class="mb-3">The Latest</h2>
         <ul class="list-group mb-3">
             <li class="list-group-item"><a id="newRelease" asp-area="Books" asp-controller="Books" asp-action="NewRelease" class="btn w-100" role="button">New Release</a></li>
@@ -77,7 +77,7 @@
             }
         </ul>
     </div>
-    <div class="col-lg-9">
+    <div class="col-lg-9 mx-auto">
         <h2>@Model</h2>
         <hr />
         <div class="row mx-auto">

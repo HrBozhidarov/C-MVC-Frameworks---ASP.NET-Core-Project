@@ -67,7 +67,6 @@ nav, footer {
     font-size: 15px;
 }
 
-
 .bold {
     font-weight: bold;
     font-size: 50px;
@@ -393,6 +392,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 
 @media (min-width: 768px) {
     div#slider-index-one div div div .col-md-3,
+    div#slider-details div div div .col-md-3,
     div#slider-index-two div div div .col-md-3 {
         -ms-flex: none;
         flex: none;
@@ -402,6 +402,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 
 @media (min-width: 576px) {
     div#slider-index-one div div div .col-sm-4,
+    div#slider-details div div div .col-md-3,
     div#slider-index-two div div div .col-md-3 {
         -ms-flex: none;
         flex: none;
@@ -469,19 +470,19 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 
 @media (min-width: 600px) {
     div.input-group span.k-widget.k-autocomplete.k-header.k-autocomplete-clearable.k-state-default {
-        width: 81%;
+        width: 80%;
     }
 }
 
 @media (min-width: 767px) {
     div.input-group span.k-widget.k-autocomplete.k-header.k-autocomplete-clearable.k-state-default {
-        width: 86%;
+        width: 85%;
     }
 }
 
 @media (min-width: 995px) {
     div.input-group span.k-widget.k-autocomplete.k-header.k-autocomplete-clearable.k-state-default {
-        width: 90%;
+        width: 89%;
     }
 }
 
@@ -497,3 +498,25 @@ div.input-group span.k-widget.k-autocomplete.k-header.k-autocomplete-clearable.k
         border-color: none;
         box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(126, 239, 104, 0.6);
     }
+
+
+@media screen and (max-width: 992px) {
+    #details-first {
+        display: none;
+    }
+
+    #details-second {
+        display: normal;
+    }
+}
+
+@media screen and (min-width: 993px) {
+
+    #details-first {
+        display: normal;
+    }
+
+    #details-second {
+        display: none;
+    }
+}

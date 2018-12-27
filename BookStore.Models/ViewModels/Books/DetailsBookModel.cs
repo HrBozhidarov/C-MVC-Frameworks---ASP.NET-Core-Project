@@ -18,6 +18,8 @@ namespace BookStore.Models.ViewModels.Books
 
         public string Isbn { get; set; }
 
+        public decimal Price { get; set; }
+
         public string ReleaseDate { get; set; }
     }
 }

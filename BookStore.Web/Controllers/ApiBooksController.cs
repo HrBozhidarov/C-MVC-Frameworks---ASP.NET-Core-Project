@@ -49,6 +49,23 @@ namespace BookStore.Web.Controllers
             return books;
         }
 
+        [HttpGet("ascWithouthCurrent")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public ActionResult<IEnumerable<BookDisplayModel>> GetOnlyEightBooksInAscOrderWithouthCurrent(int id)
+        {
+            var takeBooksPlusOne = NumberOfBooksToTake + 1;
+
+            var books = this.bookService.GetBooksInAscOrderByDate(takeBooksPlusOne).Where(x => x.Id != id).ToArray();
+
+            if (books.Length == 0)
+            {
+                return NotFound();
+            }
+
+            return books;
+        }
+
         [ProducesResponseType(200)]
         public ActionResult<IEnumerable<BookDisplayModel>> Search(string search)
         {
@@ -62,5 +79,7 @@ namespace BookStore.Web.Controllers
 
             return books;
         }
+
+
     }
 }

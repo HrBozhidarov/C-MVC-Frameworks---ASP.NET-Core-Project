@@ -157,6 +157,11 @@ namespace BookStore.Services
             return this.db.Books.Any(x => x.Title.Contains(name));
         }
 
+        public bool IfBookExists(int id)
+        {
+            return this.db.Books.Any(x => x.Id == id);
+        }
+
         public BookDisplayModel[] GetBooksByNamePart(string name)
         {
             var books = this.db.Books.Where(x => x.Title.Contains(name)).ProjectTo<BookDisplayModel>().ToArray();

@@ -6,7 +6,7 @@
     let detailsSliderId = "#slider-details";
     let url = "/api/apibooks/asc";
     let url1 = "/api/apibooks/desc";
-    let detailsUrl = "/api/apibooks/ascWithouthCurrent?id="+window.location.pathname.split("/").reverse()[0];
+    let detailsUrl = "/api/apibooks/ascWithouthCurrent?id=" + window.location.pathname.split("/").reverse()[0];
 
     if (window.location.pathname.toLocaleLowerCase().startsWith(detailsPath)) {
         ajaxRequest(detailsUrl, detailsSliderId);

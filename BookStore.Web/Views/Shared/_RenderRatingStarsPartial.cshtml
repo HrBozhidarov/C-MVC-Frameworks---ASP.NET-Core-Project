@@ -1,0 +1,45 @@
+﻿@model int
+
+@inject ICommentsService commentsService
+
+@{
+    var avgrRating = commentsService.GetAvgRating(Model);
+    var decimalPart = int.Parse(avgrRating.ToString("F1").Split('.')[1]);
+    var isHaveHalfStar = false;
+    var ifHaveExtraStar = false;
+    var diffrence = 5d - (int)avgrRating;
+
+    if (decimalPart != 0 && decimalPart <= 5)
+    {
+        isHaveHalfStar = true;
+    }
+    else if (decimalPart != 0 && decimalPart > 5)
+    {
+        ifHaveExtraStar = true;
+    }
+
+}
+
+<ul class="product-caption-rating pass-rating mx-auto">
+    @for (int i = 0; i < (int)avgrRating; i++)
+    {
+        <li><i class="fas fa-star text-dark"></i></li>
+    }
+
+    @if (isHaveHalfStar)
+    {
+        <li><i class="fas fa-star-half-alt text-dark"></i></li>
+        diffrence = diffrence - 1;
+    }
+
+    @if (ifHaveExtraStar)
+    {
+        <li><i class="fas fa-star text-dark"></i></li>
+        diffrence = diffrence - 1;
+    }
+
+    @for (int i = 0; i < diffrence; i++)
+    {
+        <li><i class="far fa-star text-dark"></i></li>
+    }
+</ul>

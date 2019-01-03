@@ -10,12 +10,17 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using BookStore.Common.HelpersMethods;
+using BookStore.Models.ViewModels.Comments;
 
 namespace BookStore.Web.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
+        private const string CreateCommentModelKey = "model";
+        private const string RedirectToDetailsBookPageWithoutCurrentBookId = "/books/books/details/";
+
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger<LoginModel> _logger;
 
@@ -72,12 +77,26 @@ namespace BookStore.Web.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
+                CreateCommentModel model = null;
+
+                if (this.TempData.ContainsKey(CreateCommentModelKey))
+                {
+                    model = this.TempData.Get<CreateCommentModel>(CreateCommentModelKey);
+                    returnUrl = $"{RedirectToDetailsBookPageWithoutCurrentBookId}{model.BookId}";
+                }
+
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.Username, Input.Password, Input.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+
+                    if (model != null)
+                    {
+                        this.TempData.Put(CreateCommentModelKey, model);
+                    }
+
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)

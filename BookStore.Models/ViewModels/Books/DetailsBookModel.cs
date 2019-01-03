@@ -8,6 +8,8 @@ namespace BookStore.Models.ViewModels.Books
     {
         public string Title { get; set; }
 
+        public int Id { get; set; }
+
         public string[] Authors { get; set; }
 
         public string[] Categories { get; set; }

@@ -1,0 +1,56 @@
+﻿@model List<AprovelCommentModel>
+
+@{
+    var count = Model.Count();
+}
+
+@if (count > 0)
+{
+    @for (int i = 0; i < count; i++)
+    {
+        var comment = Model[i];
+
+        <div class="row p-3 my-3">
+            <div class="col-lg-12 mb-3">
+                <div class="card text-center mx-auto" style="width: 11rem;">
+                    <img class="card-img-top" src="/@comment.ImgUrl" alt="Card image book">
+                    <div class="card-body">
+                        <h5 class="card-title">@comment.TitleBook</h5>
+
+                    </div>
+                </div>
+            </div>
+            <hr class="w-100 normal-hr mt-2" />
+            <div class="col-xl-12 mx-auto">
+                <div id="someId" class="row">
+                    <div class="col-xl-1 col-lg-1 col-md-12">
+                        <div class="row pad">#</div>
+                        <div class="row pad">@(i + 1)</div>
+                    </div>
+                    <div class="col-xl-2 col-lg-2 col-md-12">
+                        <div class="row pad">Username</div>
+                        <div class="row pad">@comment.Username</div>
+                    </div>
+                    <div class="col-xl-5 col-lg-5 col-md-12">
+                        <div class="row pad">Title</div>
+                        <div class="row pad">@comment.Title</div>
+                    </div>
+                    <div class="col-xl-2 col-lg-1 col-md-12">
+                        <div class="row pad">Rating</div>
+                        <div class="row pad">@comment.Rating</div>
+                    </div>
+                    <div class="col-xl-2 col-lg-3 col-md-12">
+                        <div class="row pad">Action</div>
+                        <div class="row d-flex justify-content-between"><a href="/comments/approve?id=@comment.Id&bookId=@comment.BookId" class="btn bg-approve">Approve</a> <a href="/comments/delete?id=@comment.Id" class="btn bg-delete">Delete</a></div>
+                    </div>
+
+                </div>
+            </div>
+            <hr class="w-100 normal-hr mt-2" />
+            <div class="col-xl-10 mx-auto text-center mt-1 content-comm normal-bold">Content</div>
+            <div class="col-xl-10 mx-auto">
+                <p class="text-center">@comment.Content</p>
+            </div>
+        </div>
+    }
+}

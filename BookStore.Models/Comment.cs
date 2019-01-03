@@ -12,7 +12,13 @@ namespace BookStore.Models
 
         public string Content { get; set; }
 
+        public bool IsVisible { get; set; }
+
+        public double? Rating { get; set; }
+
         public string UserId { get; set; }
+
+        public DateTime? PostedOn { get; set; }
 
         public User User { get; set; }
 

@@ -33,5 +33,7 @@ namespace BookStore.Services.Contracts
         BookDisplayModel[] GetBooksByNamePart(string name);
 
         bool IfBookTitleContainsSearchResult(string name);
+
+        bool IfBookExists(int id);
     }
 }

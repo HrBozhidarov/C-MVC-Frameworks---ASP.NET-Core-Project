@@ -39,7 +39,6 @@
     }
 </script>
 
-
 <div id="colapse-categories" class="pos-f-t">
     <div class="collapse" id="navbarToggleExternalContent">
         <div class="bg-dark p-4">
@@ -93,15 +92,9 @@
                                     <img src=@("/"+book.ImgUrl) />
                                 </a>
                             </div>
-
-                            <div class="product-caption">
-                                <ul class="product-caption-rating">
-                                    <li><i class="far fa-star"></i></li>
-                                    <li><i class="far fa-star"></i></li>
-                                    <li><i class="far fa-star"></i></li>
-                                    <li><i class="far fa-star"></i></li>
-                                    <li><i class="far fa-star"></i></li>
-                                </ul>
+                           
+                            <div class="product-caption starIndexBookSize">
+                                <partial name="_RenderRatingStarsPartial" model="@book.Id" />
                                 <h5 class="product-caption-title"> <a class="product-link" asp-area="Books" asp-controller="Books" asp-action="Details" asp-route-id="@book.Id">@book.Title</a></h5>
                                 <h6 class="product-caption-author">@book.Authors</h6>
 

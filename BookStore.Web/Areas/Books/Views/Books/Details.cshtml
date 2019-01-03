@@ -1,11 +1,11 @@
 ﻿@model DetailsBookModel
+
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<style>
-</style>
+@inject ICommentsService commentsService
 
 <div class="row">
     <div class="col-lg-12">
@@ -34,7 +34,7 @@
             <h4>Details</h4>
             <hr style="width:100%" class="details-hr mt-0" />
             <div class="mr-5 details-div">
-                <strong>@allAuthors</strong> 
+                <strong>@allAuthors</strong>
                 @foreach (var author in Model.Authors)
                 {
                     var authorName = author.Replace(" ", "_");
@@ -72,19 +72,13 @@
                 <h5 class="mx-auto">Average Rating</h5>
             </div>
             <div class="row mx-auto mb-2 w-100">
-                <span class="font-size-span mx-auto">0</span>
+                <span class="font-size-span mx-auto">@commentsService.GetAvgRating(Model.Id).ToString("F1")</span>
             </div>
             <div class="row mx-auto mb-2 w-100">
-                <ul class="product-caption-rating pass-rating mx-auto">
-                    <li><i class="far fa-star"></i></li>
-                    <li><i class="far fa-star"></i></li>
-                    <li><i class="far fa-star"></i></li>
-                    <li><i class="far fa-star"></i></li>
-                    <li><i class="far fa-star"></i></li>
-                </ul>
+                <partial name="_RenderRatingStarsPartial" model="@Model.Id" />
             </div>
             <div class="row mb-3 mx-auto w-100">
-                <a href="#" class="btn mx-auto btn-primary tex-white" role="button"><i class="far fa-comment-alt"></i> Write a Review</a>
+                <span id="undo" class="btn mx-auto btn-primary tex-white"><i class="far fa-comment-alt"></i> Write a Review</span>
             </div>
         </div>
     </div>
@@ -109,7 +103,7 @@
             <hr style="width:100%" class="details-hr mt-0" />
             <div class="mr-5 details-div">
                 <strong>@allAuthors</strong>
-                @(string.Join(", ", Model.Authors)) 
+                @(string.Join(", ", Model.Authors))
             </div>
 
             <div class="mr-5 details-div">
@@ -143,19 +137,13 @@
                     <h5 class="mx-auto">Average Rating</h5>
                 </div>
                 <div class="row mx-auto mb-2 w-100 my-auto">
-                    <span class="font-size-span mx-auto">0</span>
+                    <span class="font-size-span mx-auto">@commentsService.GetAvgRating(Model.Id).ToString("F1")</span>
                 </div>
                 <div class="row mx-auto mb-2 w-100">
-                    <ul class="product-caption-rating pass-rating mx-auto my-auto">
-                        <li><i class="far fa-star"></i></li>
-                        <li><i class="far fa-star"></i></li>
-                        <li><i class="far fa-star"></i></li>
-                        <li><i class="far fa-star"></i></li>
-                        <li><i class="far fa-star"></i></li>
-                    </ul>
+                    <partial name="_RenderRatingStarsPartial" model="@Model.Id" />
                 </div>
                 <div class="row mb-3 mx-auto w-100">
-                    <a href="#" class="btn mx-auto btn-primary tex-white" role="button"><i class="far fa-comment-alt"></i> Write a Review</a>
+                    <span id="undo1" class="btn mx-auto btn-primary tex-white"><i class="far fa-comment-alt"></i> Write a Review</span>
                 </div>
             </div>
         </div>
@@ -172,70 +160,234 @@
     </div>
 </div>
 
+<div class="col-11 col-lg-12 mx-auto">
+    <h2 class="index-color-slider-text">Customer Reviews</h2>
+    <hr class="index-color-slider-bg" />
+    @*@if (commentsService.CountCommentsWichAreApproval() == 0)
+        {
+            <div class="normal-bold">No review yet.</div>
+        }
+        else
+        {*@
+    <div id="approvalCommentsAll">
+        <div id="progressLoader" class="text-center" style="display:none">
+            <img src="~/lib/slick/ajax-loader.gif" />
+        </div>
+    </div>
+
+    @*}*@
+</div>
+
+
+@{
+    var ratingChecked = "checked";
+    var rating = -1;
+    var title = "";
+    var content = "";
+    var labels = new Dictionary<int, string>
+    {
+        [4] = @"<input type=""radio"" id=""star5"" required name=""rating"" value =""5"" /><label for=""star5"" title=""Rocks!"">5 stars</label>",
+        [3] = @"<input type=""radio"" id=""star4"" required name=""rating"" value =""4"" /><label for=""star4"" title=""Pretty good"">4 stars</label>",
+        [2] = @"<input type=""radio"" id=""star3"" required name=""rating"" value =""3"" /><label for=""star3"" title=""Meh"">3 stars</label>",
+        [1] = @"<input type=""radio"" id=""star2"" required name=""rating"" value =""2"" /><label for=""star2"" title=""Kinda bad"">2 stars</label>",
+        [0] = @"<input type=""radio"" id=""star1"" required name=""rating"" value =""1"" /><label for=""star1"" title=""Sucks big time"">1 stars</label>",
+    };
+}
+
+@if (this.TempData.ContainsKey("model"))
+{
+    var currentModel = this.TempData.Get<CreateCommentModel>("model");
+
+    if (currentModel.Rating > 0)
+    {
+        rating = currentModel.Rating - 1;
+    }
+
+    title = currentModel.Title;
+    content = currentModel.Content;
+}
+
+@(Html.Kendo().Window()
+                          .Name("window")
+                          .Visible(false)
+                          .Title("Share Your Thoughts")
+                          .Content(@<text>
+                            <form id="windowCommens" method="post" asp-area="" asp-controller="Comments" asp-action="Create">
+                                <div class="form-group row mt-3 mx-auto d-flex justify-content-center">
+                                    <fieldset class="rating">
+                                        <legend>Give You Rating</legend>
+                                        <div class="row d-flex justify-content-center">
+                                            @for (int i = labels.Count - 1; i >= 0; i--)
+                                                        {
+                                                            if (i == rating)
+                                                            {
+                                                                var index = labels[i].IndexOf("required");
+                                                                var labelChecked = labels[i].Insert(index - 1, " checked ");
+                                                                labels[i] = labelChecked;
+                                                            }
+
+                                                @Html.Raw(labels[i]);
+                                                        }
+                                        </div>
+                                        <div class="row w-100 mx-auto">
+                                            <span class="k-invalid-msg w-100" data-for="rating"></span>
+                                        </div>
+                                    </fieldset>
+                                </div>
+
+                                <input name="bookId" type="text" hidden value="@Model.Id" />
+
+                                <div class="form-group row mx-auto mt-3">
+                                    <label for="Title" class="col-lg-2 col-12 col-md-2 col-form-label text-right">Title</label>
+                                    <div class="col-lg-8 col-md-9 col-12 ch-label-100">
+                                        <input name="title" type="text" class="form-control" id="Title" value="@title" placeholder="Title...">
+                                    </div>
+                                    <div class="row w-100 mx-auto">
+                                        <span class="k-invalid-msg w-100" data-for="Title"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row mx-auto mt-3">
+                                    <label for="Content" class="col-lg-2 col-md-2 col-12 col-form-label text-right">Content</label>
+                                    <div class="col-lg-8 col-md-9 col-12 ch-label-100">
+                                        <textarea name="content" class="form-control" id="Content" rows="5" placeholder="Content...">@content</textarea>
+                                    </div>
+                                    <div class="row w-100 mx-auto">
+                                        <span class="k-invalid-msg w-100" data-for="Content"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row mx-auto mt-3">
+                                    <button id="createComm" type="submit" class="btn btn-primary mx-auto">Submit Review</button>
+                                </div>
+                            </form>
+
+                        </text>).Events(ev => ev.Close("onClose"))
+)
+
 <script src="~/js/setting-slick.js"></script>
 
-<style>
-    .scrollbar {
-        height: 200px;
-        width: 100%;
-        overflow-y: scroll;
-        border: 2px solid darkslategray;
-        border-radius: 5px;
+<script>
+    function onClose() {
+        $("#undo").show();
     }
 
-    #style-3::-webkit-scrollbar-track {
-        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-        background-color: darkslategray;
+    $(document).ready(function () {
+        $("#windowCommens").kendoValidator({
+            rules: {
+                radio: function (input) {
+                    if (input.filter("[type=radio]") && input.attr("required")) {
+                        return $("#windowCommens").find("[name=rating]").is(":checked");
+                    }
+                    return true;
+                },
+                text: function (input) {
+                    if (input.is("[name=title]")) {
+                        return input.val().match(/^[a-zA-Z0-9 \.!?,]{5,40}$/) != null;
+                    }
+
+                    return true;
+                },
+                textarea: function (input) {
+                    if (input.is("[name=content]")) {
+                        return input.val().match(/.{10,350}/) != null;
+                    }
+
+                    return true;
+                }
+            },
+            messages: {
+                radio: "You have to choose ratting from 1 to 5!",
+                text: "Title have to be between 5 and 40 symbols!",
+                textarea: "Content have to be between 10 and 350 symbols!"
+            }
+        });
+
+        $("#undo1").bind("click", function () {
+            $("#window").data("kendoWindow").open().center();
+
+        });
+
+        $("#undo").bind("click", function () {
+            $("#window").data("kendoWindow").open().center();
+
+        });
+    });
+</script>
+
+
+<script type="text/javascript">
+    var pageSize = 2;
+    var pageIndex = 0;
+    var maxPage = 0;
+    var scrolling = true;
+    var initial = false;
+
+    getNumberOfComments();
+    setTimeout(getData(), 300);
+
+        $(document).ready(function () {
+
+        $(window).scroll(function () {
+            var scrollTop = $(document).scrollTop();
+            var windowHeight = $(window).height();
+            var bodyHeight = $(document).height() - windowHeight;
+            var scrollPercentage = (scrollTop / bodyHeight);
+
+            // if the scroll is more than 90% from the top, load more content.
+            if (scrollPercentage > 0.8 && pageIndex <= maxPage && !scrolling) {
+                getData();
+
+                scrolling = true;
+            }
+        });
+    });
+
+     function getData() {
+        $.ajax({
+            type: 'POST',
+            url: '/comments/GetDataApprovalComments',
+            data: { "pageindex": pageIndex, "pagesize": pageSize,"bookId":@Model.Id },
+            dataType: 'html',
+            success: function (data) {
+                if (data.trim() != '') {
+                    $("#approvalCommentsAll").append(data);
+                    scrolling = false;
+                    initial = true;
+                    pageIndex++;
+                }
+                else if (!initial) {
+                    $("#approvalCommentsAll").append('<h3>No Reviews yet.</h3>' +
+                        '<hr class= "hr-bg-color-second"/> ');
+                    initial = true;
+                }
+                else {
+                    $("#approvalCommentsAll").append('<div class="text-center">No more comments.</div> <hr class= "hr-bg-color-second"/> ');
+                }
+            },
+            beforeSend: function () {
+                $("#progressLoader").show();
+            },
+            complete: function () {
+                $("#progressLoader").hide();
+            },
+            error: function () {
+                alert("Error while retrieving data!");
+            }
+        });
     }
 
-    #style-3::-webkit-scrollbar {
-        width: 3px;
-        background-color: darkslategray;
+    function getNumberOfComments() {
+        $.ajax({
+            type: 'GET',
+            url: '/api/ApiComments/countAprovel',
+            data: {},
+            dataType: 'text',
+            success: function (data) {
+                maxPage = Math.floor(parseInt(data) / pageSize);
+            },
+            error: function () {
+                alert("Error while retrieving data!");
+            }
+        })
     }
-
-    #style-3::-webkit-scrollbar-thumb {
-        background-color: gray;
-    }
-
-    #img-details {
-        /*width: 90%;*/
-        height: 100%;
-    }
-
-    .details-div {
-        overflow: hidden;
-        letter-spacing: 1px;
-    }
-
-    .details-hr {
-        margin-top: 5px;
-        margin-bottom: 5px;
-    }
-
-
-    #description-pharagraph {
-        padding-left: 20px;
-        padding-right: 20px;
-        padding-top: 20px;
-    }
-
-    .withouth-margin {
-        margin-left: 0px;
-        margin-right: 0px;
-    }
-
-    ul.product-caption-rating.pass-rating > li {
-        color: black;
-        font-size: initial;
-    }
-
-    .withouth-margin div > span {
-        font-size: 16px;
-        font-weight: bold;
-    }
-
-    .font-size-span {
-        font-size: 20px;
-        font-weight: bold;
-    }
-</style>
+</script>

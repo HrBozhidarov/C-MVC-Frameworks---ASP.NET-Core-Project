@@ -79,7 +79,5 @@ namespace BookStore.Web.Controllers
 
             return books;
         }
-
-
     }
 }

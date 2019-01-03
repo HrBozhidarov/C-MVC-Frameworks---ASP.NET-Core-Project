@@ -8,6 +8,7 @@ using BookStore.Web.Models;
 using BookStore.Services.Contracts;
 using X.PagedList;
 using BookStore.Models.ViewModels.Books;
+using System.Threading;
 
 namespace BookStore.Web.Controllers
 {
@@ -35,9 +36,29 @@ namespace BookStore.Web.Controllers
         public IActionResult Contact()
         {
             ViewData["Message"] = "Your contact page.";
-
+            
             return View();
         }
+
+        //[HttpGet]
+        //public JsonResult GetData(int pageIndex, int pageSize)
+        //{
+        //    var list = new List<BookDisplayModel>();
+
+        //    //Thread.Sleep(2000);
+
+        //    for (int i = 0; i < 7; i++)
+        //    {
+        //        var books = this.bookService.GetAllBooks();
+
+        //        list.AddRange(books);
+        //    }
+
+        //    list=list.Skip(pageIndex * pageSize)
+        //         .Take(pageSize).ToList();
+
+        //    return Json(list);
+        //}
 
         public IActionResult Privacy()
         {

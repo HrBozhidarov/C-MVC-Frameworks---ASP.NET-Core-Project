@@ -7,7 +7,7 @@
 <h1 class="text-center mt-3">@ViewData["Title"]</h1>
 
 <div class="row mx-auto">
-    <div class="col-md-4 mx-auto">
+    <div id="register" class="col-md-4 mx-auto">
         <div asp-validation-summary="All" class="text-danger"></div>
         <hr />
         <form asp-route-returnUrl="@Model.ReturnUrl" method="post" class="show">

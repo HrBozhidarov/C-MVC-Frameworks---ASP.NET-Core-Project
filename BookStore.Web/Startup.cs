@@ -47,6 +47,7 @@ namespace BookStore.Web
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<IAuthorService, AuthorService>();
             services.AddTransient<IBookService, BookService>();
+            services.AddTransient<ICommentsService, CommentsService>();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -64,12 +65,12 @@ namespace BookStore.Web
                 .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<BookStoreContext>();
 
-
             Mapper.Initialize(cfg =>
             {
                 cfg.AddProfile<CategoryProfile>();
                 cfg.AddProfile<AuthorProfile>();
                 cfg.AddProfile<BookProfile>();
+                cfg.AddProfile<CommentProfile>();
             });
 
             services.AddAutoMapper();

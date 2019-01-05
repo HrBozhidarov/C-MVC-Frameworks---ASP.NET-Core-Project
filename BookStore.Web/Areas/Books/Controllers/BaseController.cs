@@ -27,7 +27,7 @@ namespace BookStore.Web.Areas.Book.Controllers
                 Action = action,
                 Controller = controller,
                 EventFunction = eventFunction,
-                Id = id
+                Id = id,
             };
         }
     }

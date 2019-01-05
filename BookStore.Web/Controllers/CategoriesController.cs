@@ -64,7 +64,7 @@ namespace BookStore.Web.Controllers
         {
             if (!this.categoryService.Edit(model.Id, model.Name))
             {
-                ModelState.AddModelError("", EditErrorMessage);
+                this.TempData["error"] = EditErrorMessage;
                 return RedirectToAction("Edit");
             }
 

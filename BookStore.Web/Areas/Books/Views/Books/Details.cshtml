@@ -178,6 +178,9 @@
     @*}*@
 </div>
 
+@{
+    this.TempData["returnToDetailsAgain"] = this.Context.Request.Path.Value;
+}
 
 @{
     var ratingChecked = "checked";
@@ -208,60 +211,60 @@
 }
 
 @(Html.Kendo().Window()
-                          .Name("window")
-                          .Visible(false)
-                          .Title("Share Your Thoughts")
-                          .Content(@<text>
-                            <form id="windowCommens" method="post" asp-area="" asp-controller="Comments" asp-action="Create">
-                                <div class="form-group row mt-3 mx-auto d-flex justify-content-center">
-                                    <fieldset class="rating">
-                                        <legend>Give You Rating</legend>
-                                        <div class="row d-flex justify-content-center">
-                                            @for (int i = labels.Count - 1; i >= 0; i--)
-                                                        {
-                                                            if (i == rating)
-                                                            {
-                                                                var index = labels[i].IndexOf("required");
-                                                                var labelChecked = labels[i].Insert(index - 1, " checked ");
-                                                                labels[i] = labelChecked;
-                                                            }
+              .Name("window")
+              .Visible(false)
+              .Title("Share Your Thoughts")
+              .Content(@<text>
+                <form id="windowCommens" method="post" asp-area="" asp-controller="Comments" asp-action="Create">
+                    <div class="form-group row mt-3 mx-auto d-flex justify-content-center">
+                        <fieldset class="rating">
+                            <legend>Give You Rating</legend>
+                            <div class="row d-flex justify-content-center">
+                                @for (int i = labels.Count - 1; i >= 0; i--)
+                                            {
+                                                if (i == rating)
+                                                {
+                                                    var index = labels[i].IndexOf("required");
+                                                    var labelChecked = labels[i].Insert(index - 1, " checked ");
+                                                    labels[i] = labelChecked;
+                                                }
+              
+                                    @Html.Raw(labels[i]);
+                                            }
+                            </div>
+                            <div class="row w-100 mx-auto">
+                                <span class="k-invalid-msg w-100" data-for="rating"></span>
+                            </div>
+                        </fieldset>
+                    </div>
+              
+                    <input name="bookId" type="text" hidden value="@Model.Id" />
+              
+                    <div class="form-group row mx-auto mt-3">
+                        <label for="Title" class="col-lg-2 col-12 col-md-2 col-form-label text-right">Title</label>
+                        <div class="col-lg-8 col-md-9 col-12 ch-label-100">
+                            <input name="title" type="text" class="form-control" id="Title" value="@title" placeholder="Title...">
+                        </div>
+                        <div class="row w-100 mx-auto">
+                            <span class="k-invalid-msg w-100" data-for="Title"></span>
+                        </div>
+                    </div>
+              
+                    <div class="form-group row mx-auto mt-3">
+                        <label for="Content" class="col-lg-2 col-md-2 col-12 col-form-label text-right">Content</label>
+                        <div class="col-lg-8 col-md-9 col-12 ch-label-100">
+                            <textarea name="content" class="form-control" id="Content" rows="5" placeholder="Content...">@content</textarea>
+                        </div>
+                        <div class="row w-100 mx-auto">
+                            <span class="k-invalid-msg w-100" data-for="Content"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row mx-auto mt-3">
+                        <button id="createComm" type="submit" class="btn btn-primary mx-auto">Submit Review</button>
+                    </div>
+                </form>
 
-                                                @Html.Raw(labels[i]);
-                                                        }
-                                        </div>
-                                        <div class="row w-100 mx-auto">
-                                            <span class="k-invalid-msg w-100" data-for="rating"></span>
-                                        </div>
-                                    </fieldset>
-                                </div>
-
-                                <input name="bookId" type="text" hidden value="@Model.Id" />
-
-                                <div class="form-group row mx-auto mt-3">
-                                    <label for="Title" class="col-lg-2 col-12 col-md-2 col-form-label text-right">Title</label>
-                                    <div class="col-lg-8 col-md-9 col-12 ch-label-100">
-                                        <input name="title" type="text" class="form-control" id="Title" value="@title" placeholder="Title...">
-                                    </div>
-                                    <div class="row w-100 mx-auto">
-                                        <span class="k-invalid-msg w-100" data-for="Title"></span>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row mx-auto mt-3">
-                                    <label for="Content" class="col-lg-2 col-md-2 col-12 col-form-label text-right">Content</label>
-                                    <div class="col-lg-8 col-md-9 col-12 ch-label-100">
-                                        <textarea name="content" class="form-control" id="Content" rows="5" placeholder="Content...">@content</textarea>
-                                    </div>
-                                    <div class="row w-100 mx-auto">
-                                        <span class="k-invalid-msg w-100" data-for="Content"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row mx-auto mt-3">
-                                    <button id="createComm" type="submit" class="btn btn-primary mx-auto">Submit Review</button>
-                                </div>
-                            </form>
-
-                        </text>).Events(ev => ev.Close("onClose"))
+                </text>).Events(ev => ev.Close("onClose"))
 )
 
 <script src="~/js/setting-slick.js"></script>
@@ -308,6 +311,8 @@
         });
 
         $("#undo").bind("click", function () {
+            var a = 2;
+         
             $("#window").data("kendoWindow").open().center();
 
         });

@@ -43,13 +43,12 @@ namespace BookStore.Web.Controllers
         {
             if (!this.authorService.Edit(model.Id, model.Name, model.Details))
             {
-                ModelState.AddModelError("", EditErrorMessage);
+                this.TempData["error"] = EditErrorMessage;
                 return RedirectToAction(nameof(Edit));
             }
 
             return Redirect("/");
         }
-
 
         public IActionResult Create()
         {

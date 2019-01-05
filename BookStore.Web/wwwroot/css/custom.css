@@ -38,10 +38,18 @@
         font-weight: bold;
     }*/
 
-    /*.author-details {
+/*.author-details {
         font-size: 3vw;
     }
 }*/
+
+#editBook {
+    min-height: 1015px;
+}
+
+#deleteBook {
+    min-height: 890px;
+}
 
 #appendComment {
     min-height: 345px;
@@ -264,15 +272,15 @@ form#windowCommens {
     padding-bottom: 0px;
 }
 
-#windowCommens textarea.form-control:focus, #windowCommens input.form-control:focus {
-    color: #495057;
-    background-color: #fff;
-    border-color: #80bdff;
-    outline: 0;
-    box-shadow: 0 0 0 0.1rem rgba(0,123,255,.25);
-    padding-top: 0px;
-    padding-bottom: 0px;
-}
+    #windowCommens textarea.form-control:focus, #windowCommens input.form-control:focus {
+        color: #495057;
+        background-color: #fff;
+        border-color: #80bdff;
+        outline: 0;
+        box-shadow: 0 0 0 0.1rem rgba(0,123,255,.25);
+        padding-top: 0px;
+        padding-bottom: 0px;
+    }
 
 #uploadFile:focus {
     border-color: rgba(126, 239, 104, 0.8);
@@ -423,7 +431,7 @@ div.product-caption.starIndexBookSize ul > li {
 }
 
 .f-s-16 {
-    font-size:16px;
+    font-size: 16px;
 }
 
 .product-info-block-rating, .product-caption-rating {
@@ -543,14 +551,14 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     margin: 10px 0;
 }
 
-.payment-icons-list > li {
-    float: left;
-    margin-left: 5px;
-}
+    .payment-icons-list > li {
+        float: left;
+        margin-left: 5px;
+    }
 
 @media (max-width: 578px) {
     footer div, footer ul li {
-        text-align:center;
+        text-align: center;
     }
 
     #centerPaymentPicture {
@@ -607,6 +615,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     div.input-group span.k-widget.k-autocomplete.k-header.k-autocomplete-clearable.k-state-default {
         width: 85%;
     }
+
     div.k-widget.k-window {
         width: 520px;
     }
@@ -666,7 +675,7 @@ div.input-group span.k-widget.k-autocomplete.k-header.k-autocomplete-clearable.k
     }
 
     div.k-widget.k-window {
-        width:600px;
+        width: 600px;
     }
 }
 
@@ -792,4 +801,8 @@ ul.product-caption-rating.pass-rating > li {
 
 .ch-label-100 > span {
     width: 100%;
+}
+
+.btn-w-comment {
+    width: 135px;
 }

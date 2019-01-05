@@ -44,21 +44,21 @@
             <div>
                 <label for="Authors">Authors</label>
                 @(Html.Kendo().MultiSelect()
-                                                         .Name("Authors")
-                                                         .AutoClose(false)
-                                                         .Placeholder("Select authors...")
-                                                         .BindTo(Model.Authors)
-                                                         .Value(new string[] { }))
+                              .Name("Authors")
+                              .AutoClose(false)
+                              .Placeholder("Select authors...")
+                              .BindTo(Model.Authors)
+                              .Value(new string[] { }))
 
             </div>
             <div class="mb-3">
                 <label for="Categories">Categories</label>
                 @(Html.Kendo().MultiSelect()
-                                                         .Name("Categories")
-                                                         .AutoClose(false)
-                                                         .Placeholder("Select categories...")
-                                                         .BindTo(Model.Categories)
-                                                         .Value(new string[] { }))
+                              .Name("Categories")
+                              .AutoClose(false)
+                              .Placeholder("Select categories...")
+                              .BindTo(Model.Categories)
+                              .Value(new string[] { }))
 
             </div>
 

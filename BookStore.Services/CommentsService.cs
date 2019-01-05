@@ -20,6 +20,16 @@ namespace BookStore.Services
             this.db = db;
         }
 
+        public bool Edit(int id,string content)
+        {
+            return true;
+        }
+
+        public bool IfCommentExists(int id)
+        {
+            return this.db.Comments.Any(x => x.Id == id);
+        }
+
         public double GetAvgRating(int bookId)
         {
             var rattingModel = new RattingModel();

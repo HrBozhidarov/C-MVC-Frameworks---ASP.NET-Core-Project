@@ -7,4 +7,9 @@
 
 <h1 class="text-center">Edit Book</h1>
 
+@if (this.TempData.ContainsKey("error"))
+{
+    <div class="text-center text-danger">@this.TempData["error"]</div>
+}
+
 <partial name="_EditAuthorBookCategoryPartial" model="Model" />

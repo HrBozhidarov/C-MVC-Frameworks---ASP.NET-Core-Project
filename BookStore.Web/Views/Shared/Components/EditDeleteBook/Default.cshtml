@@ -1,0 +1,90 @@
+﻿@model EditDeleteBookModel
+
+@{
+    var disabled = "";
+    var action = "Edit";
+
+    if ((bool)this.TempData["delete"] == true)
+    {
+        this.TempData["delete"] = true;
+        action = "Delete";
+        disabled = "disabled";
+    }
+    else
+    {
+        this.TempData["delete"] = false;
+    }
+}
+
+<form method="post" enctype="multipart/form-data" asp-area="Books" asp-controller="Books" asp-action="@action" class="show">
+    <input type="text" name="id" value="@Model.Id" hidden />
+    <div class="form-group">
+        <label asp-for="Title"></label>
+        <input name="Title" @disabled class="form-control" value="@Model.Title" asp-for="Title" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Price"></label>
+        <input name="Price" @disabled class="form-control" value="@Model.Price" asp-for="Price" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ReleaseDate"></label>
+        <input name="ReleaseDate" @disabled type="datetime-local" class="form-control" value="@(Model.ReleaseDate)" asp-for="ReleaseDate" />
+        <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Isbn"></label>
+        <input name="Isbn" @disabled class="form-control" value="@Model.Isbn" asp-for="Isbn" />
+        <span asp-validation-for="Isbn" class="text-danger"></span>
+    </div>
+    <div class="row mx-auto my-1">
+        <div class="text-center mx-auto">Current picture</div>
+        <div class="col-lg-12">
+            <img src="/@Model.ImgUrl" alt="img book" />
+        </div>
+    </div>
+    @if (disabled == "")
+    {
+        <div class="form-group">
+            <label asp-for="Image"></label>
+            <input name="Image" id="uploadFile" type="file" class="form-control-file border" asp-for="Image" />
+            <span asp-validation-for="Image" class="text-danger"></span>
+        </div>
+    }
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <textarea name="Description" @disabled class="form-control" rows="7" asp-for="Description">@Model.Description</textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    @if (disabled == "")
+    {
+        <div>
+            <label for="Authors">Authors</label>
+            @(Html.Kendo().MultiSelect()
+                                                  .Name("Authors")
+                                                  .AutoClose(false)
+                                                  .Placeholder("Select authors...")
+                                                  .BindTo(Model.AllAuthors)
+                                                  .Value(Model.Authors))
+
+        </div>
+        <div class="mb-3">
+            <label for="Categories">Categories</label>
+            @(Html.Kendo().MultiSelect()
+                                                  .Name("Categories")
+                                                  .AutoClose(false)
+                                                  .Placeholder("Select categories...")
+                                                  .BindTo(Model.AllCategories)
+                                                  .Value(Model.Categories))
+
+        </div>
+    }
+    else
+    {
+        <div>Authors: @string.Join(", ", Model.Authors)</div>
+        <div>Categories: @string.Join(", ", Model.Categories)</div>
+    }
+
+    <input type="submit" class="btn bg-color" value="@action" />
+</form>

@@ -9,9 +9,26 @@
         var diffrence = 5d - comment.Rating;
 
         <div class="row">
+            @if (this.User.IsInRole("Admin"))
+            {
+                <div class="col-lg-12 col-md-12 my-1 mx-auto">
+                    @if (this.TempData.ContainsKey("returnToDetailsAgain"))
+                    {
+                        <div class="row mx-auto mb-1">
+                            <a href="/comments/delete?id=@comment.Id&bookId=@comment.BookId" class="btn bg-danger mx-auto text-white btn-w-comment">Delete</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row mx-auto mb-1">
+                           <a href="/comments/delete?id=@comment.Id" class="btn bg-danger mx-auto text-center text-white">Delete</a>
+                        </div>
+                    }
+                </div>
+            }
             <div class="col-lg-12 col-md-12 my-1 mx-auto">
                 <div class="row mx-auto">
-                    <h3>@comment.Title</h3> 
+                    <h3>@comment.Title</h3>
                 </div>
                 <div class="row mx-auto">
                     <span class="f-s-16">by <span class="text-danger normal-bold">@comment.Username</span> on @comment.PostedOn</span>
@@ -34,6 +51,6 @@
                 @comment.Content
             </div>
         </div>
-        <hr class="hr-bg-color-second"/>
+        <hr class="hr-bg-color-second" />
     }
 }

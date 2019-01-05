@@ -64,6 +64,7 @@
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownBook">
                             <a asp-area="Books" asp-controller="Books" asp-action="Create" class="dropdown-item">Create</a>
                             <a asp-area="Books" asp-controller="Books" asp-action="Edit" class="dropdown-item">Edit</a>
+                            <a asp-area="Books" asp-controller="Books" asp-action="Delete" class="dropdown-item">Delete</a>
                         </div>
                     </li>
 
@@ -167,80 +168,6 @@
         <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
         @*<script src="~/js/Test.js"></script>*@
         <script src="~/js/custom.js"></script>
-
-        @*<script type="text/javascript">
-
-            var pageSize = 10;
-            var pageIndex = 0;
-            var maxPage = 0;
-            var scrolling = false;
-
-            GetNumberOfComments();
-
-            $(document).ready(function () {
-                GetData();
-
-                $(window).scroll(function () {
-
-                    var scrollTop = $(document).scrollTop();
-                    var windowHeight = $(window).height();
-                    var bodyHeight = $(document).height() - windowHeight;
-                    var scrollPercentage = (scrollTop / bodyHeight);
-
-                    // if the scroll is more than 90% from the top, load more content.
-                    if (scrollPercentage > 0.9 && pageIndex < maxPage && !scrolling) {
-                        GetData();
-
-                        scrolling = true;
-                    }
-                });
-            });
-
-            function GetData() {
-                $.ajax({
-                    type: 'GET',
-                    url: '/home/GetData',
-                    data: { "pageindex": pageIndex, "pagesize": pageSize },
-                    dataType: 'json',
-                    success: function (data) {
-                        if (data != null) {
-                            for (var i = 0; i < data.length; i++) {
-                                $("#container").append("<h2>" +
-                                    data[i].Title + "</h2>");
-                            }
-                            scrolling = false;
-                            pageIndex++;
-                        }
-                    },
-                    beforeSend: function () {
-                        $("#progress").show();
-                    },
-                    complete: function () {
-                        $("#progress").hide();
-                    },
-                    error: function () {
-                        alert("Error while retrieving data!");
-                    }
-                });
-            }
-
-            function GetNumberOfComments() {
-                $.ajax({
-                    type: 'GET',
-                    url: '/api/ApiComments/count',
-                    data: {},
-                    dataType: 'text',
-                    success: function (data) {
-                        alert(data);
-                        maxPage = Math.floor(parseInt(data.value) / pageSize);
-                    },
-                    error: function () {
-                        alert("Error while retrieving data!");
-                    }
-                })
-            }
-
-        </script>*@
     </environment>
     <environment exclude="Development">
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"

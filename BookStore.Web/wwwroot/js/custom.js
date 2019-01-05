@@ -4,11 +4,13 @@
 
 const pathCategories = "/categories/edit";
 const pathAuthor = "/authors/edit";
-const pathBook = "books/books/edit";
-const ajaxBookRequest = '/books/books/editbook';
+const pathBookEdit = "/books/books/edit";
+const pathBookDelete = "/books/books/delete";
+const ajaxBookRequest = '/books/books/editdeleteBook';
 const ajaxCategoryRequest = '/categories/editcategory';
 const ajaxAuthorRequest = '/authors/editauthor';
-const bookId = "#editBook";
+const bookEditId = "#editBook";
+const bookDeleteId = "#deleteBook";
 const authorId = "#eidtAuthor";
 const categoryId = "#editCategory";
 const passDataBookId = '#selBook';
@@ -50,6 +52,16 @@ function initializePath() {
             id = authorId;
             currentRequest = ajaxAuthorRequest;
             currentPassId = passDataAuthorId;
+            break;
+        case pathBookEdit:
+            id = bookEditId;
+            currentRequest = ajaxBookRequest;
+            currentPassId = passDataBookId;
+            break;
+        case pathBookDelete:
+            id = bookDeleteId;
+            currentRequest = ajaxBookRequest;
+            currentPassId = passDataBookId;
             break;
     }
 }

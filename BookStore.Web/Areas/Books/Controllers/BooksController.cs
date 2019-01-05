@@ -4,6 +4,7 @@ using BookStore.Web.Filters.Action;
 using ImageMagick;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -29,6 +30,10 @@ namespace BookStore.Web.Areas.Book.Controllers
         private const string FolderName = "Img";
         private const string ParentFolder = "images";
         private const string ErrorMessageSizeImg = "Picture is too large or too small, it can be between 15000 and 64000 bytes.";
+        private const string ErrorMessageDate = "Date is invalid!";
+        private const string IsbnErrorMessage = "Isbn is invalid or exists.";
+        private const string InvalidAttemptEdit = "Invalid attempt!";
+        private const string InvalidAttemptDelete = "Invalid attempt! Choose book again and dele it.";
 
         private readonly IBookService bookService;
         private readonly ICategoryService categoryService;
@@ -104,19 +109,167 @@ namespace BookStore.Web.Areas.Book.Controllers
             return View(book);
         }
 
+        public IActionResult EditDeleteBook(string dataName)
+        {
+            return ViewComponent("EditDeleteBook", dataName);
+        }
+
+        public JsonResult GetBooks(string text)
+        {
+            var books = this.bookService.GetAllBooks().Select(x => x.Title).ToArray();
+
+            if (!string.IsNullOrEmpty(text?.ToLower()))
+            {
+                books = books.Where(b => b.ToLower().Contains(text?.ToLower())).ToArray();
+            }
+
+            return Json(books);
+        }
+
         [Authorize(Roles = "Admin")]
         public IActionResult Edit()
         {
+            this.TempData["delete"] = false;
+
             var model = this.GetModel(
-               "Categories",
-               "categories",
-               "Name",
-               "GetCategories",
-               "Categories",
+               "Books",
+               "books",
+               "",
+               "GetBooks",
+               "Books",
                "ChooseCategory",
-               "editCategory");
+               "editBook");
 
             return View(model);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public IActionResult Edit(EditDeleteBookModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                this.TempData["error"] = InvalidAttemptEdit;
+
+                return RedirectToAction(nameof(Edit));
+            }
+
+            if (!this.bookService.IfCurrentBookHaveTheSameIsbn(model.Id, model.Isbn))
+            {
+                if (!this.bookService.IfIsbnExists(model.Isbn))
+                {
+                    this.TempData["error"] = IsbnErrorMessage;
+
+                    return RedirectToAction(nameof(Edit));
+                }
+            }
+
+            if (!DateTime.TryParse(model.ReleaseDate, out var date))
+            {
+                this.TempData["error"] = ErrorMessageDate;
+
+                return RedirectToAction(nameof(Edit));
+            }
+
+            if (model.Image != null)
+            {
+                var fileName = model.Image.FileName;
+
+                var extention = Path.GetExtension(fileName);
+
+                if (extention != ExtentionJpg && extention != ExtentionPng)
+                {
+                    this.TempData["error"] = ErrorMessageExtention;
+
+                    return RedirectToAction(nameof(Edit));
+                }
+
+                if (MaxAllowableSize < model.Image.Length || model.Image.Length < MinAllowableSize)
+                {
+                    this.TempData["error"] = ErrorMessageSizeImg;
+
+                    return RedirectToAction(nameof(Edit));
+                }
+
+                var currentNumberOnFolder = this.bookService.CountOfAllBooks() % NumberOnFolder;
+                var currentFoledName = FolderName + currentNumberOnFolder;
+                var newFileName = Guid.NewGuid().ToString() + extention;
+                var path = Path.Combine(environment.WebRootPath + $@"\{ParentFolder}", currentFoledName);
+                var imgUrl = path + $@"\{newFileName}";
+
+                var isSuccess = this.bookService.Edit(
+                    model.Id,
+                    model.Title,
+                    model.Price,
+                    model.Isbn,
+                    imgUrl,
+                    model.Description,
+                    date,
+                    model.Authors,
+                    model.Categories);
+
+                if (!isSuccess)
+                {
+                    this.TempData["error"] = ErrorMessageNoCategoryOrAuthorh;
+
+                    return RedirectToAction(nameof(Edit));
+                }
+
+                CreateImg(model.Image, path, imgUrl);
+            }
+            else
+            {
+                var isSuccess = this.bookService.Edit(
+                    model.Id,
+                    model.Title,
+                    model.Price,
+                    model.Isbn,
+                    null,
+                    model.Description,
+                    date,
+                    model.Authors,
+                    model.Categories);
+
+                if (!isSuccess)
+                {
+                    this.TempData["error"] = ErrorMessageNoCategoryOrAuthorh;
+
+                    return RedirectToAction(nameof(Edit));
+                }
+            }
+
+            return Redirect("/");
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult Delete()
+        {
+            this.TempData["delete"] = true;
+
+            var model = this.GetModel(
+              "Books",
+              "books",
+              "",
+              "GetBooks",
+              "Books",
+              "ChooseCategory",
+              "deleteBook");
+
+            return View(model);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public IActionResult Delete(EditDeleteBookModel model)
+        {
+            if (!this.bookService.DeleteBookIsSuccess(model.Id))
+            {
+                this.TempData["error"] = InvalidAttemptDelete;
+
+                return RedirectToAction(nameof(Delete));
+            }
+
+            return Redirect("/");
         }
 
         [Authorize(Roles = "Admin")]
@@ -141,7 +294,9 @@ namespace BookStore.Web.Areas.Book.Controllers
         {
             if (!this.bookService.IfIsbnExists(model.Isbn))
             {
-                ModelState.AddModelError("", "Isbn is invalid or exists.");
+                ModelState.AddModelError("", IsbnErrorMessage);
+
+                AddAllAuthorsAndCategoriesToModelForDropdownList(model);
 
                 return View(model);
             }
@@ -154,12 +309,16 @@ namespace BookStore.Web.Areas.Book.Controllers
             {
                 ModelState.AddModelError("", ErrorMessageExtention);
 
+                AddAllAuthorsAndCategoriesToModelForDropdownList(model);
+
                 return View(model);
             }
 
             if (MaxAllowableSize < model.Image.Length || model.Image.Length < MinAllowableSize)
             {
                 ModelState.AddModelError("", ErrorMessageSizeImg);
+
+                AddAllAuthorsAndCategoriesToModelForDropdownList(model);
 
                 return View(model);
             }
@@ -170,7 +329,7 @@ namespace BookStore.Web.Areas.Book.Controllers
             var path = Path.Combine(environment.WebRootPath + $@"\{ParentFolder}", currentFoledName);
             var imgUrl = path + $@"\{newFileName}";
 
-            var isSeccess = this.bookService.Create(
+            var isSuccess = this.bookService.Create(
                 model.Title,
                 model.Price,
                 model.Isbn,
@@ -180,19 +339,21 @@ namespace BookStore.Web.Areas.Book.Controllers
                 model.Authors,
                 model.Categories);
 
-            if (!isSeccess)
+            if (!isSuccess)
             {
                 ModelState.AddModelError("", ErrorMessageNoCategoryOrAuthorh);
+
+                AddAllAuthorsAndCategoriesToModelForDropdownList(model);
 
                 return View(model);
             }
 
-            CreateImg(model, path, imgUrl);
+            CreateImg(model.Image, path, imgUrl);
 
             return Redirect("/");
         }
 
-        private void CreateImg(BookCreateModel model, string path, string imgUrl)
+        private void CreateImg(IFormFile image, string path, string imgUrl)
         {
             if (!Directory.Exists(path))
             {
@@ -203,23 +364,29 @@ namespace BookStore.Web.Areas.Book.Controllers
 
             using (var memoryStream = new MemoryStream())
             {
-                model.Image.CopyTo(memoryStream);
+                image.CopyTo(memoryStream);
                 imgBytesArray = memoryStream.ToArray();
             }
 
-            using (MagickImage image = new MagickImage(imgBytesArray))
+            using (MagickImage magicImage = new MagickImage(imgBytesArray))
             {
                 MagickGeometry size = new MagickGeometry(154, 230);
 
-                image.Resize(size);
+                magicImage.Resize(size);
 
-                image.Write(imgUrl);
+                magicImage.Write(imgUrl);
             }
         }
 
         private BookDisplayModel[] GetBooksByCategory(string category)
         {
             return this.bookService.GetBooksByCategoryName(category);
+        }
+
+        private void AddAllAuthorsAndCategoriesToModelForDropdownList(dynamic model)
+        {
+            model.Authors = this.categoryService.AllCategories().Select(x => x.Name).ToList();
+            model.Categories = this.authorService.AllAuthors().Select(x => x.Name).ToList();
         }
     }
 }

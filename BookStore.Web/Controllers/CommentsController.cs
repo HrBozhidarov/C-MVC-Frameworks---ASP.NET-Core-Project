@@ -15,6 +15,7 @@ namespace BookStore.Web.Controllers
     public class CommentsController : BaseController
     {
         private const string RedirectToLoginPath = "/Identity/Account/Login";
+        private const string RedirectToCurrentBookDetails = "/books/books/details";
 
         private readonly ICommentsService commentsService;
         private readonly IBookService bookService;
@@ -70,13 +71,30 @@ namespace BookStore.Web.Controllers
                 return NotFound();
             }
 
+            if (comment.BookId != bookId)
+            {
+                return NotFound();
+            }
+
             this.commentsService.ApproveComment(id);
 
-            return Redirect($"/books/books/details/{bookId}");
+            return Redirect($"{RedirectToCurrentBookDetails}/{bookId}");
+        }
+
+        public IActionResult Edit(int id,int bookId)
+        {
+            if (!this.commentsService.IfCommentExists(id))
+            {
+                return NotFound();
+            }
+
+
+
+            return Redirect($"{RedirectToCurrentBookDetails}/{bookId}");
         }
 
         [Authorize(Roles = "Admin")]
-        public IActionResult Delete(int id)
+        public IActionResult Delete(int id, int bookId = 0)
         {
             var comment = this.commentsService.GetCommentsById(id);
 
@@ -85,7 +103,17 @@ namespace BookStore.Web.Controllers
                 return NotFound();
             }
 
+            if (bookId != 0 && comment.BookId != bookId)
+            {
+                return NotFound();
+            }
+
             this.commentsService.DeleteComment(comment);
+
+            if (bookId != 0)
+            {
+                return Redirect($"{RedirectToCurrentBookDetails}/{bookId}");
+            }
 
             return RedirectToAction(nameof(ApprovalComments));
         }

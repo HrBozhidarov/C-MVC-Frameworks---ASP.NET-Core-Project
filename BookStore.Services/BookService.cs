@@ -4,9 +4,11 @@ using BookStore.Data;
 using BookStore.Models;
 using BookStore.Models.ViewModels.Books;
 using BookStore.Services.Contracts;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -23,6 +25,110 @@ namespace BookStore.Services
         {
             this.db = db;
             this.mapper = mapper;
+        }
+
+        public EditDeleteBookModel GetBookByNameForEdit(string bookName)
+        {
+            var book = this.db.Books.Include(x => x.BooksAuthors).Include(x => x.BooksCategories).Where(x => x.Title == bookName)
+                    .ProjectTo<EditDeleteBookModel>().FirstOrDefault();
+
+            var allCategories = this.db.Categories.Select(x => x.Name).ToList();
+            var allAuthors = this.db.Authors.Select(x => x.Name).ToList();
+
+            book.AllAuthors = allAuthors;
+            book.AllCategories = allCategories;
+
+            return book;
+        }
+
+        public bool DeleteBookIsSuccess(int bookId)
+        {
+            if (!this.IfBookExists(bookId))
+            {
+                return false;
+            }
+
+            var book = this.db.Books.FirstOrDefault(x => x.Id == bookId);
+
+            this.db.Books.Remove(book);
+            this.db.SaveChanges();
+
+            return true;
+        }
+
+        public bool Edit(
+            int id,
+            string title,
+            decimal price,
+            string isbn,
+            string imgUrl,
+            string description,
+            DateTime releaseDate,
+            IList<string> authors,
+            IList<string> categories)
+        {
+            if (!AthorsAndCategoriesAreValid(authors, categories))
+            {
+                return false;
+            }
+
+            var book = this.db.Books.Include(x => x.BooksAuthors).Include(x => x.BooksCategories).FirstOrDefault(x => x.Id == id);
+
+            var imgPath = book.Img;
+
+            if (imgUrl != null)
+            {
+                var imgPathAndName = imgUrl.Split(@"\", StringSplitOptions.RemoveEmptyEntries);
+                imgPath = $"images/{imgPathAndName[imgPathAndName.Length - 2]}/{imgPathAndName[imgPathAndName.Length - 1]}";
+            }
+
+            book.BooksCategories.Clear();
+            book.BooksAuthors.Clear();
+
+            book.Description = description;
+            book.Isbn = isbn;
+            book.Title = title;
+            book.Price = price;
+            book.Img = imgPath;
+            book.ReleaseDate = releaseDate;
+
+            this.db.SaveChanges();
+
+            foreach (var author in authors)
+            {
+                var currentAuthorId = this.db.Authors.FirstOrDefault(x => x.Name == author).Id;
+
+                book.BooksAuthors.Add(new BookAuthor
+                {
+                    AuthorId = currentAuthorId,
+                    BookId = book.Id
+                });
+            }
+
+            foreach (var category in categories)
+            {
+                var currentCategoryId = this.db.Categories.FirstOrDefault(x => x.Name == category).Id;
+
+                book.BooksCategories.Add(new BookCategory
+                {
+                    CategoryId = currentCategoryId,
+                    BookId = book.Id
+                });
+            }
+
+            this.db.SaveChanges();
+
+            return true;
+        }
+
+        public bool IfCurrentBookHaveTheSameIsbn(int bookId, string isbn)
+        {
+            if (string.IsNullOrEmpty(isbn))
+            {
+                return false;
+            }
+
+            return this.db.Books.FirstOrDefault(x => x.Id == bookId).Isbn == isbn;
         }
 
         public bool Create(
@@ -172,6 +278,21 @@ namespace BookStore.Services
             }
 
             return books;
+        }
+
+        private bool AthorsAndCategoriesAreValid(IList<string> authors, IList<string> categories)
+        {
+            if (authors.Count == 0 || categories.Count == 0)
+            {
+                return false;
+            }
+
+            if (!this.db.Authors.Any(x => authors.Contains(x.Name)) || !this.db.Categories.Any(x => categories.Contains(x.Name)))
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

@@ -9,22 +9,22 @@
                 <div id="dropdownlist">
                     <h5>@Model.SmallTitle</h5>
                     @(Html.Kendo().DropDownList()
-                                                          .Name(Model.CollectionName)
-                                                          .HtmlAttributes(new { style = "width: 100%;" })
-                                                          .DataTextField(Model.TextFieldAndValue)
-                                                          .DataValueField(Model.TextFieldAndValue)
-                                                          .Filter(FilterType.Contains)
-                                                          .DataSource(source =>
-                                                          {
-                                                              source.Read(read =>
-                                                              {
-                                                                  read.Action(Model.Action, Model.Controller);
-                                                              })
-                                                              .ServerFiltering(false);
-                                                          })
-                                                              .Events(e => e
-                                                                      .Change(Model.EventFunction)
-                                                          ))
+                                  .Name(Model.CollectionName)
+                                  .HtmlAttributes(new { style = "width: 100%;" })
+                                  .DataTextField(Model.TextFieldAndValue)
+                                  .DataValueField(Model.TextFieldAndValue)
+                                  .Filter(FilterType.Contains)
+                                  .DataSource(source =>
+                                  {
+                                      source.Read(read =>
+                                      {
+                                          read.Action(Model.Action, Model.Controller);
+                                      })
+                                      .ServerFiltering(false);
+                                  })
+                                      .Events(e => e
+                                              .Change(Model.EventFunction)
+                                  ))
                 </div>
             </div>
         </div>
@@ -33,30 +33,33 @@
 
 @{
     var path = this.Context.Request.Path.Value.ToLower();
+    var ids = new string[2];
+    ids[1] = Model.Id;
 }
 
 @if (path == "/categories/edit")
 {
-    <div class="row justify-content-center mx-0 mt-5">
-        <div id=categoryEdit class="col-lg-4 col-md-5 col-sm-5 col-xs-8 col-10 text-center">
-            <hr />
-            <div id="@Model.Id" class="mx-auto">
+    ids[0] = "categoryEdit";
 
-            </div>
-            <hr />
-        </div>
-    </div>
+    <partial name="_ContainerDeleteEditPartial" model="ids" />
 }
 @if (path == "/authors/edit")
 {
-    <div class="row justify-content-center mx-0 mt-5">
-        <div id="authorEdit" class="col-lg-4 col-md-5 col-sm-5 col-xs-8 col-10 text-center">
-            <hr />
-            <div id="@Model.Id" class="mx-auto">
+    ids[0] = "authorEdit";
 
-            </div>
-            <hr />
-        </div>
-    </div>
+    <partial name="_ContainerDeleteEditPartial" model="ids" />
 }
 
+@if (path == "/books/books/edit")
+{
+    ids[0] = "bookEdit";
+
+    <partial name="_ContainerDeleteEditPartial" model="ids" />
+}
+
+@if (path == "/books/books/delete")
+{
+    ids[0] = "bookDelete";
+
+    <partial name="_ContainerDeleteEditPartial" model="ids" />
+}

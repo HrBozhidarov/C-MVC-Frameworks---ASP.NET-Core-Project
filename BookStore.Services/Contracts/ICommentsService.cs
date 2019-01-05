@@ -29,5 +29,7 @@ namespace BookStore.Services.Contracts
         double GetAvgRating(int bookId);
 
         AprovelCommentModel[] GetCommentsForCurrentBook(int bookId);
+
+        bool IfCommentExists(int id);
     }
 }

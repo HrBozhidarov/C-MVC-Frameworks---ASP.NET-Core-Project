@@ -1,0 +1,22 @@
+﻿@model string[]
+
+@if (Model.Length == 0)
+{
+    <div class="text-center mt-5">
+        <div class="text-danger text-center">No authors, you have to add or you can`t edit.</div>
+        <a href="/authors/create" class="btn btn-danger text-center mt-3">Create</a>
+    </div>
+}
+else
+{
+    <div class="row mx-auto mt-5">
+        <div class="col-lg-2">
+            <select name="book" id="selBook" class="form-control">
+                @foreach (var book in Model)
+                {
+                    <option value="@book">@book</option>
+                }
+            </select>
+        </div>
+    </div>
+}

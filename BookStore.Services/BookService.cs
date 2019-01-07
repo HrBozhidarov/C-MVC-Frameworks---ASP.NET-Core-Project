@@ -27,6 +27,17 @@ namespace BookStore.Services
             this.mapper = mapper;
         }
 
+        public VisualizeBooktemsModel GetItemBook(int bookId, int quantity)
+        {
+            var book = this.db.Books.First(x => x.Id == bookId);
+
+           var visualizeModel = mapper.Map<VisualizeBooktemsModel>(book);
+
+            visualizeModel.Quantity = quantity;
+
+            return visualizeModel;
+        }
+
         public EditDeleteBookModel GetBookByNameForEdit(string bookName)
         {
             var book = this.db.Books.Include(x => x.BooksAuthors).Include(x => x.BooksCategories).Where(x => x.Title == bookName)

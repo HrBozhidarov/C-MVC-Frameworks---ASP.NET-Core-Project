@@ -57,6 +57,7 @@
 
     <div class="col-lg-3 col-md-3 col-xs-2 col-sm-12 col-2">
         <div class="row withouth-margin mb-4" style=" border:2px solid darkslategray; border-radius:10px; width:100%">
+            @*<div class="getitem" hidden>@Model.Id</div>*@
             <div class="row mb-2 mx-auto mt-3 w-100">
                 <h3 class="mx-auto">$@Model.Price</h3>
             </div>
@@ -64,7 +65,7 @@
                 <span class="mx-auto">Free Shipping</span>
             </div>
             <div class="row mb-3 mx-auto w-100">
-                <a href="#" class="btn mx-auto" style="background-color:darkslategray" role="button"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                <button id="addToCart2" class="btn mx-auto" style="background-color:darkslategray"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
             </div>
         </div>
         <div class="row mt-2 mx-auto" style=" border:2px solid darkslategray; border-radius:10px;">
@@ -129,10 +130,11 @@
                     <span class="mx-auto">Free Shipping</span>
                 </div>
                 <div class="row mb-3 mx-auto w-100">
-                    <a href="#" class="btn mx-auto" style="background-color:darkslategray" role="button"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                    <button id="addToCart1" class="btn mx-auto" style="background-color:darkslategray"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
                 </div>
             </div>
             <div class="col-sm-5 col-md-5 mx-auto mb-3 col-10" style=" border:2px solid darkslategray; border-radius:10px;">
+                <div id="getitem" style="display:none">@Model.Id</div>
                 <div class="row mb-2 mx-auto mt-3 w-100 my-auto">
                     <h5 class="mx-auto">Average Rating</h5>
                 </div>
@@ -174,9 +176,40 @@
             <img src="~/lib/slick/ajax-loader.gif" />
         </div>
     </div>
-
+    
     @*}*@
 </div>
+
+@{ 
+    this.TempData["bookId"] = Model.Id;
+}
+
+
+<script>
+    $(document).ready(function () {
+        $('#addToCart2,#addToCart1').on("click", add)
+    })
+
+    function add() {
+        let bookId = $('#getitem').text();
+
+        $.ajax({
+            type: 'POST',
+            dataType: 'text',
+            url: '/ShoppingCart/AddToCart',
+            data: { 'bookId': bookId },
+            success: function (data) {
+                $('#notification').html(data)
+            },
+            error: function (data) {
+                alert(data);
+            }
+        });
+        $(this).css("background-color", "lightblue");
+    }
+</script>
+
+
 
 @{
     this.TempData["returnToDetailsAgain"] = this.Context.Request.Path.Value;
@@ -211,58 +244,58 @@
 }
 
 @(Html.Kendo().Window()
-              .Name("window")
-              .Visible(false)
-              .Title("Share Your Thoughts")
-              .Content(@<text>
-                <form id="windowCommens" method="post" asp-area="" asp-controller="Comments" asp-action="Create">
-                    <div class="form-group row mt-3 mx-auto d-flex justify-content-center">
-                        <fieldset class="rating">
-                            <legend>Give You Rating</legend>
-                            <div class="row d-flex justify-content-center">
-                                @for (int i = labels.Count - 1; i >= 0; i--)
-                                            {
-                                                if (i == rating)
+                  .Name("window")
+                  .Visible(false)
+                  .Title("Share Your Thoughts")
+                  .Content(@<text>
+                    <form id="windowCommens" method="post" asp-area="" asp-controller="Comments" asp-action="Create">
+                        <div class="form-group row mt-3 mx-auto d-flex justify-content-center">
+                            <fieldset class="rating">
+                                <legend>Give You Rating</legend>
+                                <div class="row d-flex justify-content-center">
+                                    @for (int i = labels.Count - 1; i >= 0; i--)
                                                 {
-                                                    var index = labels[i].IndexOf("required");
-                                                    var labelChecked = labels[i].Insert(index - 1, " checked ");
-                                                    labels[i] = labelChecked;
+                                                    if (i == rating)
+                                                    {
+                                                        var index = labels[i].IndexOf("required");
+                                                        var labelChecked = labels[i].Insert(index - 1, " checked ");
+                                                        labels[i] = labelChecked;
+                                                    }
+
+                                        @Html.Raw(labels[i]);
                                                 }
-              
-                                    @Html.Raw(labels[i]);
-                                            }
+                                </div>
+                                <div class="row w-100 mx-auto">
+                                    <span class="k-invalid-msg w-100" data-for="rating"></span>
+                                </div>
+                            </fieldset>
+                        </div>
+
+                        <input name="bookId" type="text" hidden value="@Model.Id" />
+
+                        <div class="form-group row mx-auto mt-3">
+                            <label for="Title" class="col-lg-2 col-12 col-md-2 col-form-label text-right">Title</label>
+                            <div class="col-lg-8 col-md-9 col-12 ch-label-100">
+                                <input name="title" type="text" class="form-control" id="Title" value="@title" placeholder="Title...">
                             </div>
                             <div class="row w-100 mx-auto">
-                                <span class="k-invalid-msg w-100" data-for="rating"></span>
+                                <span class="k-invalid-msg w-100" data-for="Title"></span>
                             </div>
-                        </fieldset>
-                    </div>
-              
-                    <input name="bookId" type="text" hidden value="@Model.Id" />
-              
-                    <div class="form-group row mx-auto mt-3">
-                        <label for="Title" class="col-lg-2 col-12 col-md-2 col-form-label text-right">Title</label>
-                        <div class="col-lg-8 col-md-9 col-12 ch-label-100">
-                            <input name="title" type="text" class="form-control" id="Title" value="@title" placeholder="Title...">
                         </div>
-                        <div class="row w-100 mx-auto">
-                            <span class="k-invalid-msg w-100" data-for="Title"></span>
+
+                        <div class="form-group row mx-auto mt-3">
+                            <label for="Content" class="col-lg-2 col-md-2 col-12 col-form-label text-right">Content</label>
+                            <div class="col-lg-8 col-md-9 col-12 ch-label-100">
+                                <textarea name="content" class="form-control" id="Content" rows="5" placeholder="Content...">@content</textarea>
+                            </div>
+                            <div class="row w-100 mx-auto">
+                                <span class="k-invalid-msg w-100" data-for="Content"></span>
+                            </div>
                         </div>
-                    </div>
-              
-                    <div class="form-group row mx-auto mt-3">
-                        <label for="Content" class="col-lg-2 col-md-2 col-12 col-form-label text-right">Content</label>
-                        <div class="col-lg-8 col-md-9 col-12 ch-label-100">
-                            <textarea name="content" class="form-control" id="Content" rows="5" placeholder="Content...">@content</textarea>
+                        <div class="form-group row mx-auto mt-3">
+                            <button id="createComm" type="submit" class="btn btn-primary mx-auto">Submit Review</button>
                         </div>
-                        <div class="row w-100 mx-auto">
-                            <span class="k-invalid-msg w-100" data-for="Content"></span>
-                        </div>
-                    </div>
-                    <div class="form-group row mx-auto mt-3">
-                        <button id="createComm" type="submit" class="btn btn-primary mx-auto">Submit Review</button>
-                    </div>
-                </form>
+                    </form>
 
                 </text>).Events(ev => ev.Close("onClose"))
 )
@@ -270,53 +303,53 @@
 <script src="~/js/setting-slick.js"></script>
 
 <script>
-    function onClose() {
-        $("#undo").show();
-    }
-
-    $(document).ready(function () {
-        $("#windowCommens").kendoValidator({
-            rules: {
-                radio: function (input) {
-                    if (input.filter("[type=radio]") && input.attr("required")) {
-                        return $("#windowCommens").find("[name=rating]").is(":checked");
-                    }
-                    return true;
-                },
-                text: function (input) {
-                    if (input.is("[name=title]")) {
-                        return input.val().match(/^[a-zA-Z0-9 \.!?,]{5,40}$/) != null;
-                    }
-
-                    return true;
-                },
-                textarea: function (input) {
-                    if (input.is("[name=content]")) {
-                        return input.val().match(/.{10,350}/) != null;
-                    }
-
-                    return true;
-                }
-            },
-            messages: {
-                radio: "You have to choose ratting from 1 to 5!",
-                text: "Title have to be between 5 and 40 symbols!",
-                textarea: "Content have to be between 10 and 350 symbols!"
+        function onClose() {
+                $("#undo").show();
             }
-        });
 
-        $("#undo1").bind("click", function () {
-            $("#window").data("kendoWindow").open().center();
+        $(document).ready(function () {
+                $("#windowCommens").kendoValidator({
+                    rules: {
+                        radio: function (input) {
+                            if (input.filter("[type=radio]") && input.attr("required")) {
+                                return $("#windowCommens").find("[name=rating]").is(":checked");
+                            }
+                            return true;
+                        },
+                        text: function (input) {
+                            if (input.is("[name=title]")) {
+                                return input.val().match(/^[a-zA-Z0-9 \.!?,]{5,40}$/) != null;
+                            }
 
-        });
+                            return true;
+                        },
+                        textarea: function (input) {
+                            if (input.is("[name=content]")) {
+                                return input.val().match(/.{10,350}/) != null;
+                            }
 
-        $("#undo").bind("click", function () {
-            var a = 2;
-         
-            $("#window").data("kendoWindow").open().center();
+                            return true;
+                        }
+                    },
+                    messages: {
+                        radio: "You have to choose ratting from 1 to 5!",
+                        text: "Title have to be between 5 and 40 symbols!",
+                        textarea: "Content have to be between 10 and 350 symbols!"
+                    }
+                });
 
-        });
-    });
+                $("#undo1").bind("click", function () {
+                    $("#window").data("kendoWindow").open().center();
+
+                });
+
+                $("#undo").bind("click", function () {
+                    var a = 2;
+
+                    $("#window").data("kendoWindow").open().center();
+
+                });
+            });
 </script>
 
 

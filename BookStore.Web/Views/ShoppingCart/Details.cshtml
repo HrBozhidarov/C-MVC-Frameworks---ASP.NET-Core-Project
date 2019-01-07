@@ -1,0 +1,142 @@
+﻿@model VisualizeBooktemsModel[]
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="cardId" class="row mt-5">
+
+    <partial name="_OptionsPartial" />
+
+    <div class="col-lg-9">
+        <div class="container cart-font-size">
+            <div class="h4 mb-3">Shopping Cart</div>
+            <hr class="w-100 normal-hr" />
+            <div id="shoppingTable">
+                <partial name="_TableItemCartPartial" />
+            </div>
+        </div>
+    </div>
+    <div class="my-3 w-100 text-right h4">Total Price: <span id="totalPrice"></span> $</div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        totalMoney();
+        $('.deleteFromCart').click(function () {
+            var delBookId = $(this).find('span').text();
+            let deleteItemUrl = '/ShoppingCart/DeleteItem';
+
+            $.ajax({
+                url: deleteItemUrl,
+                data: { 'bookId': delBookId },
+                type: 'POST',
+                dataType: 'html',
+                success: function (data) {
+                    if (data != null) {
+                        $('#shoppingTable').html(data)
+                    }
+                },
+                complete: notification,
+                error: function () {
+                    alert('Error occurred in Card Details');
+                }
+            }).then(totalMoney)
+        })
+
+        $('.updateUp').click(function () {
+            var bookId = $(this).find('span').text();
+            let updateUpUrl = '/ShoppingCart/UpdateUp'
+            $.ajax({
+                url: updateUpUrl,
+                data: { 'bookId': bookId },
+                type: 'POST',
+                dataType: 'json',
+                success: function (data) {
+
+                    if (data != null) {
+                        $('.quantityNumber' + data.BookId).html(data.Quantity);
+                        notification(data);
+                    }
+                },
+                error: function () {
+                    alert('Error occurred in Card Details');
+                }
+            }).then(totalMoney)
+        })
+
+        $('.updateDown').click(function () {
+            var bookId = $(this).find('span').text();
+            let updateUpUrl = '/ShoppingCart/UpdateDown'
+            $.ajax({
+                url: updateUpUrl,
+                data: { 'bookId': bookId },
+                type: 'POST',
+                dataType: 'json',
+                success: function (data) {
+               
+                    if (data != undefined) {
+                        $('.quantityNumber' + data.BookId).html(data.Quantity);
+                        notification(data);
+                    }
+                },
+                error: function () {
+                    alert('Error occurred in Card Details');
+                }
+            }).then(function (data) {
+                console.log(JSON.stringify(data));
+                if (data == undefined) {
+                    $.ajax({
+                        type: 'POST',
+                        dataType: 'html',
+                        url: '/ShoppingCart/GetShoppingTable',
+                        data: {},
+                        success: function (data) {
+                            $('#shoppingTable').html(data)
+                        },
+                        complete: notification,
+                        error: function (data) {
+                            alert(data);
+                        }
+                    });
+                }
+            }).then(totalMoney)
+        })
+
+        function totalMoney() {
+            let totalPriceUrl = '/ShoppingCart/TotalPrice';
+
+            $.ajax({
+                url: totalPriceUrl,
+                data: {},
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    var totalPrice = parseFloat(data);
+                    $('#totalPrice').html(totalPrice);
+                },
+                error: function () {
+                    alert('Error occurred in Get Total money');
+                }
+            })
+        }
+
+        function notification(data) {
+            if (data != null) {
+                $.ajax({
+                    type: 'GET',
+                    dataType: 'text',
+                    url: '/ShoppingCart/NumberItemsInCart',
+                    data: {},
+                    success: function (data) {
+                        $('#notification').html(data)
+                    },
+                    error: function (data) {
+                        alert(data);
+                    }
+                });
+            }
+        }
+    })
+</script>

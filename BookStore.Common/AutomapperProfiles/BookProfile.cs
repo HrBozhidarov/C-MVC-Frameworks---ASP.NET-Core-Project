@@ -34,6 +34,8 @@ namespace BookStore.Common.AutomapperProfiles
                 .ForMember(dest => dest.ReleaseDate,
                 opt => opt.MapFrom(src => src.ReleaseDate.ToString("yyyy-MM-ddThh:mm", CultureInfo.InvariantCulture)))
                 .ForMember(dest => dest.ImgUrl, opt => opt.MapFrom(src => src.Img));
+
+            CreateMap<Book, VisualizeBooktemsModel>();
         }
     }
 }

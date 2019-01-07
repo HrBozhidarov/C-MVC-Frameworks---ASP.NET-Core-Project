@@ -48,6 +48,7 @@ namespace BookStore.Web
             services.AddTransient<IAuthorService, AuthorService>();
             services.AddTransient<IBookService, BookService>();
             services.AddTransient<ICommentsService, CommentsService>();
+            services.AddSingleton<IShoppingCartManager, ShoppingCartManager>();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -74,6 +75,12 @@ namespace BookStore.Web
             });
 
             services.AddAutoMapper();
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = new TimeSpan(2, 0, 0, 0, 0);
+                options.Cookie.HttpOnly = true;
+            });
 
             services.AddMvc(options =>
             {
@@ -107,6 +114,8 @@ namespace BookStore.Web
             app.UseAuthentication();
 
             app.PreventLoginRegisterAccessWhenUserIsAthenticated();
+
+            app.UseSession();
 
             app.UseMvc(routes =>
             {

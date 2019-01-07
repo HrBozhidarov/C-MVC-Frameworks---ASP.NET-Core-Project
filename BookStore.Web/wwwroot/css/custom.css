@@ -169,18 +169,18 @@ nav, footer {
     font-size: 50px;
 }
 
-emg-fluid-user-section .emg-fluid-notification {
+#notification {
     position: absolute;
-    display: none;
-    left: 13px;
-    top: 0;
+    /*display: none;*/
+    /*left: 13px;*/
+    right: 85px;
+    top: 1px;
     min-width: 17px;
     height: 17px;
     line-height: 17px;
     font-size: 10px;
     font-weight: bold;
     text-align: center;
-    background-color: #f0280a;
     border-radius: 50%;
 }
 
@@ -805,4 +805,20 @@ ul.product-caption-rating.pass-rating > li {
 
 .btn-w-comment {
     width: 135px;
+}
+
+#cardId {
+    min-height:400px;
+}
+
+@media screen and (max-width: 580px) {
+    .cart-font-size {
+        font-size: 11px;
+    }
+}
+
+@media screen and (max-width: 390px) {
+    .cart-font-size {
+        font-size: 8px;
+    }
 }

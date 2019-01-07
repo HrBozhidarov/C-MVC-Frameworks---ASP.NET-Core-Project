@@ -81,20 +81,24 @@
                 }
             </ul>
             <ul class="navbar-nav mt-3 mt-lg-0">
+                <li class="nav-item dropdown mr-5">
+                    <a asp-area="" asp-controller="ShoppingCart" asp-action="Details" ><i class="fas fa-shopping-cart"></i> Cart</a>
+                </li>
                 <li class="nav-item dropdown mr-3">
-                    <a asp-area="Books" asp-controller="Books" asp-action="Category" asp-route-category="all"><i class="fas fa-book"></i> Books</a>
+                    <a asp-area="Books" asp-controller="Books" asp-action="Category" asp-route-category="all"><i class="fas fa-book"></i> Books <span id="notification" class="fluid-notification cart-bubble bg-primary text-white" style="display: inline;"></span></a>
                 </li>
             </ul>
             <partial name="_LoginPartial" />
 
         </div>
     </nav>
-    <partial name="_CookieConsentPartial" />
 
+    <partial name="_CookieConsentPartial" />
     <div class="container body-content pading-left-riht-zero mb-5 mx-auto">
         @RenderBody()
     </div>
     <br />
+
     <footer id="footer">
         <div class="container">
             <div class="row mx-auto">
@@ -168,6 +172,26 @@
         <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
         @*<script src="~/js/Test.js"></script>*@
         <script src="~/js/custom.js"></script>
+
+        <script>
+            getCount();
+
+            function getCount() {
+                $.ajax({
+                    type: 'GET',
+                    dataType: 'text',
+                    url: '/ShoppingCart/NumberItemsInCart',
+                    data: {},
+                    success: function (data) {
+                        $('#notification').html(data)
+                    },
+                    error: function (data) {
+                        alert(data);
+                    }
+                });
+            }
+        </script>
+
     </environment>
     <environment exclude="Development">
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"

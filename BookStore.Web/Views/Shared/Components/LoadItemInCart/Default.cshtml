@@ -1,0 +1,148 @@
+﻿@model VisualizeBooktemsModel[]
+
+<table class="table table-hover">
+    <thead>
+        <tr class="row mx-auto">
+            <th scope="col" class="col-1 d-flex justify-content-center">#</th>
+            <th scope="col" class="col-1 d-flex justify-content-center">Action</th>
+            <th scope="col" class="col-5 d-flex justify-content-center">Book</th>
+            <th scope="col" class="col-1 d-flex justify-content-center">Quantity</th>
+            <th scope="col" class="col-3 d-flex justify-content-center">Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Length > 0)
+        {
+            @for (int i = 0; i < Model.Length; i++)
+            {
+                var item = Model[i];
+                var number = i + 1;
+
+                <tr class="row mx-auto">
+                    <td class="col-1 d-flex justify-content-center">
+                        @number
+                    </td>
+                    <td class="col-1 d-flex justify-content-center">
+                        <a class="text-danger" asp-controller="ShoppingCart" asp-action="Delete" asp-route-bookId="@item.Id"><i class="fas fa-times-circle"></i></a>
+                    </td>
+                    <td class="col-5 d-flex justify-content-center">
+                        <a asp-area="Books" asp-controller="Books" asp-action="Details" asp-route-id="@item.Id">
+                            @item.Title
+                        </a>
+                    </td>
+
+                    <td class="col-1 d-flex justify-content-center">
+                        <a class="text-danger pr-2 updateDown"><i class="fas fa-minus-circle"> </i> <span class="getId" style="display:none">@item.Id</span></a>
+                        <span class="@("quantityNumber"+item.Id)">@item.Quantity</span>
+
+                        <a class="text-danger pl-2 updateUp"><i class="fas fa-plus-circle"> </i> <span class="getId" style="display:none">@item.Id</span></a>
+
+                    </td>
+                    <td class="col-3 d-flex justify-content-center">@item.Price $</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function () {
+
+        $('.deleteFromCart').click(function () {
+            var delBookId = $(this).find('span').text();
+            let deleteItemUrl = '/ShoppingCart/DeleteItem';
+
+            $.ajax({
+                url: deleteItemUrl,
+                data: { 'bookId': delBookId },
+                type: 'GET',
+                dataType: 'html',
+                success: function (data) {
+                    if (data != null) {
+                        $('#shoppingTable').html(data)
+                    }
+                },
+                complete: notification,
+                error: function () {
+                    alert('Error occurred in Card Details');
+                }
+            })
+        })
+
+        $('.updateUp').click(function () {
+            var bookId = $(this).find('span').text();
+            let updateUpUrl = '/ShoppingCart/UpdateUp'
+            $.ajax({
+                url: updateUpUrl,
+                data: { 'bookId': bookId },
+                type: 'POST',
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    if (data != null) {
+                        $('.quantityNumber' + data.BookId).html(data.Quantity);
+                        notification(data);
+                    }
+                },
+                error: function () {
+                    alert('Error occurred in Card Details');
+                }
+            })
+        })
+
+        $('.updateDown').click(function () {
+            var bookId = $(this).find('span').text();
+            let updateUpUrl = '/ShoppingCart/UpdateDown'
+            $.ajax({
+                url: updateUpUrl,
+                data: { 'bookId': bookId },
+                type: 'POST',
+                dataType: 'json',
+                success: function (data) {
+                    if (data != undefined) {
+                        $('.quantityNumber' + data.BookId).html(data.Quantity);
+                        notification(data);
+                    }
+                },
+                error: function () {
+                    alert('Error occurred in Card Details');
+                }
+            }).then(function (data) {
+
+                if (data == undefined) {
+                    $.ajax({
+                        type: 'POST',
+                        dataType: 'html',
+                        url: '/ShoppingCart/GetShoppingTable',
+                        data: {},
+                        success: function (data) {
+                            $('#shoppingTable').html(data)
+                        },
+                        complete: notification,
+                        error: function (data) {
+                            alert(data);
+                        }
+                    });
+                }
+
+            })
+        })
+
+        function notification(data) {
+            if (data != null) {
+                $.ajax({
+                    type: 'GET',
+                    dataType: 'text',
+                    url: '/ShoppingCart/NumberItemsInCart',
+                    data: {},
+                    success: function (data) {
+                        $('#notification').html(data)
+                    },
+                    error: function (data) {
+                        alert(data);
+                    }
+                });
+            }
+        }
+    })
+</script>

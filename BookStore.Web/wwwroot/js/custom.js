@@ -69,5 +69,7 @@ function initializePath() {
 $(document).ready(function () {
     $('.show').hide().show(1000);
 
-    ChooseCategory();
+    if (path==pathCategories || path==pathAuthor || path==pathBookDelete || path==pathBookEdit) {
+        ChooseCategory();
+    }
 })

@@ -60,5 +60,13 @@ namespace BookStore.Models.ViewModels.Shopping
                 this.items.Remove(item);
             }
         }
+
+        public void Clear()
+        {
+            if (this.items.Count>0)
+            {
+                this.items.Clear();
+            }
+        }
     }
 }

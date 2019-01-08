@@ -18,12 +18,51 @@
         </div>
     </div>
     <div class="my-3 w-100 text-right h4">Total Price: <span id="totalPrice"></span> $</div>
+    <div class="row w-100">
+        <div class="col-lg-4"></div>
+        <div class="col-lg-6 col-md-10 col-8 col-sm-8">
+            <a class="btn btn-primary mr-3" role="button" asp-area="Books" asp-controller="Books" asp-action="Category" asp-route-category="all">Continue Shopping</a> 
+            <button id="clearShoppingCart" class="btn btn-warning">Empty Cart</button>
+        </div>
+        @if (this.Model.Length > 0)
+        {
+            <div class="col-lg-2 col-md-2 col-4 col-sm-4 mr-0">
+                <span id="orderFromCart" class="btn mx-auto btn-success tex-white float-right"><i class="fab fa-jedi-order"></i> Order Now</span>
+            </div>
+        }
+    </div>
 </div>
 
 
 <script>
     $(document).ready(function () {
         totalMoney();
+
+        $('#clearShoppingCart').click(function () {
+            let shoppingCartClearUrl = '/ShoppingCart/ClearShoppingCart';
+
+            $.ajax({
+                url: shoppingCartClearUrl,
+                data: { },
+                type: 'POST',
+                dataType: 'json',
+                success: function (data) {
+                    $('#emptyBody').html(`
+                        <tr>
+                            <td>
+                                <div class="h4 text-center">Yours shopping cart is empty!</div>
+                            </td>
+                        </tr>`);
+
+                    $('#orderFromCart').hide();
+                },
+                complete: notification,
+                error: function () {
+                    alert('Error occurred while Empty shopping cart');
+                }
+            }).then(totalMoney)
+        })
+
         $('.deleteFromCart').click(function () {
             var delBookId = $(this).find('span').text();
             let deleteItemUrl = '/ShoppingCart/DeleteItem';

@@ -116,6 +116,17 @@ namespace BookStore.Web.Controllers
             return totalPrice;
         }
 
+        [IgnoreAntiforgeryToken]
+        [HttpPost]
+        public ActionResult<bool> ClearShoppingCart()
+        {
+            var key = this.HttpContext.Session.GetShopingCartKey();
+
+            this.shoppingCartManager.Clear(key);
+
+            return true;
+        }
+
         public IActionResult Details()
         {
             var cartItems = this.ItemsInCart();

@@ -10,155 +10,166 @@
             <th scope="col" class="col-3 d-flex justify-content-center">Price</th>
         </tr>
     </thead>
-    <tbody>
-        @for (int i = 0; i < Model.Length; i++)
+    <tbody id="emptyBody">
+        @if (Model.Length > 0)
         {
-            var item = Model[i];
-            var number = i + 1;
+            @for (int i = 0; i < Model.Length; i++)
+            {
+                var item = Model[i];
+                var number = i + 1;
 
-            <tr class="row mx-auto">
-                <td class="col-1 d-flex justify-content-center">
-                    @number
-                </td>
-                <td class="col-1 d-flex justify-content-center">
-                    <a class="text-danger deleteFromCart"><i class="fas fa-times-circle"></i><span class="getId" style="display:none">@item.Id</span></a>
-                </td>
-                <td class="col-5 d-flex justify-content-center">
-                    <a asp-area="Books" asp-controller="Books" asp-action="Details" asp-route-id="@item.Id">
-                        @item.Title
-                    </a>
-                </td>
+                <tr class="row mx-auto">
+                    <td class="col-1 d-flex justify-content-center">
+                        @number
+                    </td>
+                    <td class="col-1 d-flex justify-content-center">
+                        <a class="text-danger deleteFromCart"><i class="fas fa-times-circle"></i><span class="getId" style="display:none">@item.Id</span></a>
+                    </td>
+                    <td class="col-5 d-flex justify-content-center">
+                        <a asp-area="Books" asp-controller="Books" asp-action="Details" asp-route-id="@item.Id">
+                            @item.Title
+                        </a>
+                    </td>
 
-                <td class="col-1 d-flex justify-content-center">
-                    <a class="text-danger pr-2 updateDown"><i class="fas fa-minus-circle"> </i> <span class="getId" style="display:none">@item.Id</span></a>
-                    <span class="@("quantityNumber"+item.Id)">@item.Quantity</span>
+                    <td class="col-1 d-flex justify-content-center">
+                        <a class="text-danger pr-2 updateDown"><i class="fas fa-minus-circle"> </i> <span class="getId" style="display:none">@item.Id</span></a>
+                        <span class="@("quantityNumber"+item.Id)">@item.Quantity</span>
 
-                    <a class="text-danger pl-2 updateUp"><i class="fas fa-plus-circle"> </i> <span class="getId" style="display:none">@item.Id</span></a>
+                        <a class="text-danger pl-2 updateUp"><i class="fas fa-plus-circle"> </i> <span class="getId" style="display:none">@item.Id</span></a>
 
+                    </td>
+                    <td class="col-3 d-flex justify-content-center">@item.Price $</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td>
+                    <div class="h4 text-center">Yours shopping cart is empty!</div>
                 </td>
-                <td class="col-3 d-flex justify-content-center">@item.Price $</td>
             </tr>
         }
     </tbody>
 </table>
 
 @*<script>
-    $(document).ready(function () {
-        totalMoney();
-        $('.deleteFromCart').click(function () {
-            var delBookId = $(this).find('span').text();
-            let deleteItemUrl = '/ShoppingCart/DeleteItem';
+        $(document).ready(function () {
+            totalMoney();
+            $('.deleteFromCart').click(function () {
+                var delBookId = $(this).find('span').text();
+                let deleteItemUrl = '/ShoppingCart/DeleteItem';
 
-            $.ajax({
-                url: deleteItemUrl,
-                data: { 'bookId': delBookId },
-                type: 'POST',
-                dataType: 'html',
-                success: function (data) {
-                    if (data != null) {
-                        $('#shoppingTable').html(data)
+                $.ajax({
+                    url: deleteItemUrl,
+                    data: { 'bookId': delBookId },
+                    type: 'POST',
+                    dataType: 'html',
+                    success: function (data) {
+                        if (data != null) {
+                            $('#shoppingTable').html(data)
+                        }
+                    },
+                    complete: notification,
+                    error: function () {
+                        alert('Error occurred in Card Details');
                     }
-                },
-                complete: notification,
-                error: function () {
-                    alert('Error occurred in Card Details');
-                }
+                })
             })
-        })
 
-        $('.updateUp').click(function () {
-            var bookId = $(this).find('span').text();
-            let updateUpUrl = '/ShoppingCart/UpdateUp'
-            $.ajax({
-                url: updateUpUrl,
-                data: { 'bookId': bookId },
-                type: 'POST',
-                dataType: 'json',
-                success: function (data) {
-         
-                    if (data != null) {
-                        $('.quantityNumber' + data.BookId).html(data.Quantity);
-                        notification(data);
+            $('.updateUp').click(function () {
+                var bookId = $(this).find('span').text();
+                let updateUpUrl = '/ShoppingCart/UpdateUp'
+                $.ajax({
+                    url: updateUpUrl,
+                    data: { 'bookId': bookId },
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function (data) {
+
+                        if (data != null) {
+                            $('.quantityNumber' + data.BookId).html(data.Quantity);
+                            notification(data);
+                        }
+                    },
+                    error: function () {
+                        alert('Error occurred in Card Details');
                     }
-                },
-                error: function () {
-                    alert('Error occurred in Card Details');
-                }
+                })
             })
-        })
 
-        $('.updateDown').click(function () {
-            var bookId = $(this).find('span').text();
-            let updateUpUrl = '/ShoppingCart/UpdateDown'
-            $.ajax({
-                url: updateUpUrl,
-                data: { 'bookId': bookId },
-                type: 'POST',
-                dataType: 'json',
-                success: function (data) {
-                    if (data != undefined) {
-                        $('.quantityNumber' + data.BookId).html(data.Quantity);
-                        notification(data);
+            $('.updateDown').click(function () {
+                var bookId = $(this).find('span').text();
+                let updateUpUrl = '/ShoppingCart/UpdateDown'
+                $.ajax({
+                    url: updateUpUrl,
+                    data: { 'bookId': bookId },
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data != undefined) {
+                            $('.quantityNumber' + data.BookId).html(data.Quantity);
+                            notification(data);
+                        }
+                    },
+                    error: function () {
+                        alert('Error occurred in Card Details');
                     }
-                },
-                error: function () {
-                    alert('Error occurred in Card Details');
-                }
-            }).then(function (data) {
+                }).then(function (data) {
 
-                if (data == undefined) {
+                    if (data == undefined) {
+                        $.ajax({
+                            type: 'POST',
+                            dataType: 'html',
+                            url: '/ShoppingCart/GetShoppingTable',
+                            data: {},
+                            success: function (data) {
+                                $('#shoppingTable').html(data)
+                            },
+                            complete: notification,
+                            error: function (data) {
+                                alert(data);
+                            }
+                        });
+                    }
+
+                    totalMoney();
+                })
+            })
+
+            function totalMoney() {
+                let totalPriceUrl = '/ShoppingCart/TotalPrice';
+
+                $.ajax({
+                    url: totalPriceUrl,
+                    data: {},
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        var totalPrice = parseInt(data);
+                        $('#totalPrice').html(totalPrice);
+                    },
+                    error: function () {
+                        alert('Error occurred in Get Total money');
+                    }
+                })
+            }
+
+            function notification(data) {
+                if (data != null) {
                     $.ajax({
-                        type: 'POST',
-                        dataType: 'html',
-                        url: '/ShoppingCart/GetShoppingTable',
+                        type: 'GET',
+                        dataType: 'text',
+                        url: '/ShoppingCart/NumberItemsInCart',
                         data: {},
                         success: function (data) {
-                            $('#shoppingTable').html(data)
+                            $('#notification').html(data)
                         },
-                        complete: notification,
                         error: function (data) {
                             alert(data);
                         }
                     });
                 }
-
-                totalMoney();
-            })
-        })
-
-        function totalMoney() {
-            let totalPriceUrl = '/ShoppingCart/TotalPrice';
-
-            $.ajax({
-                url: totalPriceUrl,
-                data: {},
-                type: 'GET',
-                dataType: 'json',
-                success: function (data) {
-                    var totalPrice = parseInt(data);
-                    $('#totalPrice').html(totalPrice);
-                },
-                error: function () {
-                    alert('Error occurred in Get Total money');
-                }
-            })
-        }
-
-        function notification(data) {
-            if (data != null) {
-                $.ajax({
-                    type: 'GET',
-                    dataType: 'text',
-                    url: '/ShoppingCart/NumberItemsInCart',
-                    data: {},
-                    success: function (data) {
-                        $('#notification').html(data)
-                    },
-                    error: function (data) {
-                        alert(data);
-                    }
-                });
             }
-        }
-    })
-</script>*@
+        })
+    </script>*@

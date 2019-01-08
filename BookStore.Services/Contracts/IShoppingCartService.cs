@@ -16,5 +16,7 @@ namespace BookStore.Services.Contracts
         CartItem GetCartItemByBookId(int bookId, string id);
 
         void RemoveFromCart(string id, int bookId);
+
+        void Clear(string id);
     }
 }

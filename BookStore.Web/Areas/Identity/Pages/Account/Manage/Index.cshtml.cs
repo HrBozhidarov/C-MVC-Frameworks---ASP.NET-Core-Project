@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using BookStore.Models;
+using BookStore.Services.Contracts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -17,15 +18,18 @@ namespace BookStore.Web.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IEmailSender _emailSender;
+        private readonly IUserService _userService;
 
         public IndexModel(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IUserService userService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
+            _userService = userService;
         }
 
         public string Username { get; set; }
@@ -47,6 +51,16 @@ namespace BookStore.Web.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            [Required]
+            public string FirstName { get; set; }
+
+            [Required]
+            public string LastName { get; set; }
+
+            public string City { get; set; }
+
+            public string Address { get; set; }
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -60,12 +74,20 @@ namespace BookStore.Web.Areas.Identity.Pages.Account.Manage
             var userName = await _userManager.GetUserNameAsync(user);
             var email = await _userManager.GetEmailAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            var firstname = user.Firstname;
+            var lastname = user.Lastname;
+            var city = user.City;
+            var address = user.Address;
 
             Username = userName;
 
             Input = new InputModel
             {
                 Email = email,
+                FirstName = firstname,
+                LastName = lastname,
+                Address = address,
+                City = city,
                 PhoneNumber = phoneNumber
             };
 
@@ -109,6 +131,26 @@ namespace BookStore.Web.Areas.Identity.Pages.Account.Manage
                 }
             }
 
+            if (Input.Address != user.Address)
+            {
+                this._userService.EditAddress(user.Id, Input.Address);
+            }
+
+            if (Input.City != user.City)
+            {
+                this._userService.EditCity(user.Id, Input.City);
+            }
+
+            if (Input.FirstName != user.Firstname)
+            {
+                _userService.EditFirsname(user, Input.FirstName);
+            }
+
+            if (Input.LastName != user.Lastname)
+            {
+                _userService.EditLastname(user, Input.LastName);
+            }
+
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();
@@ -126,7 +168,6 @@ namespace BookStore.Web.Areas.Identity.Pages.Account.Manage
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
-
 
             var userId = await _userManager.GetUserIdAsync(user);
             var email = await _userManager.GetEmailAsync(user);

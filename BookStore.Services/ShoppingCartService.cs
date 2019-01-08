@@ -53,6 +53,13 @@ namespace BookStore.Services
             shoppingCart.RemoveFromCart(bookId);
         }
 
+        public void Clear(string id)
+        {
+            var shoppingCart = this.GetShoppingCart(id);
+
+            shoppingCart.Clear();
+        }
+
         private ShoppingCart GetShoppingCart(string id)
             => this.carts.GetOrAdd(id, new ShoppingCart());
     }

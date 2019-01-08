@@ -112,31 +112,31 @@
 }
 
 #test1 {
-    height: 370px;
+    min-height: 370px;
 }
 
 #createBook {
-    height: 875px;
+    min-height: 875px;
 }
 
 #createCategory {
-    height: 278px;
+    min-height: 278px;
 }
 
 #categoryEdit {
-    height: 190px;
+    min-height: 190px;
 }
 
 #authorEdit {
-    height: 480px;
+    min-height: 480px;
 }
 
 #register {
-    height: 440px;
+    min-height: 566px;
 }
 
 #login {
-    height: 376px;
+    min-height: 390px;
 }
 
 li.selected {
@@ -196,6 +196,10 @@ nav, footer {
 .pading-left-riht-zero {
     padding-left: 0px;
     padding-right: 0px;
+}
+
+.color-book {
+    color: #28c491
 }
 
 #navbarDropdownMenuLink-4 {

@@ -59,6 +59,14 @@ namespace BookStore.Web.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Display(Name ="First name")]
+            [Required]
+            public string Firstname { get; set; }
+
+            [Display(Name ="Last name")]
+            [Required]
+            public string Lastname { get; set; }
         }
 
         public void OnGet(string returnUrl = null)
@@ -71,7 +79,7 @@ namespace BookStore.Web.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = Input.Username, Email = Input.Email };
+                var user = new User { UserName = Input.Username, Email = Input.Email, Firstname=Input.Firstname,Lastname=Input.Lastname };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

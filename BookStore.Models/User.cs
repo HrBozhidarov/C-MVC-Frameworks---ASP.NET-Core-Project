@@ -15,6 +15,14 @@ namespace BookStore.Models
             this.Comments = new HashSet<Comment>();
         }
 
+        public string Firstname { get; set; }
+
+        public string Lastname { get; set; }
+
+        public string City { get; set; }
+
+        public string Address { get; set; }
+
         public ICollection<Comment> Comments { get; set; }
 
         public ICollection<Order> Orders { get; set; }

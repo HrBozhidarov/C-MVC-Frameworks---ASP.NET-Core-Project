@@ -841,4 +841,8 @@ ul.product-caption-rating.pass-rating > li {
     .cart-font-size {
         font-size: 8px;
     }
+
+    .order-size {
+        font-size: 11px;
+    }
 }

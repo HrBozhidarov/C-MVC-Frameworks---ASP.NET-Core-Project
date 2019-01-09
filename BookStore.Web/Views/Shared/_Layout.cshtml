@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - BookStore.Web</title>
 
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
     <environment include="Development">
         <link rel="stylesheet" href="~/css/reset.css" />
         <link href="~/lib/slick/slick.css" rel="stylesheet" />
@@ -191,6 +193,43 @@
                 });
             }
         </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        @*<script>
+            $.ajax({
+                type: "POST",
+                accepts: "text",
+                url: "/api/ApiOrders/go",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    date: '12/03/2015'
+                }),
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("XSRF-TOKEN", $('input:hidden[name="__RequestVerificationToken"]').val());
+                    $("#progress").show();
+                },
+                success: function (result) {
+                    alert(result);
+                },
+                error: function (req, status, error) {
+                    alert('no ok');
+                }
+            });
+        </script>*@
 
     </environment>
     <environment exclude="Development">

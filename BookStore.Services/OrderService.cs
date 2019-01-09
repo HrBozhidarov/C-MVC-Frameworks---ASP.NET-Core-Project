@@ -1,10 +1,15 @@
-﻿using BookStore.Data;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using BookStore.Data;
 using BookStore.Models;
+using BookStore.Models.ViewModels.Books;
 using BookStore.Models.ViewModels.Orders;
 using BookStore.Models.ViewModels.Shopping;
 using BookStore.Services.Contracts;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -12,6 +17,8 @@ namespace BookStore.Services
 {
     public class OrderService : IOrderService
     {
+        private const int BgTimeZoneHoursPlus = 2;
+
         private readonly BookStoreContext db;
 
         public OrderService(BookStoreContext db)
@@ -19,9 +26,72 @@ namespace BookStore.Services
             this.db = db;
         }
 
+        public MinMaxOrderDateModel GetMinAndMaxRangeDateOnOrderBook()
+        {
+            var minDate = this.db.Orders.OrderBy(x => x.OrderedOn).FirstOrDefault()?.OrderedOn.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+            var maxDate = this.db.Orders.OrderByDescending(x => x.OrderedOn).FirstOrDefault()?.OrderedOn.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+
+            if (minDate == null || maxDate == null)
+            {
+                return null;
+            }
+
+            return new MinMaxOrderDateModel
+            {
+                MinDate = minDate,
+                MaxDate = maxDate
+            };
+        }
+
+        public HistoryModel[] GetAllHistory()
+        {
+            var history = this.db.Orders.ProjectTo<HistoryModel>().ToArray();
+
+            return history;
+        }
+
+        public IncomeModel GetIncomeModel(DateTime start, DateTime end)
+        {
+            var minMaxOrderDateModel = this.GetMinAndMaxRangeDateOnOrderBook();
+
+            if (!DateTime.TryParse(minMaxOrderDateModel.MinDate, out var minDate))
+            {
+                return null;
+            }
+
+            if (!DateTime.TryParse(minMaxOrderDateModel.MaxDate, out var maxDate))
+            {
+                return null;
+            }
+
+            if (start > end)
+            {
+                return null;
+            }
+
+            if (minDate > start)
+            {
+                start = minDate;
+            }
+
+            if (maxDate < end)
+            {
+                end = maxDate;
+            }
+
+            var income = this.db.Orders.Where(x => x.OrderedOn >= start && x.OrderedOn <= end).Sum(x => x.TotalPrice);
+
+            return new IncomeModel
+            {
+                EndDate = end.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
+                StartDate = start.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
+                Income = income
+            };
+        }
+
         public void Create(string userId, IEnumerable<CartItem> cartItems, string address, string city, string phone)
         {
-            var order = this.CreateOrder(userId,cartItems, address, city, phone);
+            var order = this.CreateOrder(userId, cartItems, address, city, phone);
 
             foreach (var item in cartItems)
             {
@@ -46,7 +116,8 @@ namespace BookStore.Services
                 UserId = userId,
                 TotalPrice = totalPrice,
                 City = city,
-                Phone = phone
+                Phone = phone,
+                OrderedOn = DateTime.UtcNow.AddHours(BgTimeZoneHoursPlus)
             });
 
             this.db.SaveChanges();

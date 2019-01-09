@@ -72,6 +72,7 @@ namespace BookStore.Web
 
             Mapper.Initialize(cfg =>
             {
+                cfg.AddProfile<OrderProfile>();
                 cfg.AddProfile<UserProfile>();
                 cfg.AddProfile<CategoryProfile>();
                 cfg.AddProfile<AuthorProfile>();
@@ -113,6 +114,7 @@ namespace BookStore.Web
 
             app.SeedData();
             app.UseHttpsRedirection();
+            app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseCookiePolicy();
 

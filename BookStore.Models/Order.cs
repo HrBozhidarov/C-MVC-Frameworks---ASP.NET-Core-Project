@@ -19,6 +19,8 @@ namespace BookStore.Models
 
         public decimal TotalPrice { get; set; }
 
+        public DateTime OrderedOn { get; set; }
+
         public string City { get; set; }
 
         public string Phone { get; set; }

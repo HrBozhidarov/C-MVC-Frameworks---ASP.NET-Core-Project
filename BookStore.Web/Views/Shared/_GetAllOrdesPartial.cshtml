@@ -1,0 +1,58 @@
+﻿@model HistoryModel[]
+
+@if (Model.Length > 0)
+{
+    <div class="row" style="min-height:300px">
+        @foreach (var orderInfo in Model)
+        {
+            <div class="col-xl-7 order-size mx-auto">
+
+                <div class="container shadow pl-4 pb-4 pr-4 mb-4 bg-white">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr class="row">
+                                <th scope="col" class="col-2 d-flex justify-content-center"><strong>Book Id</strong></th>
+                                <th scope="col" class="col-6 d-flex justify-content-center"><strong>Book Title</strong></th>
+                                <th scope="col" class="col-1 d-flex justify-content-center"><strong>Quantity</strong></th>
+                                <th scope="col" class="col-3 d-flex justify-content-center"><strong>Price</strong></th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < orderInfo.Books.Length; i++)
+                            {
+                                var book = orderInfo.Books[i];
+
+                                <tr class="row my-3">
+                                    <td class="col-2 d-flex justify-content-center">
+                                        @book.Id
+                                    </td>
+                                    <td class="col-6 d-flex justify-content-center">
+                                        <a href="/Books/Books/Details/@book.Id">
+                                            @book.Title
+                                        </a>
+                                    </td>
+                                    <td class="col-1 d-flex justify-content-center">
+                                        @book.Quantity
+                                    </td>
+                                    <td class="col-3 d-flex justify-content-around">
+                                        @book.Price $
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <div class="mx-auto">
+                        <div class="">
+                            <p class="normal-bold text-danger">
+                                <div class="normal-bold">Orderd by: @orderInfo.Username on @orderInfo.OrderedOn</div>
+                                <div class="normal-bold">Total Price: @orderInfo.TotalPrice $</div>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        }
+    </div>
+}

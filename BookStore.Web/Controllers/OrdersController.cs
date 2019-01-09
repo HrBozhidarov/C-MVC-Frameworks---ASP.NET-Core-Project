@@ -60,7 +60,26 @@ namespace BookStore.Web.Controllers
             return RedirectToAction(nameof(History));
         }
 
+        [Authorize(Roles ="Admin")]
+        [HttpPost]
+        public PartialViewResult GetOrders(int pageIndex, int pageSize)
+        {
+            var orders = this.orderService.GetAllHistory()
+                .Skip(pageIndex * pageSize)
+                .Take(pageSize).ToArray();
+
+            return PartialView("_GetAllOrdesPartial", orders);
+        }
+
         public IActionResult History()
+        {
+            var username = this.User.Identity.Name;
+
+            return View();
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult AllOrdersHistory()
         {
             return View();
         }

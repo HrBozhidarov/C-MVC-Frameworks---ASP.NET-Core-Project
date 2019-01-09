@@ -6,6 +6,9 @@
 
   <ItemGroup>
     <Compile Remove="Migrations\20181122100036_AddEntitiesToDatabase.cs" />
+    <Compile Remove="Migrations\20190107203649_AddPropertiesToUserForOrder.cs" />
+    <Compile Remove="Migrations\20190108122222_AddBookEntityAndRemoveTwoProperitesFromOrderBook.cs" />
+    <Compile Remove="Migrations\20190108131130_AddPropertyCityToOrder.cs" />
   </ItemGroup>
 
   <ItemGroup>

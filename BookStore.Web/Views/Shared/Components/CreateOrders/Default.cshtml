@@ -1,0 +1,91 @@
+﻿@model OrderFormModel
+
+@if (Model.UserInfo == null)
+{
+    <div class="mt-5">
+        <h4 class="text-center">You can`t order withouth login!</h4>
+        <div class="row d-flex justify-content-center"> <a href="/identity/account/login" class="btn text-success index-color-slider-bg text-center">Sign In</a></div>
+    </div>
+}
+else
+{
+    @if (Model.BooksInfo.Count() <= 0)
+    {
+        <h4 class="text-center">You Can`t elements in your shopping cart</h4>
+    }
+    else
+    {
+        <div class="row mx-auto w-100">
+            <div class="col-md-7 mx-auto">
+                <form id="orderCreate" method="post" action="/orders/create">
+                    @*<div asp-validation-summary="All" class="text-danger"></div>*@
+                    <hr class="hr-kendo-order" />
+                    <div class="form-group">
+                        <input type="text" hidden value="@Model.UserInfo.UserId" name="userId" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="userEmailOrder">Email:</label>
+                        <input type="email" name="email" readonly value="@Model.UserInfo.Email" id="userEmailOrder" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="phoneOrder">Phone:</label>
+                        <input type="text" name="phone" id="phoneOrder" required data-required-msg="You need to enter a Phone"  pattern="\d{10}" validationMessage="Plase enter a ten digit phone number" value="@Model.UserInfo.Phone" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="addressOrder">Address:</label>
+                        <input type="text" name="address"  required data-required-msg="You need to enter a Address" value="@Model.UserInfo.Address" id="addressOrder" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="cityOrder">City:</label>
+                        <input type="text" name="city" id="cityOrder" required data-required-msg="You need to enter a Address" value="@Model.UserInfo.City" class="form-control" />
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" class="btn index-color-slider-bg text-success">Order</button>
+                    </div>
+                </form>
+                <hr class="hr-kendo-order" />
+            </div>
+        </div>
+        <div class="row mt-2 d-flex justify-content-center">
+            <h4 class="text-center">Yours elements</h4>
+            <table class="table table-hover mx-auto">
+                <thead>
+                    <tr class="row mx-auto">
+                        <th scope="col" class="col-1 d-flex justify-content-center">#</th>
+                        <th scope="col" class="col-5 d-flex justify-content-center">Book</th>
+                        <th scope="col" class="col-1 d-flex justify-content-center">Quantity</th>
+                        <th scope="col" class="col-3 d-flex justify-content-center">Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @for (int i = 0; i < Model.BooksInfo.Count; i++)
+                    {
+                        var item = Model.BooksInfo[i];
+                        var number = i + 1;
+
+                        <tr class="row mx-auto">
+                            <td class="col-1 d-flex justify-content-center">
+                                @number
+                            </td>
+                            <td class="col-5 d-flex justify-content-center">
+                                <a asp-area="Books" asp-controller="Books" asp-action="Details" asp-route-id="@item.Id">
+                                    @item.Title
+                                </a>
+                            </td>
+
+                            <td class="col-1 d-flex justify-content-center">
+                                @item.Quantity
+                            </td>
+                            <td class="col-3 d-flex justify-content-center">@item.Price $</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+}
+
+<script>
+    $("#orderCreate").kendoValidator();
+</script>

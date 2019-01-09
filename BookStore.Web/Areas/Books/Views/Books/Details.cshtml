@@ -198,6 +198,9 @@
             dataType: 'text',
             url: '/ShoppingCart/AddToCart',
             data: { 'bookId': bookId },
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("XSRF-TOKEN", $('input:hidden[name="__RequestVerificationToken"]').val());
+            },
             success: function (data) {
                 $('#notification').html(data)
             },
@@ -386,6 +389,10 @@
             url: '/comments/GetDataApprovalComments',
             data: { "pageindex": pageIndex, "pagesize": pageSize,"bookId":@Model.Id },
             dataType: 'html',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("XSRF-TOKEN", $('input:hidden[name="__RequestVerificationToken"]').val());
+                $("#progressLoader").show();
+            },
             success: function (data) {
                 if (data.trim() != '') {
                     $("#approvalCommentsAll").append(data);
@@ -401,9 +408,6 @@
                 else {
                     $("#approvalCommentsAll").append('<div class="text-center">No more comments.</div> <hr class= "hr-bg-color-second"/> ');
                 }
-            },
-            beforeSend: function () {
-                $("#progressLoader").show();
             },
             complete: function () {
                 $("#progressLoader").hide();

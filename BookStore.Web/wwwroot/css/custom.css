@@ -43,6 +43,22 @@
     }
 }*/
 
+ #orderCreate input.form-control {
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.hr-kendo-order {
+    width: 106%;
+}
+
+/*#orderCreate > div.form-control {
+    padding-top:0px;
+    padding-bottom:0px;
+    margin-top:0px;
+    margin-bottom:0px;
+}*/
+
 #editBook {
     min-height: 1015px;
 }

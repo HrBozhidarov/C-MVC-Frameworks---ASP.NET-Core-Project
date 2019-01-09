@@ -19,6 +19,10 @@ namespace BookStore.Models
 
         public decimal TotalPrice { get; set; }
 
+        public string City { get; set; }
+
+        public string Phone { get; set; }
+
         public string Address { get; set; }
 
         public ICollection<OrderBook> OrderBooks { get; set; }

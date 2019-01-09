@@ -1,5 +1,7 @@
-﻿using BookStore.Data;
+﻿using AutoMapper;
+using BookStore.Data;
 using BookStore.Models;
+using BookStore.Models.ViewModels.Users;
 using BookStore.Services.Contracts;
 using System;
 using System.Collections.Generic;
@@ -11,13 +13,37 @@ namespace BookStore.Services
     public class UserService : IUserService
     {
         private readonly BookStoreContext db;
+        private readonly IMapper mapper;
 
-        public UserService(BookStoreContext db)
+        public UserService(BookStoreContext db, IMapper mapper)
         {
             this.db = db;
+            this.mapper = mapper;
         }
 
-        public bool EditAddress(string userId,string address)
+        public UserInfoForOrderFormModel GetUserModelForForm(string username)
+        {
+            if (string.IsNullOrEmpty(username))
+            {
+                return null;
+            }
+
+            if (!this.db.Users.Any(x => x.UserName == username))
+            {
+                return null;
+            }
+
+            var user = this.mapper.Map<UserInfoForOrderFormModel>(this.db.Users.First(x => x.UserName == username));
+
+            return user;
+        }
+
+        public bool IsUserIsValid(string email, string userId)
+        {
+            return this.db.Users.Any(x => x.Email == email && x.Id == userId);
+        }
+
+        public bool EditAddress(string userId, string address)
         {
             var user = this.db.Users.FirstOrDefault(x => x.Id == userId);
             if (user == null)
@@ -36,15 +62,15 @@ namespace BookStore.Services
             return false;
         }
 
-        public bool EditCity(string userId,string city)
+        public bool EditCity(string userId, string city)
         {
             var user = this.db.Users.FirstOrDefault(x => x.Id == userId);
-            if (user==null)
+            if (user == null)
             {
                 return false;
             }
 
-            if (user.City!=city)
+            if (user.City != city)
             {
                 user.City = city;
 

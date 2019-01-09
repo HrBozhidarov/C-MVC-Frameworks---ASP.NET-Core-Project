@@ -10,9 +10,11 @@ namespace BookStore.Models
 
         public int BookId { get; set; }
 
-        public string BookName { get; set; }
+        public Book Book { get; set; }
 
-        public decimal BookPrice { get; set; }
+        //public string BookName { get; set; }
+
+        //public decimal BookPrice { get; set; }
 
         public int Quantity { get; set; }
 

@@ -118,7 +118,7 @@ namespace BookStore.Web.Controllers
             return RedirectToAction(nameof(ApprovalComments));
         }
 
-        [IgnoreAntiforgeryToken]
+        //[IgnoreAntiforgeryToken]
         [HttpPost]
         public PartialViewResult GetDataNotApprovalComments(int pageIndex, int pageSize)
         {
@@ -130,7 +130,7 @@ namespace BookStore.Web.Controllers
             return PartialView("_GetNotApprovalCommentsPartial", notApprovalComments);
         }
 
-        [IgnoreAntiforgeryToken]
+        //[IgnoreAntiforgeryToken]
         [HttpPost]
         public IActionResult GetDataApprovalComments(int pageIndex, int pageSize, int bookId)
         {

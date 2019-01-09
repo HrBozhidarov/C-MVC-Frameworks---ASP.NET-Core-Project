@@ -44,12 +44,15 @@ namespace BookStore.Web
             services.AddDbContext<BookStoreContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddTransient<IOrderService, OrderService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<IAuthorService, AuthorService>();
             services.AddTransient<IBookService, BookService>();
             services.AddTransient<ICommentsService, CommentsService>();
             services.AddSingleton<IShoppingCartManager, ShoppingCartManager>();
+
+            services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -69,6 +72,7 @@ namespace BookStore.Web
 
             Mapper.Initialize(cfg =>
             {
+                cfg.AddProfile<UserProfile>();
                 cfg.AddProfile<CategoryProfile>();
                 cfg.AddProfile<AuthorProfile>();
                 cfg.AddProfile<BookProfile>();

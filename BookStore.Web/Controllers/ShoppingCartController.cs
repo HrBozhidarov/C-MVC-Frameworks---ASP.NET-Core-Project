@@ -21,7 +21,6 @@ namespace BookStore.Web.Controllers
             this.bookService = bookService;
         }
 
-        [IgnoreAntiforgeryToken]
         [HttpPost]
         public int AddToCart(int bookId)
         {
@@ -48,7 +47,7 @@ namespace BookStore.Web.Controllers
             return count;
         }
 
-        [IgnoreAntiforgeryToken]
+  
         [HttpPost]
         public ActionResult<CartItem> UpdateUp(int bookId)
         {
@@ -64,7 +63,6 @@ namespace BookStore.Web.Controllers
             return this.shoppingCartManager.GetCartItemByBookId(bookId, key);
         }
 
-        [IgnoreAntiforgeryToken]
         [HttpPost]
         public ActionResult<CartItem> UpdateDown(int bookId)
         {
@@ -80,7 +78,6 @@ namespace BookStore.Web.Controllers
             return this.shoppingCartManager.GetCartItemByBookId(bookId, key);
         }
 
-        [IgnoreAntiforgeryToken]
         [HttpPost]
         public IActionResult GetShoppingTable()
         {
@@ -89,7 +86,6 @@ namespace BookStore.Web.Controllers
             return PartialView("_TableItemCartPartial", cartItems.ToArray());
         }
 
-        [IgnoreAntiforgeryToken]
         [HttpPost]
         public IActionResult DeleteItem(int bookId)
         {
@@ -116,7 +112,6 @@ namespace BookStore.Web.Controllers
             return totalPrice;
         }
 
-        [IgnoreAntiforgeryToken]
         [HttpPost]
         public ActionResult<bool> ClearShoppingCart()
         {

@@ -46,6 +46,10 @@
             url: '/comments/GetDataNotApprovalComments',
             data: { "pageindex": pageIndex, "pagesize": pageSize },
             dataType: 'html',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("XSRF-TOKEN", $('input:hidden[name="__RequestVerificationToken"]').val());
+                $("#progress").show();
+            },
             success: function (data) {
                 if (data.trim() != '') {
                     $("#aprovalComments").append(data);
@@ -60,9 +64,6 @@
                 else {
                     $("#aprovalComments").append('<div class="text-center">No more comments for approval.</div> <hr class= "hr-bg-color-second"/> ');
                 }
-            },
-            beforeSend: function () {
-                $("#progress").show();
             },
             complete: function () {
                 $("#progress").hide();

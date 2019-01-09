@@ -18,6 +18,11 @@ namespace BookStore.Data
 
         public DbSet<Author> Authors { get; set; }
 
+        public void Any()
+        {
+            throw new NotImplementedException();
+        }
+
         public DbSet<Book> Books { get; set; }
 
         public DbSet<BookAuthor> BooksAuthors { get; set; }

@@ -2,42 +2,7 @@
 
 @inject BookStore.Services.Contracts.ICategoryService categoryService
 
-<div class="row justify-content-center mx-auto">
-    <div class="col-md-6 col-sm-6 col-xs-7 col-8">
-        <form role="search" class="form search-form w-100 mx-auto mt-3 mb-5" action="/books/books/search">
-            <div class="input-group">
-                @(Html.Kendo().AutoComplete()
-                              .Name("search")
-                              .DataTextField("Title")
-                              .Filter("contains")
-                              .MinLength(3)
-                              .Placeholder("Search")
-                              .DataSource(source =>
-                              {
-                                  source
-                                      .Read(read =>
-                                      {
-                                          read.Action("Search", "ApiBooks")
-                                          .Data("onAdditionalData");
-                                      })
-                                      .ServerFiltering(true);
-                              })
-                )
-                <span class="input-group-btn ">
-                    <button type="submit" value="Search" class="btn btn-success"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;</button>
-                </span>
-            </div>
-        </form>
-    </div>
-</div>
-
-<script>
-    function onAdditionalData() {
-        return {
-            search: $("#search").val()
-        };
-    }
-</script>
+<partial name="_SearchPartial" />
 
 <div id="colapse-categories" class="pos-f-t">
     <div class="collapse" id="navbarToggleExternalContent">

@@ -57,7 +57,11 @@ namespace BookStore.Web.Controllers
                 model.Phone
                 );
 
-            return RedirectToAction(nameof(History));
+            this.shoppingCartManager.Clear(sessionKey);
+
+            this.TempData["successOrder"] = this.User.Identity.Name;
+
+            return Redirect("/");
         }
 
         [Authorize(Roles ="Admin")]
@@ -71,12 +75,13 @@ namespace BookStore.Web.Controllers
             return PartialView("_GetAllOrdesPartial", orders);
         }
 
-        public IActionResult History()
-        {
-            var username = this.User.Identity.Name;
+        //[Authorize]
+        //public IActionResult History()
+        //{
+        //    var username = this.User.Identity.Name;
 
-            return View();
-        }
+        //    return View();
+        //}
 
         [Authorize(Roles = "Admin")]
         public IActionResult AllOrdersHistory()

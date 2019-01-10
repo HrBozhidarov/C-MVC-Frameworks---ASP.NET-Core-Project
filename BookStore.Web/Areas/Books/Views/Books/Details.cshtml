@@ -184,7 +184,6 @@
     this.TempData["bookId"] = Model.Id;
 }
 
-
 <script>
     $(document).ready(function () {
         $('#addToCart2,#addToCart1').on("click", add)
@@ -211,8 +210,6 @@
         $(this).css("background-color", "lightblue");
     }
 </script>
-
-
 
 @{
     this.TempData["returnToDetailsAgain"] = this.Context.Request.Path.Value;

@@ -194,43 +194,6 @@
             }
         </script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        @*<script>
-            $.ajax({
-                type: "POST",
-                accepts: "text",
-                url: "/api/ApiOrders/go",
-                contentType: "application/json",
-                data: JSON.stringify({
-                    date: '12/03/2015'
-                }),
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader("XSRF-TOKEN", $('input:hidden[name="__RequestVerificationToken"]').val());
-                    $("#progress").show();
-                },
-                success: function (result) {
-                    alert(result);
-                },
-                error: function (req, status, error) {
-                    alert('no ok');
-                }
-            });
-        </script>*@
-
     </environment>
     <environment exclude="Development">
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"

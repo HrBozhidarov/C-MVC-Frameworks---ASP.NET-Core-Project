@@ -1,15 +1,36 @@
-﻿<div class="col-8 col-sm-8 col-lg-3 mx-auto">
-    <div class="h4 text-center">Options</div>
-    <div class="mt-3">
-        <ul class="">
-            <li class="bg-white fa-border "><a asp-area="Books" asp-controller="Books" asp-action="Category" asp-route-category="all" class="btn w-100" role="button"><i class="fas fa-user"></i> Profile</a></li>
-            <li class="bg-white fa-border"><a asp-area="Books" asp-controller="Books" asp-action="Category" asp-route-category="1" class="btn w-100" role="button"><i class="fas fa-shopping-cart"></i> Shopping Cart</a></li>
-            <li class="bg-white fa-border"><a asp-area="Books" asp-controller="Books" asp-action="Category" asp-route-category="1" class="btn w-100" role="button"><i class="fas fa-history"></i> History</a></li>
-            <li class="bg-white fa-border"><a asp-area="Books" asp-controller="Books" asp-action="Category" asp-route-category="1" class="btn w-100" role="button"><i class="fas fa-sign-out-alt"></i> Sign out</a></li>
-        </ul>
-    </div>
-</div>
+﻿@if (User.Identity.IsAuthenticated)
+{
+    <div class="col-8 col-sm-8 col-lg-3 mx-auto">
+        <div class="h4 text-center">Options</div>
+        <div class="mt-3">
+            <ul id="cliclUl">
+                <li class="bg-white fa-border "><a asp-area="Identity" asp-controller="Account" asp-action="Manage" class="btn w-100" role="button"><i class="fas fa-user"></i> Profile</a></li>
+                <li class="bg-white fa-border"><a asp-area="" asp-controller="ShoppingCart" asp-action="Details" class="btn w-100" role="button"><i class="fas fa-shopping-cart"></i> Shopping Cart</a></li>
+                @if (this.User.IsInRole("Admin"))
+                {
+                    <li class="bg-white fa-border"><a asp-area="" asp-controller="Orders" asp-action="AllOrdersHistory" class="btn w-100" role="button"><i class="fas fa-history"></i> Order History</a></li>
 
-<script>
-    console.log('Inside');
-</script>
+                }
+                <li class="bg-white fa-border"><a asp-area="Identity" asp-controller="Account/Manage" asp-action="ChangePassword" class="btn w-100" role="button"><i class="fas fa-lock"></i> Change Password</a></li>
+
+                <li class="bg-white fa-border">
+                    <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post" id="logoutForm">
+                        <button type="submit" class="btn w-100 bg-white color-book"><i class="fas fa-sign-out-alt"></i> Sign out</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+}
+else
+{
+    <div class="col-8 col-sm-8 col-lg-3 mx-auto">
+        <div class="h4 text-center">Options</div>
+        <div class="mt-3">
+            <ul>
+                <li class="bg-white fa-border "><a asp-area="Identity" asp-controller="Account" asp-action="Login" class="btn w-100" role="button"><i class="fas fa-sign-in-alt"></i> Sign in</a></li>
+            </ul>
+        </div>
+    </div>
+}
+

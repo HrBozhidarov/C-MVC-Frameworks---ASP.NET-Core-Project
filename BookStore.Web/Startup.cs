@@ -44,6 +44,7 @@ namespace BookStore.Web
             services.AddDbContext<BookStoreContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddTransient<IQuestionService, QuestionService>();
             services.AddTransient<IOrderService, OrderService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ICategoryService, CategoryService>();
@@ -72,6 +73,7 @@ namespace BookStore.Web
 
             Mapper.Initialize(cfg =>
             {
+                cfg.AddProfile<QuestionsProfile>();
                 cfg.AddProfile<OrderProfile>();
                 cfg.AddProfile<UserProfile>();
                 cfg.AddProfile<CategoryProfile>();

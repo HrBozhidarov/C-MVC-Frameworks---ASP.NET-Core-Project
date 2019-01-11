@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -17,5 +18,9 @@ namespace BookStore.Models.ViewModels.Authors
         [Required]
         [RegularExpression(@"[a-zA-Z0-9 _!?.'`:,-]{50,1000}", ErrorMessage = ErrorMessage)]
         public string Details { get; set; }
+
+        [Required]
+        [DataType(DataType.Upload)]
+        public IFormFile Image { get; set; }
     }
 }

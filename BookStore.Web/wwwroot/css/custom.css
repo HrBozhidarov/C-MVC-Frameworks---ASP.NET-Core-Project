@@ -185,6 +185,23 @@ nav, footer {
     font-size: 50px;
 }
 
+#requestNotification {
+    position: absolute;
+    /*display: none;*/
+    /*left: 13px;*/
+    left: 684px;
+    /*right: 817px;*/
+    top: 18px;
+    min-width: 17px;
+    height: 17px;
+    line-height: 17px;
+    font-size: 10px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 50%;
+    background-color: yellowgreen;
+}
+
 #notification {
     position: absolute;
     /*display: none;*/
@@ -539,10 +556,28 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     }
 }
 
+@media (max-width: 991px) {
+    #shoppingCartNav {
+        margin-bottom:10px;
+    }
+
+    #notification {
+        right: initial;
+        left: 65px;
+    }
+
+    #requestNotification {
+        left: 89px;
+        right: 889px;
+        top: 258px;
+    }
+}
+
 @media (min-width: 768px) {
     div#slider-index-one div div div .col-md-3,
     div#slider-details div div div .col-md-3,
-    div#slider-index-two div div div .col-md-3 {
+    div#slider-index-two div div div .col-md-3,
+    div#slider-details-author-books div div div .col-md-3 {
         -ms-flex: none;
         flex: none;
         max-width: none;
@@ -552,7 +587,8 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 @media (min-width: 576px) {
     div#slider-index-one div div div .col-sm-4,
     div#slider-details div div div .col-md-3,
-    div#slider-index-two div div div .col-md-3 {
+    div#slider-index-two div div div .col-md-3,
+    div#slider-details-author-books div div div .col-md-3 {
         -ms-flex: none;
         flex: none;
         max-width: none;

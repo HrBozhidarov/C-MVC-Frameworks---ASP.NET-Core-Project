@@ -27,11 +27,27 @@ namespace BookStore.Services
             this.mapper = mapper;
         }
 
+        public BookDisplayModel[] GetAllBooksByAuthorName(string name)
+        {
+            if (!this.db.Authors.Any(x=>x.Name==name))
+            {
+                return null;
+            }
+
+            var books = this.db.BooksAuthors
+                .Include(x => x.Author)
+                .Include(x => x.Book)
+                .Where(x => x.Author.Name == name)
+                .Select(x => x.Book).ProjectTo<BookDisplayModel>().ToArray();
+
+            return books;
+        }
+
         public VisualizeBooktemsModel GetItemBook(int bookId, int quantity)
         {
             var book = this.db.Books.First(x => x.Id == bookId);
 
-           var visualizeModel = mapper.Map<VisualizeBooktemsModel>(book);
+            var visualizeModel = mapper.Map<VisualizeBooktemsModel>(book);
 
             visualizeModel.Quantity = quantity;
 

@@ -1,0 +1,28 @@
+﻿@model SenderContactDetailsModel
+
+<div class="shadow">
+
+    <form id="test">
+
+        <div class="mt-3">
+            <label style="margin-left: 18px;" asp-for="@Model.Title">Title:</label>
+            <input asp-for="@Model.Title"  style="width: 90%;" class="form-control ml-3" disabled placeholder="Title" />
+        </div>
+        <div class=" my-3">
+            <label style="margin-left: 18px;" asp-for="@Model.Email">Email:</label>
+            <input type="email" asp-for="@Model.Email"  style="width: 90%;" class="form-control ml-3 mr-3" disabled placeholder="Емейл" />
+        </div>
+
+        <div class=" my-3">
+            <label style="margin-left: 18px;" asp-for="@Model.CreatedOn">Date</label>
+            <input asp-for="@Model.CreatedOn" class="form-control ml-3 mr-3"  style="width: 90%;" disabled placeholder="Заглавие" />
+        </div>
+        <div class="my-3">
+            <label style="margin-left: 18px;" asp-for="@Model.Content">Content:</label>
+            <textarea asp-for="@Model.Content" class="form-control ml-3 mr-3" style="width: 90%;" rows="3" disabled>@Model.Content</textarea>
+        </div>
+        <div class="text-center mt-3 mb-3">
+            <a style="padding:5px;" href="mailto:@Model.Email?subject=Re: @Model.Title&body=Re: @Model.Content" class="btn btn-sm font-weight-bold"><i class="fas fa-reply"></i> Send Response</a>
+        </div>
+    </form>
+</div>

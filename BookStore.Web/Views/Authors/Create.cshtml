@@ -9,11 +9,16 @@
 <div class="row justify-content-center mx-0">
     <div id="test1" class="col-lg-4 text-center">
         <hr />
-        <form method="post" class="show">
+        <form method="post" enctype="multipart/form-data" class="show">
             <div class="form-group">
                 <label asp-for="Name">Author name</label>
                 <input class="form-control" asp-for="Name" />
                 <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Image"></label>
+                <input id="uploadFile" type="file" class="form-control-file border" asp-for="Image" />
+                <span asp-validation-for="Image" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Details">Details</label>

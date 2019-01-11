@@ -23,7 +23,10 @@
         <div class="col-lg-4"></div>
         <div class="col-lg-6 col-md-10 col-8 col-sm-8">
             <a class="btn btn-primary mr-3" role="button" asp-area="Books" asp-controller="Books" asp-action="Category" asp-route-category="all">Continue Shopping</a>
-            <button id="clearShoppingCart" class="btn btn-warning">Empty Cart</button>
+            @if (this.Model.Length > 0)
+            {
+                <button id="clearShoppingCart" class="btn btn-warning">Empty Cart</button>
+            }
         </div>
         @if (this.Model.Length > 0)
         {
@@ -44,7 +47,6 @@
                   <div id="contentOrder"></div>
               </text>).Events(ev => ev.Close("onClose"))
 )
-
 
 
 <script>

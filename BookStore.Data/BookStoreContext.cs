@@ -37,6 +37,8 @@ namespace BookStore.Data
 
         public DbSet<OrderBook> OrdersBooks { get; set; }
 
+        public DbSet<Question> Questions { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<BookCategory>()

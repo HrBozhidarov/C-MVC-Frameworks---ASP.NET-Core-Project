@@ -13,6 +13,7 @@ namespace BookStore.Common.AutomapperProfiles
         {
             CreateMap<Author, NameAuthorModel>();
             CreateMap<Author, EditAuthorModel>();
+            CreateMap<Author, DetailsAuthorModel>();
         }
     }
 }

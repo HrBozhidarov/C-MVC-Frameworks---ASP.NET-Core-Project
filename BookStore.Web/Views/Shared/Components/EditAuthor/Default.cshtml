@@ -1,6 +1,11 @@
 ﻿@model EditAuthorModel
 
-<form method="post">
+@*@if (this.TempData.ContainsKey("error"))
+{
+    <div class="text-center text-danger">@this.TempData["error"]</div>
+}*@
+
+<form enctype="multipart/form-data" method="post">
     <div class="form-group">
         <input class="form-control" hidden asp-for="Id" />
     </div>
@@ -8,6 +13,11 @@
         <label asp-for="Name">Category</label>
         <input class="form-control" asp-for="Name" />
         <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Image"></label>
+        <input name="Image" id="uploadFile" type="file" class="form-control-file border" asp-for="Image" />
+        <span asp-validation-for="Image" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="Details">Category</label>

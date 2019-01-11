@@ -34,7 +34,7 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light">
-        <a id="navBarHome" class="navbar-brand navBarHome" href="/">BookStore</a>
+        <a id="navBarHome" class="navbar-brand navBarHome" href="/">Store</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -43,7 +43,6 @@
                 <li class="nav-link mr-3"><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                 @if (!User.IsInRole("Admin"))
                 {
-                    <li class="nav-link mr-3"><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li class="nav-link mr-3"><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                 }
 
@@ -80,10 +79,11 @@
                         </div>
                     </li>
                     <li class="nav-link mr-3"><a asp-area="" asp-controller="Comments" asp-action="ApprovalComments">Approve Comments</a></li>
+                    <li class="nav-link mr-3"><a asp-area="" asp-controller="Questions" asp-action="All">Questions </a> <span id="requestNotification" class="fluid-notification cart-bubble text-white" style="display: inline;"></span></li>
                 }
             </ul>
             <ul class="navbar-nav mt-3 mt-lg-0">
-                <li class="nav-item dropdown mr-5">
+                <li id="shoppingCartNav" class="nav-item dropdown mr-5">
                     <a asp-area="" asp-controller="ShoppingCart" asp-action="Details" ><i class="fas fa-shopping-cart"></i> Cart</a>
                 </li>
                 <li class="nav-item dropdown mr-3">
@@ -110,7 +110,7 @@
                             <h5><a href="/">BookStore</a></h5>
                             <ul>
                                 <li><a href="/home/about">About us</a></li>
-                                <li><a href="#">Contacts</a></li>
+                                <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                                 <li><a href="#">General terms</a></li>
                             </ul>
 
@@ -191,6 +191,27 @@
                         alert(data);
                     }
                 });
+            }
+        </script>
+
+        <script>
+
+            let isInAdminRole ='@(User.IsInRole("Admin"))';
+
+            if (isInAdminRole) {
+
+                $.ajax({
+                    type: 'GET',
+                    url: '/api/ApiQuestions/notificationCount',
+                    data: {},
+                    dataType: 'text',
+                    success: function (data) {
+                        $('#requestNotification').html(data)
+                    },
+                    error: function () {
+                        alert("Error in Question Api Controllers With Action CountOrders");
+                    }
+                }) 
             }
         </script>
 

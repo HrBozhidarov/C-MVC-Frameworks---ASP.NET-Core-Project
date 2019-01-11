@@ -9,6 +9,7 @@
     <Compile Remove="Migrations\20190107203649_AddPropertiesToUserForOrder.cs" />
     <Compile Remove="Migrations\20190108122222_AddBookEntityAndRemoveTwoProperitesFromOrderBook.cs" />
     <Compile Remove="Migrations\20190108131130_AddPropertyCityToOrder.cs" />
+    <Compile Remove="Migrations\20190110045350_newEntityQuestion.cs" />
   </ItemGroup>
 
   <ItemGroup>

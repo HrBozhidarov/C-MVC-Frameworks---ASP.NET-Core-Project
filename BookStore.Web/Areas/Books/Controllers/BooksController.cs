@@ -1,5 +1,6 @@
 ﻿using BookStore.Models.ViewModels.Books;
 using BookStore.Services.Contracts;
+using BookStore.Web.Controllers;
 using BookStore.Web.Filters.Action;
 using ImageMagick;
 using Microsoft.AspNetCore.Authorization;
@@ -15,21 +16,14 @@ using X.PagedList;
 
 namespace BookStore.Web.Areas.Book.Controllers
 {
+    [Area("Books")]
     public class BooksController : BaseController
     {
         private const int ItemsPerPage = 6;
-        private const int MaxAllowableSize = 65000;
-        private const int MinAllowableSize = 5000;
-        private const int NumberOnFolder = 20;
         private const string AllCategoriesName = "all";
         private const string NewReleaseCategoriesName = "newRelease";
-        private const string ExtentionJpg = ".jpg";
-        private const string ExtentionPng = ".png";
-        private const string ErrorMessageExtention = "The file have to be with extention png or jpg.";
-        private const string ErrorMessageNoCategoryOrAuthorh = "You have not introduce author or category.";
-        private const string FolderName = "Img";
-        private const string ParentFolder = "images";
-        private const string ErrorMessageSizeImg = "Picture is too large or too small, it can be between 15000 and 64000 bytes.";
+        private const string ErrorMessageNoCategoryOrAuthorh = "You have not introduce author or category, choose book again and try again.";
+
         private const string ErrorMessageDate = "Date is invalid!";
         private const string IsbnErrorMessage = "Isbn is invalid or exists.";
         private const string InvalidAttemptEdit = "Invalid attempt!";
@@ -173,29 +167,18 @@ namespace BookStore.Web.Areas.Book.Controllers
 
             if (model.Image != null)
             {
+                if (!this.CheckServerSideValidationImgCreate(model.Image))
+                {
+                    return RedirectToAction(nameof(Edit));
+                }
+
                 var fileName = model.Image.FileName;
-
-                var extention = Path.GetExtension(fileName);
-
-                if (extention != ExtentionJpg && extention != ExtentionPng)
-                {
-                    this.TempData["error"] = ErrorMessageExtention;
-
-                    return RedirectToAction(nameof(Edit));
-                }
-
-                if (MaxAllowableSize < model.Image.Length || model.Image.Length < MinAllowableSize)
-                {
-                    this.TempData["error"] = ErrorMessageSizeImg;
-
-                    return RedirectToAction(nameof(Edit));
-                }
-
+                var extention = ReturnExtension(fileName);
                 var currentNumberOnFolder = this.bookService.CountOfAllBooks() % NumberOnFolder;
                 var currentFoledName = FolderName + currentNumberOnFolder;
-                var newFileName = Guid.NewGuid().ToString() + extention;
-                var path = Path.Combine(environment.WebRootPath + $@"\{ParentFolder}", currentFoledName);
-                var imgUrl = path + $@"\{newFileName}";
+                var path = base.ReturnPath(environment, currentFoledName);
+
+                var imgUrl = base.ReturnUrl(environment, currentFoledName, extention);
 
                 var isSuccess = this.bookService.Edit(
                     model.Id,
@@ -301,33 +284,19 @@ namespace BookStore.Web.Areas.Book.Controllers
                 return View(model);
             }
 
+            if (!base.CheckServerSideValidationImgCreate(model.Image))
+            {
+                AddAllAuthorsAndCategoriesToModelForDropdownList(model);
+                return View(model);
+            }
+
             var fileName = model.Image.FileName;
-
-            var extention = Path.GetExtension(fileName);
-
-            if (extention != ExtentionJpg && extention != ExtentionPng)
-            {
-                ModelState.AddModelError("", ErrorMessageExtention);
-
-                AddAllAuthorsAndCategoriesToModelForDropdownList(model);
-
-                return View(model);
-            }
-
-            if (MaxAllowableSize < model.Image.Length || model.Image.Length < MinAllowableSize)
-            {
-                ModelState.AddModelError("", ErrorMessageSizeImg);
-
-                AddAllAuthorsAndCategoriesToModelForDropdownList(model);
-
-                return View(model);
-            }
-
+            var extention = ReturnExtension(fileName);
             var currentNumberOnFolder = this.bookService.CountOfAllBooks() % NumberOnFolder;
             var currentFoledName = FolderName + currentNumberOnFolder;
-            var newFileName = Guid.NewGuid().ToString() + extention;
-            var path = Path.Combine(environment.WebRootPath + $@"\{ParentFolder}", currentFoledName);
-            var imgUrl = path + $@"\{newFileName}";
+            var path = base.ReturnPath(environment, currentFoledName);
+
+            var imgUrl = base.ReturnUrl(environment, currentFoledName, extention);
 
             var isSuccess = this.bookService.Create(
                 model.Title,
@@ -351,31 +320,6 @@ namespace BookStore.Web.Areas.Book.Controllers
             CreateImg(model.Image, path, imgUrl);
 
             return Redirect("/");
-        }
-
-        private void CreateImg(IFormFile image, string path, string imgUrl)
-        {
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-
-            var imgBytesArray = new byte[0];
-
-            using (var memoryStream = new MemoryStream())
-            {
-                image.CopyTo(memoryStream);
-                imgBytesArray = memoryStream.ToArray();
-            }
-
-            using (MagickImage magicImage = new MagickImage(imgBytesArray))
-            {
-                MagickGeometry size = new MagickGeometry(154, 230);
-
-                magicImage.Resize(size);
-
-                magicImage.Write(imgUrl);
-            }
         }
 
         private BookDisplayModel[] GetBooksByCategory(string category)

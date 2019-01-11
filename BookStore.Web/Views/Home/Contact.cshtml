@@ -1,17 +1,54 @@
-﻿@{
-    ViewData["Title"] = "Contact";
+﻿@model CreateEditContactModel
+
+@{
+    ViewData["Title"] = "Contact Us";
 }
-<h2>@ViewData["Title"]</h2>
-<h3>@ViewData["Message"]</h3>
 
-<address>
-    One Microsoft Way<br />
-    Redmond, WA 98052-6399<br />
-    <abbr title="Phone">P:</abbr>
-    425.555.0100
-</address>
+<div class="row my-5">
+    <div class="col-md-4">
+        <div class="h2 text-center text-info">@ViewData["Title"]</div>
+        <div class="shadow py-3 px-3">
+            <strong>"Bozhidarov" Bookstore</strong>
+            <address>
+                Dianabad, Sofia Bulgaria <br />
+                st. Tintqva 15-17<br />
+            </address>
 
-<address>
-    <strong>Support:</strong> <a href="mailto:Support@example.com">Support@example.com</a><br />
-    <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
-</address>
+            <p class="mb-0"><strong>Email: </strong><a href="mailto:h_bozhidarov@abv.bg">h_bozhidarov@abv.bg</a></p>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2933.7442397451427!2d23.350088315427275!3d42.66677497916752!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40aa85cca4a719b7%3A0xdf53fcbcd8e758d7!2sSoftware+University!5e0!3m2!1sen!2sus!4v1547090388379" height="280" style="width:100%; border:0;" frameborder="0" allowfullscreen></iframe>
+    </div>
+</div>
+<div class="container mt-2 py-3 px-3">
+    <div class="h4 text-center text-secondary"><u>Question</u></div>
+    <form asp-controller="Home" asp-action="Contact" method="post">
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-6">
+                    <label asp-for="Title">Title:</label>
+                    <input asp-for="Title" class="form-control" placeholder="Title" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Email">Email:</label>
+                    <input asp-for="Email" class="form-control" placeholder="Email" value="@Model.Email" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Content">Content:</label>
+            <textarea asp-for="Content" class="form-control" rows="5"></textarea>
+            <span asp-validation-for="Content" class="text-danger"></span>
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn index-color-slider-bg color-book text-center font-weight-bold">Send</button>
+        </div>
+    </form>
+</div>
+
+@*@section Scripts {
+    <partial name="~/Views/Shared/Partials/_ValidationScriptsPartial.cshtml" />
+}*@

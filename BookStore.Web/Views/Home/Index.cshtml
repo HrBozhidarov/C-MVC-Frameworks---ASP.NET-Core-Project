@@ -52,10 +52,14 @@
 </div>
 
 <script>
-    var val = '@Html.Raw(HttpUtility.JavaScriptStringEncode((string)TempData["successOrder"]))';
+    var successOrder = '@Html.Raw(HttpUtility.JavaScriptStringEncode((string)TempData["successOrder"]))';
+     var successRequest = '@Html.Raw(HttpUtility.JavaScriptStringEncode((string)TempData["successQuestion"]))';
 
-    if (val!="") {
+    if (successOrder!="") {
         swal("Successful order!", "You made a successful order, thank you for the great choice!", "success");
+    }
+    if (successRequest != "") {
+        swal("Successful Request!", `${successRequest}`, "success");
     }
 </script>
 <script src="~/js/setting-slick.js"></script>

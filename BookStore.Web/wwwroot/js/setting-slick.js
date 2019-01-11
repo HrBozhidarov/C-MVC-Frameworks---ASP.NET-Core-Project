@@ -14,10 +14,11 @@
 
     ajaxRequest(url1, secondSliderId);
     ajaxRequest(url, firstSliderId);
+    ajaxAuthorRequest(detailsAuthorBooksUrl, detailsAuthorSliderId);
 
     function ajaxRequest(url, id) {
         $.get(url, function () {
-
+            
         }).done(function (data) {
             $.ajax({
                 data: JSON.stringify(data),

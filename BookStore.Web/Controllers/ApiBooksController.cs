@@ -19,6 +19,21 @@ namespace BookStore.Web.Controllers
             this.bookService = bookService;
         }
 
+        [HttpGet("getallauthorbooks/{name}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public ActionResult<IEnumerable<BookDisplayModel>> Getallauthorbooks(string name)
+        {
+            var books = this.bookService.GetAllBooksByAuthorName(name);
+
+            if (books == null)
+            {
+                return NotFound();
+            }
+
+            return books;
+        }
+
         [HttpGet("desc")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]

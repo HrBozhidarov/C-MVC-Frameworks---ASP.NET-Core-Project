@@ -9,16 +9,19 @@ using BookStore.Services.Contracts;
 using X.PagedList;
 using BookStore.Models.ViewModels.Books;
 using System.Threading;
+using BookStore.Models.ViewModels.Contacts;
 
 namespace BookStore.Web.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IBookService bookService;
+        private readonly IQuestionService questionService;
 
-        public HomeController(IBookService bookService)
+        public HomeController(IBookService bookService, IQuestionService questionService)
         {
             this.bookService = bookService;
+            this.questionService = questionService;
         }
 
         public IActionResult Index()
@@ -35,9 +38,28 @@ namespace BookStore.Web.Controllers
 
         public IActionResult Contact()
         {
-            ViewData["Message"] = "Your contact page.";
+            var model = new CreateEditContactModel();
+
+            if (this.User.Identity.IsAuthenticated)
+            {
+                model = this.questionService.GetCreateEditContactModel(this.User.Identity.Name);
+            }
             
-            return View();
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Contact(CreateEditContactModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            this.questionService.CreateQuestion(model.Email, model.Content, model.Title);
+            this.TempData["successQuestion"] = "You have made success request, we will conncet with you!";
+
+            return Redirect("/");
         }
 
         //[HttpGet]

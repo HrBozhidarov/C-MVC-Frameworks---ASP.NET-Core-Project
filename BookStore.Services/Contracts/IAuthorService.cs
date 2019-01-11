@@ -7,14 +7,16 @@ namespace BookStore.Services.Contracts
 {
     public interface IAuthorService
     {
-        bool Create(string authorName, string details);
+        bool Create(string authorName, string details, string imgUrl);
 
-        bool Edit(int id, string authorName, string details);
+        bool Edit(int id, string authorName, string details, string imgUrl);
 
         bool IfAuthorExists(string authorName);
 
         NameAuthorModel[] AllAuthors();
 
         EditAuthorModel GetAuthorByName(string authorName);
+
+        DetailsAuthorModel GetAuthourByNameDetails(string authorname);
     }
 }

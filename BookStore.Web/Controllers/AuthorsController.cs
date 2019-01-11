@@ -2,6 +2,7 @@
 using BookStore.Services.Contracts;
 using BookStore.Web.Filters.Action;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -17,10 +18,27 @@ namespace BookStore.Web.Controllers
         private const string EditErrorMessage = "This author id is invalid.";
 
         private readonly IAuthorService authorService;
+        private readonly IBookService bookService;
+        private readonly IHostingEnvironment environment;
 
-        public AuthorsController(IAuthorService authorService)
+        public AuthorsController(IAuthorService authorService, IBookService bookService, IHostingEnvironment environment)
         {
             this.authorService = authorService;
+            this.bookService = bookService;
+            this.environment = environment;
+        }
+
+        [AllowAnonymous]
+        public IActionResult Details(string name)
+        {
+            var author = this.authorService.GetAuthourByNameDetails(name);
+
+            if (author == null)
+            {
+                return NotFound();
+            }
+
+            return View(author);
         }
 
         public IActionResult Edit()
@@ -41,10 +59,36 @@ namespace BookStore.Web.Controllers
         [HttpPost]
         public IActionResult Edit(EditAuthorModel model)
         {
-            if (!this.authorService.Edit(model.Id, model.Name, model.Details))
+            if (model.Image != null)
             {
-                this.TempData["error"] = EditErrorMessage;
-                return RedirectToAction(nameof(Edit));
+                if (!this.CheckServerSideValidationImgCreate(model.Image))
+                {
+                    return RedirectToAction(nameof(Edit));
+                }
+
+                var fileName = model.Image.FileName;
+                var extention = ReturnExtension(fileName);
+                var currentNumberOnFolder = this.bookService.CountOfAllBooks() % NumberOnFolder;
+                var currentFoledName = FolderName + currentNumberOnFolder;
+                var path = base.ReturnPath(environment, currentFoledName);
+
+                var imgUrl = base.ReturnUrl(environment, currentFoledName, extention);
+
+                if (!this.authorService.Edit(model.Id, model.Name, model.Details, imgUrl))
+                {
+                    this.TempData["error"] = EditErrorMessage;
+                    return RedirectToAction(nameof(Edit));
+                }
+
+                CreateImg(model.Image, path, imgUrl);
+            }
+            else
+            {
+                if (!this.authorService.Edit(model.Id, model.Name, model.Details, null))
+                {
+                    this.TempData["error"] = EditErrorMessage;
+                    return RedirectToAction(nameof(Edit));
+                }
             }
 
             return Redirect("/");
@@ -59,11 +103,26 @@ namespace BookStore.Web.Controllers
         [HttpPost]
         public IActionResult Create(CreateAuthorModel model)
         {
-            if (!this.authorService.Create(model.Name, model.Details))
+            if (!base.CheckServerSideValidationImgCreate(model.Image))
+            {
+                return View(model);
+            }
+
+            var fileName = model.Image.FileName;
+            var extention = ReturnExtension(fileName);
+            var currentNumberOnFolder = this.bookService.CountOfAllBooks() % NumberOnFolder;
+            var currentFoledName = FolderName + currentNumberOnFolder;
+            var path = base.ReturnPath(environment, currentFoledName);
+
+            var imgUrl = base.ReturnUrl(environment, currentFoledName, extention);
+
+            if (!this.authorService.Create(model.Name, model.Details, imgUrl))
             {
                 ModelState.AddModelError("", CreateErrorMessage);
                 return View();
             }
+
+            this.CreateImg(model.Image, path, imgUrl);
 
             return Redirect("/");
         }

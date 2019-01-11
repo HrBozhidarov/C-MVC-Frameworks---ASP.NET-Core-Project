@@ -2,15 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BookStore.Models
+namespace BookStore.Models.ViewModels.Authors
 {
-    public class Author
+    public class DetailsAuthorModel
     {
-        public Author()
-        {
-            this.BooksAuthors = new HashSet<BookAuthor>();
-        }
-
         public int Id { get; set; }
 
         public string Name { get; set; }
@@ -18,7 +13,5 @@ namespace BookStore.Models
         public string ImgUrl { get; set; }
 
         public string Details { get; set; }
-
-        public ICollection<BookAuthor> BooksAuthors { get; set; }
     }
 }

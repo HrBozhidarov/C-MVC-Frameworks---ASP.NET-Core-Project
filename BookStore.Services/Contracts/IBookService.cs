@@ -55,5 +55,7 @@ namespace BookStore.Services.Contracts
         bool IfCurrentBookHaveTheSameIsbn(int bookId, string isbn);
 
         VisualizeBooktemsModel GetItemBook(int bookId, int quantity);
+
+        BookDisplayModel[] GetAllBooksByAuthorName(string authorId);
     }
 }

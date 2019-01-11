@@ -6,8 +6,8 @@
 }
 
 <h2 class="text-center my-3">@ViewData["Title"]</h2>
-<div class="container w-75">
-    <table id="notAll" class="table table-hover" style="min-height:320px;">
+<div class="container w-75" style="min-height:320px;">
+    <table id="notAll" class="table table-hover">
         <thead>
             <tr class="row">
                 <th class="col-lg-2 col d-flex justify-content-center" scope="col">#</th>
@@ -68,7 +68,11 @@
                 xhr.setRequestHeader("XSRF-TOKEN", $('input:hidden[name="__RequestVerificationToken"]').val());
             },
             success: function (data) {
-
+                var number = parseInt($("#requestNotification").text());
+                if (number > 0) {
+                    number--;
+                    $("#requestNotification").html(number);
+                }
             },
             error: function () {
                 alert('Error occurred in VISUALIZE CREATE');
@@ -89,6 +93,11 @@
             let id = parseInt($(this).next().text());
             $(this).removeClass("btn-warning").addClass("btn-success")
 
+            var number = parseInt($("#requestNotification").text());
+            if (number > 0) {
+                number--;
+                $("#requestNotification").html(number);
+            }
 
             $.ajax({
                 url: visualizeOfSendEmail,
@@ -100,7 +109,7 @@
                 },
                 success: function (data) {
                     if (data != null) {
-                        $("#sednEmail").html(data)
+                        $("#sednEmail").html(data);
                     }
                 },
                 error: function () {

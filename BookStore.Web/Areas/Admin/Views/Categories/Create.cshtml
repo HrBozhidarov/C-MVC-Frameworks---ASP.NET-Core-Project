@@ -1,0 +1,23 @@
+﻿@model CategoryNameModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-center mt-3 mb-5">Create Category</h1>
+<div asp-validation-summary="All" class="text-danger text-center"></div>
+<div class="row justify-content-center">
+    <div id="createCategory" class="col-lg-4 text-center">
+        <hr />
+        <form asp-action="Create" method="post" class="show">
+            <div class="form-group">
+                <label asp-for="Name">Category</label>
+                <input class="form-control" asp-for="Name" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <input type="submit" class="btn bg-color" value="Create"/>
+        </form>
+        <hr />
+    </div>
+</div>

@@ -3,6 +3,7 @@ using AutoMapper.QueryableExtensions;
 using BookStore.Data;
 using BookStore.Models;
 using BookStore.Models.ViewModels.Books;
+using BookStore.Models.ViewModels.Shopping;
 using BookStore.Services.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +28,16 @@ namespace BookStore.Services
             this.mapper = mapper;
         }
 
+        public DateTime? ConvertFromStringToDateTimeIfPossible(string releaseDate)
+        {
+            if (!DateTime.TryParse(releaseDate, out var date))
+            {
+                return null;
+            }
+
+            return date;
+        }
+
         public BookDisplayModel[] GetAllBooksByAuthorName(string name)
         {
             if (!this.db.Authors.Any(x=>x.Name==name))
@@ -43,7 +54,19 @@ namespace BookStore.Services
             return books;
         }
 
-        public VisualizeBooktemsModel GetItemBook(int bookId, int quantity)
+        public IList<VisualizeBooktemsModel> GetBooksInCurrentShoppingCart(IEnumerable<CartItem> items)
+        {
+            var cartItems = new List<VisualizeBooktemsModel>();
+
+            foreach (var item in items)
+            {
+                cartItems.Add(GetItemBook(item.BookId, item.Quantity));
+            }
+
+            return cartItems;
+        }
+
+        private VisualizeBooktemsModel GetItemBook(int bookId, int quantity)
         {
             var book = this.db.Books.First(x => x.Id == bookId);
 

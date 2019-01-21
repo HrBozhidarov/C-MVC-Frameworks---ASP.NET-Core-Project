@@ -1,4 +1,5 @@
-﻿using BookStore.Models.ViewModels.Shopping;
+﻿using BookStore.Models.ViewModels.Books;
+using BookStore.Models.ViewModels.Shopping;
 using System;
 using System.Collections.Generic;
 using System.Text;

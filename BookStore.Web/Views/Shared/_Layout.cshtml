@@ -53,8 +53,8 @@
                             Category
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a asp-area="" asp-controller="Categories" asp-action="Create" class="dropdown-item">Create</a>
-                            <a asp-area="" asp-controller="Categories" asp-action="Edit" class="dropdown-item">Edit</a>
+                            <a asp-area="Admin" asp-controller="Categories" asp-action="Create" class="dropdown-item">Create</a>
+                            <a asp-area="Admin" asp-controller="Categories" asp-action="Edit" class="dropdown-item">Edit</a>
                         </div>
                     </li>
 
@@ -63,9 +63,9 @@
                             Book
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownBook">
-                            <a asp-area="Books" asp-controller="Books" asp-action="Create" class="dropdown-item">Create</a>
-                            <a asp-area="Books" asp-controller="Books" asp-action="Edit" class="dropdown-item">Edit</a>
-                            <a asp-area="Books" asp-controller="Books" asp-action="Delete" class="dropdown-item">Delete</a>
+                            <a asp-area="Admin" asp-controller="Books" asp-action="Create" class="dropdown-item">Create</a>
+                            <a asp-area="Admin" asp-controller="Books" asp-action="Edit" class="dropdown-item">Edit</a>
+                            <a asp-area="Admin" asp-controller="Books" asp-action="Delete" class="dropdown-item">Delete</a>
                         </div>
                     </li>
 
@@ -74,28 +74,30 @@
                             Author
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownBook">
-                            <a asp-area="" asp-controller="Authors" asp-action="Create" class="dropdown-item">Create</a>
-                            <a asp-area="" asp-controller="Authors" asp-action="Edit" class="dropdown-item">Edit</a>
+                            <a asp-area="Admin" asp-controller="Authors" asp-action="Create" class="dropdown-item">Create</a>
+                            <a asp-area="Admin" asp-controller="Authors" asp-action="Edit" class="dropdown-item">Edit</a>
                         </div>
                     </li>
-                    <li class="nav-link mr-3"><a asp-area="" asp-controller="Comments" asp-action="ApprovalComments">Approve Comments</a></li>
-                    <li class="nav-link mr-3"><a asp-area="" asp-controller="Questions" asp-action="All">Questions </a> <span id="requestNotification" class="fluid-notification cart-bubble text-white" style="display: inline;"></span></li>
+                    <li class="nav-link mr-3"><a asp-area="Admin" asp-controller="Comments" asp-action="ApprovalComments">Approve Comments</a></li>
+                    <li class="nav-link mr-3"><a asp-area="Admin" asp-controller="Questions" asp-action="All">Questions </a> <span id="requestNotification" class="fluid-notification cart-bubble text-white" style="display: inline;"></span></li>
                 }
             </ul>
             <ul class="navbar-nav mt-3 mt-lg-0">
                 <li id="shoppingCartNav" class="nav-item dropdown mr-5">
-                    <a asp-area="" asp-controller="ShoppingCart" asp-action="Details" ><i class="fas fa-shopping-cart"></i> Cart</a>
+                    <a asp-area="" asp-controller="ShoppingCart" asp-action="Details"><i class="fas fa-shopping-cart"></i> Cart</a>
                 </li>
                 <li class="nav-item dropdown mr-3">
-                    <a asp-area="Books" asp-controller="Books" asp-action="Category" asp-route-category="all"><i class="fas fa-book"></i> Books <span id="notification" class="fluid-notification cart-bubble bg-primary text-white" style="display: inline;"></span></a>
+                    <a asp-area="" asp-controller="Books" asp-action="Category" asp-route-category="all"><i class="fas fa-book"></i> Books <span id="notification" class="fluid-notification cart-bubble bg-primary text-white" style="display: inline;"></span></a>
                 </li>
             </ul>
             <partial name="_LoginPartial" />
-
         </div>
     </nav>
 
     <partial name="_CookieConsentPartial" />
+
+    @Html.AntiForgeryToken()
+
     <div class="container body-content pading-left-riht-zero mb-5 mx-auto">
         @RenderBody()
     </div>
@@ -172,49 +174,7 @@
         <script src="~/js/bootstrap.min.js"></script>
         <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
         <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
-        @*<script src="~/js/Test.js"></script>*@
-        <script src="~/js/custom.js"></script>
-        @Html.AntiForgeryToken()
-        <script>
-            getCount();
-
-            function getCount() {
-                $.ajax({
-                    type: 'GET',
-                    dataType: 'text',
-                    url: '/ShoppingCart/NumberItemsInCart',
-                    data: {},
-                    success: function (data) {
-                        $('#notification').html(data)
-                    },
-                    error: function (data) {
-                        alert(data);
-                    }
-                });
-            }
-        </script>
-
-        <script>
-
-            let isInAdminRole ='@(User.IsInRole("Admin"))';
-
-            if (isInAdminRole) {
-
-                $.ajax({
-                    type: 'GET',
-                    url: '/api/ApiQuestions/notificationCount',
-                    data: {},
-                    dataType: 'text',
-                    success: function (data) {
-                        $('#requestNotification').html(data)
-                    },
-                    error: function () {
-                        alert("Error in Question Api Controllers With Action CountOrders");
-                    }
-                }) 
-            }
-        </script>
-
+        <script src="~/js/custom.js"></script>    
     </environment>
     <environment exclude="Development">
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"

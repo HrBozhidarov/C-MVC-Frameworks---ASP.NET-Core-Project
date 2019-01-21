@@ -22,23 +22,11 @@ namespace BookStore.Web.Components.ShoppingCart
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var cartItems = this.ItemsInCart();
-
-            return View(cartItems.ToArray());
-        }
-
-        private List<VisualizeBooktemsModel> ItemsInCart()
-        {
             var key = this.HttpContext.Session.GetShopingCartKey();
             var items = this.shoppingCartManager.GetAllCartItems(key);
-            var cartItems = new List<VisualizeBooktemsModel>();
+            var allBooksInCurrentShoppingCart = this.bookService.GetBooksInCurrentShoppingCart(items);
 
-            foreach (var item in items)
-            {
-                cartItems.Add(this.bookService.GetItemBook(item.BookId, item.Quantity));
-            }
-
-            return cartItems;
+            return View(allBooksInCurrentShoppingCart.ToArray());
         }
     }
 }

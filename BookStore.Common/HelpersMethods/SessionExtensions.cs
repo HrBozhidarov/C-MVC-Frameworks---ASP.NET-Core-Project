@@ -37,5 +37,4 @@ namespace BookStore.Common.HelpersMethods
                     : JsonConvert.DeserializeObject<T>(value);
         }
     }
-
 }

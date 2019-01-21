@@ -1,4 +1,5 @@
 ﻿using BookStore.Models.ViewModels.Books;
+using BookStore.Models.ViewModels.Shopping;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -54,8 +55,12 @@ namespace BookStore.Services.Contracts
 
         bool IfCurrentBookHaveTheSameIsbn(int bookId, string isbn);
 
-        VisualizeBooktemsModel GetItemBook(int bookId, int quantity);
+        //VisualizeBooktemsModel GetItemBook(int bookId, int quantity);
+
+        IList<VisualizeBooktemsModel> GetBooksInCurrentShoppingCart(IEnumerable<CartItem> items);
 
         BookDisplayModel[] GetAllBooksByAuthorName(string authorId);
+
+        DateTime? ConvertFromStringToDateTimeIfPossible(string releaseDate);
     }
 }

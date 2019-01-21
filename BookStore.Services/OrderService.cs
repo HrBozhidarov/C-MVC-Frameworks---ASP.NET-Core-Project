@@ -18,6 +18,8 @@ namespace BookStore.Services
     public class OrderService : IOrderService
     {
         private const int BgTimeZoneHoursPlus = 2;
+        private const string DateFormatWithDash = "yyyy-MM-dd";
+        private const string DateFormatSlash = "dd/MM/yyyy";
 
         private readonly BookStoreContext db;
 
@@ -28,8 +30,8 @@ namespace BookStore.Services
 
         public MinMaxOrderDateModel GetMinAndMaxRangeDateOnOrderBook()
         {
-            var minDate = this.db.Orders.OrderBy(x => x.OrderedOn).FirstOrDefault()?.OrderedOn.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
-            var maxDate = this.db.Orders.OrderByDescending(x => x.OrderedOn).FirstOrDefault()?.OrderedOn.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+            var minDate = this.db.Orders.OrderBy(x => x.OrderedOn).FirstOrDefault()?.OrderedOn.ToString(DateFormatSlash, CultureInfo.InvariantCulture);
+            var maxDate = this.db.Orders.OrderByDescending(x => x.OrderedOn).FirstOrDefault()?.OrderedOn.ToString(DateFormatSlash, CultureInfo.InvariantCulture);
 
             if (minDate == null || maxDate == null)
             {
@@ -79,12 +81,12 @@ namespace BookStore.Services
                 end = maxDate;
             }
 
-            var income = this.db.Orders.Where(x => x.OrderedOn >= start && x.OrderedOn <= end).Sum(x => x.TotalPrice);
+            var income = this.db.Orders.Where(x => x.OrderedOn.Date >= start.Date && x.OrderedOn.Date <= end.Date).Sum(x => x.TotalPrice);
 
             return new IncomeModel
             {
-                EndDate = end.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
-                StartDate = start.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
+                EndDate = end.ToString(DateFormatWithDash, CultureInfo.InvariantCulture),
+                StartDate = start.ToString(DateFormatWithDash, CultureInfo.InvariantCulture),
                 Income = income
             };
         }

@@ -12,6 +12,8 @@ namespace BookStore.Web.Controllers
 {
     public class ShoppingCartController : BaseController
     {
+        private const string TalbeItemCartPartialName = "_TableItemCartPartial";
+
         private readonly IShoppingCartManager shoppingCartManager;
         private readonly IBookService bookService;
 
@@ -22,68 +24,13 @@ namespace BookStore.Web.Controllers
         }
 
         [HttpPost]
-        public int AddToCart(int bookId)
-        {
-            if (!this.bookService.IfBookExists(bookId))
-            {
-                return NumberItemsInCart();
-            }
-
-            var key = this.HttpContext.Session.GetShopingCartKey();
-
-            this.shoppingCartManager.AddToCart(key, bookId);
-
-            var count = this.shoppingCartManager.GetAllCartItems(key).Sum(x => x.Quantity);
-
-            return count;
-        }
-
-        public int NumberItemsInCart()
-        {
-            var key = this.HttpContext.Session.GetShopingCartKey();
-
-            var count = this.shoppingCartManager.GetAllCartItems(key).Sum(x => x.Quantity);
-
-            return count;
-        }
-
-  
-        [HttpPost]
-        public ActionResult<CartItem> UpdateUp(int bookId)
-        {
-            if (!this.bookService.IfBookExists(bookId))
-            {
-                return null;
-            }
-
-            var key = this.HttpContext.Session.GetShopingCartKey();
-
-            this.shoppingCartManager.AddToCart(key, bookId);
-
-            return this.shoppingCartManager.GetCartItemByBookId(bookId, key);
-        }
-
-        [HttpPost]
-        public ActionResult<CartItem> UpdateDown(int bookId)
-        {
-            if (!this.bookService.IfBookExists(bookId))
-            {
-                return null;
-            }
-
-            var key = this.HttpContext.Session.GetShopingCartKey();
-
-            this.shoppingCartManager.RemoveFromCart(key, bookId);
-
-            return this.shoppingCartManager.GetCartItemByBookId(bookId, key);
-        }
-
-        [HttpPost]
         public IActionResult GetShoppingTable()
         {
-            var cartItems = this.ItemsInCart();
+            var key = this.HttpContext.Session.GetShopingCartKey();
+            var items = this.shoppingCartManager.GetAllCartItems(key);
+            var allBooksInCurrentShoppingCart = this.bookService.GetBooksInCurrentShoppingCart(items);
 
-            return PartialView("_TableItemCartPartial", cartItems.ToArray());
+            return PartialView(TalbeItemCartPartialName, allBooksInCurrentShoppingCart.ToArray());
         }
 
         [HttpPost]
@@ -97,50 +44,19 @@ namespace BookStore.Web.Controllers
             var key = this.HttpContext.Session.GetShopingCartKey();
             this.shoppingCartManager.RemoveItemFromCart(key, bookId);
 
-            var cartItems = this.ItemsInCart();
-
-            return PartialView("_TableItemCartPartial", cartItems.ToArray());
-        }
-
-        public ActionResult<decimal> TotalPrice()
-        {
-            var key = this.HttpContext.Session.GetShopingCartKey();
             var items = this.shoppingCartManager.GetAllCartItems(key);
+            var allBooksInCurrentShoppingCart = this.bookService.GetBooksInCurrentShoppingCart(items);
 
-            var totalPrice = ItemsInCart().Sum(x => x.Price * x.Quantity);
-
-            return totalPrice;
-        }
-
-        [HttpPost]
-        public ActionResult<bool> ClearShoppingCart()
-        {
-            var key = this.HttpContext.Session.GetShopingCartKey();
-
-            this.shoppingCartManager.Clear(key);
-
-            return true;
+            return PartialView(TalbeItemCartPartialName, allBooksInCurrentShoppingCart.ToArray());
         }
 
         public IActionResult Details()
         {
-            var cartItems = this.ItemsInCart();
-
-            return View(cartItems.ToArray());
-        }
-
-        private List<VisualizeBooktemsModel> ItemsInCart()
-        {
             var key = this.HttpContext.Session.GetShopingCartKey();
             var items = this.shoppingCartManager.GetAllCartItems(key);
-            var cartItems = new List<VisualizeBooktemsModel>();
+            var allBooksInCurrentShoppingCart = this.bookService.GetBooksInCurrentShoppingCart(items);
 
-            foreach (var item in items)
-            {
-                cartItems.Add(this.bookService.GetItemBook(item.BookId, item.Quantity));
-            }
-
-            return cartItems;
+            return View(allBooksInCurrentShoppingCart.ToArray());
         }
     }
 }

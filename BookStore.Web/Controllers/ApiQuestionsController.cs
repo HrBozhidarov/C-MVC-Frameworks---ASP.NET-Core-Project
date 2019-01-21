@@ -1,4 +1,5 @@
 ﻿using BookStore.Services.Contracts;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,10 @@ namespace BookStore.Web.Controllers
 {
     public class ApiQuestionsController : ApiController
     {
+        private const string GetNotificationCountName = "notificationCount";
+        private const string PutUpdateStateName = "updateState";
+        private const string DeleteDeleteQuestionName = "deleteQuestion";
+
         private readonly IQuestionService questionService;
 
         public ApiQuestionsController(IQuestionService questionService)
@@ -16,14 +21,17 @@ namespace BookStore.Web.Controllers
             this.questionService = questionService;
         }
 
-        [HttpGet("notificationCount")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [HttpGet(GetNotificationCountName)]
         public ActionResult<int> GetNotificationCount()
         {
             return this.questionService.NotVisitYetQuestionCount();
         }
 
-        [HttpPut("updateState/{id}")]
-        public ActionResult<bool> PutUpdateStateVisit([FromRoute]int id)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpPut(PutUpdateStateName)]
+        public ActionResult<bool> PutUpdateStateVisit([FromBody]int id)
         {
             var IsHaveIdToUpdate = this.questionService.UpdateStateOnSeen(id);
 
@@ -32,11 +40,13 @@ namespace BookStore.Web.Controllers
                 return NotFound(false);
             }
 
-            return Ok(true);
+            return true;
         }
 
-        [HttpDelete("deleteQuestion/{id}")]
-        public ActionResult<bool> DeleteItem(int id)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpDelete(DeleteDeleteQuestionName)]
+        public ActionResult<bool> DeleteItem([FromBody]int id)
         {
             var IsHaveIdToDelete = this.questionService.DeleteItem(id);
 
@@ -45,7 +55,7 @@ namespace BookStore.Web.Controllers
                 return NotFound(false);
             }
 
-            return Ok(true);
+            return true;
         }
     }
 }

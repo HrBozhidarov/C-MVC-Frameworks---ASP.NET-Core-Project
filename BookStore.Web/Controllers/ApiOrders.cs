@@ -1,5 +1,6 @@
 ﻿using BookStore.Models.ViewModels.Orders;
 using BookStore.Services.Contracts;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,9 @@ namespace BookStore.Web.Controllers
 {
     public class ApiOrders : ApiController
     {
+        private const string GetDataName = "Income";
+        private const string GetOrdersCountName = "countOrders";
+
         private readonly IOrderService orderService;
 
         public ApiOrders(IOrderService orderService)
@@ -18,30 +22,33 @@ namespace BookStore.Web.Controllers
         }
 
         [IgnoreAntiforgeryToken]
-        [HttpPost("Income")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpPost(GetDataName)]
         public ActionResult<IncomeModel> GetData([FromBody]MinMaxOrderDateModel model)
         {
             if (!DateTime.TryParse(model.MinDate, out var start))
             {
-                return null;
+                return NotFound();
             }
 
             if (!DateTime.TryParse(model.MaxDate, out var end))
             {
-                return null;
+                return NotFound();
             }
 
             var incomeModel = this.orderService.GetIncomeModel(start, end);
 
             if (incomeModel == null)
             {
-                return null;
+                return NotFound();
             }
 
             return incomeModel;
         }
 
-        [HttpGet("countOrders")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [HttpGet(GetOrdersCountName)]
         public ActionResult<int> GetOrdersCount()
         {
             return this.orderService.GetAllHistory().Length;

@@ -37,13 +37,15 @@ namespace BookStore.Web
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
+                options.CheckConsentNeeded = context => false;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
             services.AddDbContext<BookStoreContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddTransient<IModelKendoService, ModelKendoService>();
+            services.AddTransient<IImgService, ImgService>();
             services.AddTransient<IQuestionService, QuestionService>();
             services.AddTransient<IOrderService, OrderService>();
             services.AddTransient<IUserService, UserService>();
@@ -67,8 +69,8 @@ namespace BookStore.Web
             });
 
             services.AddIdentity<User, IdentityRole>()
-                .AddDefaultUI()
                 .AddDefaultTokenProviders()
+                .AddDefaultUI()
                 .AddEntityFrameworkStores<BookStoreContext>();
 
             Mapper.Initialize(cfg =>

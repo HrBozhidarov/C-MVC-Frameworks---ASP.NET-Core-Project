@@ -1,5 +1,5 @@
 ﻿$(document).on('ready', function () {
-    const detailsPath = "/books/books/details";
+    const detailsPath = "/books/details";
 
     let firstSliderId = "#slider-index-one";
     let secondSliderId = "#slider-index-two";
@@ -14,7 +14,7 @@
 
     ajaxRequest(url1, secondSliderId);
     ajaxRequest(url, firstSliderId);
-    ajaxAuthorRequest(detailsAuthorBooksUrl, detailsAuthorSliderId);
+    //ajaxAuthorRequest(detailsAuthorBooksUrl, detailsAuthorSliderId);
 
     function ajaxRequest(url, id) {
         $.get(url, function () {

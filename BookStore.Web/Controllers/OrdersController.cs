@@ -1,4 +1,5 @@
-﻿using BookStore.Common.HelpersMethods;
+﻿using BookStore.Common;
+using BookStore.Common.HelpersMethods;
 using BookStore.Models.ViewModels.Orders;
 using BookStore.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
@@ -12,6 +13,10 @@ namespace BookStore.Web.Controllers
 {
     public class OrdersController : BaseController
     {
+        private const string RedirectToShoppingCartDetailsPath = "/shoppingcart/details";
+        private const string CreateOrdersViewComponentName = "CreateOrders";
+        private const string TempDataKeyAfterSuccessOrder = "successOrder";
+
         private readonly IOrderService orderService;
         private readonly IUserService userService;
         private readonly IShoppingCartManager shoppingCartManager;
@@ -23,11 +28,10 @@ namespace BookStore.Web.Controllers
             this.shoppingCartManager = shoppingCartManager;
         }
 
-        //[IgnoreAntiforgeryToken]
         [HttpPost]
         public IActionResult VisualizeCreate()
         {
-            return ViewComponent("CreateOrders");
+            return ViewComponent(CreateOrdersViewComponentName);
         }
 
         [IgnoreAntiforgeryToken]
@@ -38,7 +42,7 @@ namespace BookStore.Web.Controllers
             if (!ModelState.IsValid ||
                 !this.userService.IsUserIsValid(model.Email, model.UserId))
             {
-                return Redirect("/shoppingcart/details");
+                return Redirect(RedirectToShoppingCartDetailsPath);
             }
 
             var sessionKey = this.HttpContext.Session.GetShopingCartKey();
@@ -46,7 +50,7 @@ namespace BookStore.Web.Controllers
 
             if (items.Count() <= 0)
             {
-                return Redirect("/shoppingcart/details");
+                return Redirect(RedirectToShoppingCartDetailsPath);
             }
 
             this.orderService.Create(
@@ -59,34 +63,9 @@ namespace BookStore.Web.Controllers
 
             this.shoppingCartManager.Clear(sessionKey);
 
-            this.TempData["successOrder"] = this.User.Identity.Name;
+            this.TempData[TempDataKeyAfterSuccessOrder] = this.User.Identity.Name;
 
-            return Redirect("/");
-        }
-
-        [Authorize(Roles ="Admin")]
-        [HttpPost]
-        public PartialViewResult GetOrders(int pageIndex, int pageSize)
-        {
-            var orders = this.orderService.GetAllHistory()
-                .Skip(pageIndex * pageSize)
-                .Take(pageSize).ToArray();
-
-            return PartialView("_GetAllOrdesPartial", orders);
-        }
-
-        //[Authorize]
-        //public IActionResult History()
-        //{
-        //    var username = this.User.Identity.Name;
-
-        //    return View();
-        //}
-
-        [Authorize(Roles = "Admin")]
-        public IActionResult AllOrdersHistory()
-        {
-            return View();
+            return Redirect(GlobalConstants.IndexPath);
         }
     }
 }

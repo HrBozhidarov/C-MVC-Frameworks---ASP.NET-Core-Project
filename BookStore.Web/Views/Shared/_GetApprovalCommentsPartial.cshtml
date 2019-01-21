@@ -15,13 +15,13 @@
                     @if (this.TempData.ContainsKey("returnToDetailsAgain"))
                     {
                         <div class="row mx-auto mb-1">
-                            <a href="/comments/delete?id=@comment.Id&bookId=@comment.BookId" class="btn bg-danger mx-auto text-white btn-w-comment">Delete</a>
+                            <a href="/admin/comments/delete?id=@comment.Id&bookId=@comment.BookId" class="btn bg-danger mx-auto text-white btn-w-comment">Delete</a>
                         </div>
                     }
                     else
                     {
                         <div class="row mx-auto mb-1">
-                           <a href="/comments/delete?id=@comment.Id" class="btn bg-danger mx-auto text-center text-white">Delete</a>
+                           <a href="/admin/comments/delete?id=@comment.Id" class="btn bg-danger mx-auto text-center text-white">Delete</a>
                         </div>
                     }
                 </div>

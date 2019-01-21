@@ -2,13 +2,13 @@
     $.validator.unobtrusive.parse(document);
 });
 
-const pathCategories = "/categories/edit";
-const pathAuthor = "/authors/edit";
-const pathBookEdit = "/books/books/edit";
-const pathBookDelete = "/books/books/delete";
-const ajaxBookRequest = '/books/books/editdeleteBook';
-const ajaxCategoryRequest = '/categories/editcategory';
-const ajaxAuthorRequest = '/authors/editauthor';
+const pathCategories = "/admin/categories/edit";
+const pathAuthor = "/admin/authors/edit";
+const pathBookEdit = "/admin/books/edit";
+const pathBookDelete = "/admin/books/delete";
+const ajaxBookRequest = '/admin/books/editdeleteBook';
+const ajaxCategoryRequest = '/admin/categories/editcategory';
+const ajaxAuthorRequest = '/admin/authors/editauthor';
 const bookEditId = "#editBook";
 const bookDeleteId = "#deleteBook";
 const authorId = "#eidtAuthor";
@@ -67,9 +67,42 @@ function initializePath() {
 }
 
 $(document).ready(function () {
+    getCount();
+    notificationAdmin();
+
+    function getCount() {
+        $.ajax({
+            type: 'GET',
+            dataType: 'text',
+            url: '/api/ApiShoppingCart/NumberItemsInCart',
+            data: {},
+            success: function (data) {
+                $('#notification').html(data)
+            },
+            error: function (data) {
+                alert(data);
+            }
+        });
+    }
+
+    function notificationAdmin() {
+        $.ajax({
+            type: 'GET',
+            url: '/api/ApiQuestions/notificationCount',
+            data: {},
+            dataType: 'text',
+            success: function (data) {
+                $('#requestNotification').html(data)
+            },
+            error: function () {
+                alert("Error in Question Api Controllers With Action CountOrders");
+            }
+        })
+    }
+
     $('.show').hide().show(1000);
 
-    if (path==pathCategories || path==pathAuthor || path==pathBookDelete || path==pathBookEdit) {
+    if (path == pathCategories || path == pathAuthor || path == pathBookDelete || path == pathBookEdit) {
         ChooseCategory();
     }
 })

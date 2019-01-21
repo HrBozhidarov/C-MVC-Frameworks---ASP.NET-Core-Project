@@ -10,6 +10,8 @@ namespace BookStore.Web.Controllers
 {
     public class QuestionsController : BaseController
     {
+        private const string QuestuibDetailsPartialName = "_QuestionDetailsPartial";
+
         private readonly IQuestionService questionService;
 
         public QuestionsController(IQuestionService questionService)
@@ -17,20 +19,12 @@ namespace BookStore.Web.Controllers
             this.questionService = questionService;
         }
 
-        [Authorize(Roles = "Admin")]
-        public IActionResult All()
-        {
-            var model = this.questionService.GetAll();
-
-            return View(model);
-        }
-
         [HttpPost]
         public PartialViewResult VisualizeSendEmail(int id)
         {
             var model = this.questionService.GetSenderContactDetailsById(id);
 
-            return PartialView("_QestionDetailsPartial", model);
+            return PartialView(QuestuibDetailsPartialName, model);
         }
     }
 }

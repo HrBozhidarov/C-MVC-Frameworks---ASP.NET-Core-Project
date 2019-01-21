@@ -8,7 +8,7 @@
                 <li class="bg-white fa-border"><a asp-area="" asp-controller="ShoppingCart" asp-action="Details" class="btn w-100" role="button"><i class="fas fa-shopping-cart"></i> Shopping Cart</a></li>
                 @if (this.User.IsInRole("Admin"))
                 {
-                    <li class="bg-white fa-border"><a asp-area="" asp-controller="Orders" asp-action="AllOrdersHistory" class="btn w-100" role="button"><i class="fas fa-history"></i> Order History</a></li>
+                    <li class="bg-white fa-border"><a asp-area="Admin" asp-controller="Orders" asp-action="AllOrdersHistory" class="btn w-100" role="button"><i class="fas fa-history"></i> Order History</a></li>
 
                 }
                 <li class="bg-white fa-border"><a asp-area="Identity" asp-controller="Account/Manage" asp-action="ChangePassword" class="btn w-100" role="button"><i class="fas fa-lock"></i> Change Password</a></li>

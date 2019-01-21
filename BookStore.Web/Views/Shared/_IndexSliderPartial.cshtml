@@ -6,14 +6,14 @@
         <div class="product max-height-custom">
             <ul class="product-labels"></ul>
             <div class="product-img-wrap text-center">
-                <a asp-area="Books" asp-controller="Books" asp-action="Details" asp-route-id="@book.Id">
+                <a asp-area="" asp-controller="Books" asp-action="Details" asp-route-id="@book.Id">
                     <img src="/@book.ImgUrl" />
                 </a>
             </div>
 
             <div class="product-caption starIndexBookSize">
                 <partial name="_RenderRatingStarsPartial" model="@book.Id" />
-                <h5 class="product-caption-title"><a class="product-link" asp-area="Books" asp-controller="Books" asp-action="Details" asp-route-id="@book.Id">@book.Title</a></h5>
+                <h5 class="product-caption-title"><a class="product-link" asp-area="" asp-controller="Books" asp-action="Details" asp-route-id="@book.Id">@book.Title</a></h5>
                 <h6 class="product-caption-author">@book.Authors</h6>
 
                 <div class="product-caption-discount">

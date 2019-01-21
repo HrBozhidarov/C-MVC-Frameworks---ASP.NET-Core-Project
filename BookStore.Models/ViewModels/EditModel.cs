@@ -12,9 +12,7 @@ namespace BookStore.Models.ViewModels
 
         public string TextFieldAndValue { get; set; }
 
-        public string Action { get; set; }
-
-        public string Controller { get; set; }
+        public string Url { get; set; }
 
         public string EventFunction { get; set; }
 

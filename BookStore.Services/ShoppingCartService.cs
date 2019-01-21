@@ -6,6 +6,9 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using BookStore.Common.HelpersMethods;
 using System.Text;
+using BookStore.Models.ViewModels.Books;
+using BookStore.Data;
+using AutoMapper;
 
 namespace BookStore.Services
 {
@@ -25,7 +28,7 @@ namespace BookStore.Services
             shoppingCart.AddToCart(bookId);
         }
 
-        public CartItem GetCartItemByBookId(int bookId,string id)
+        public CartItem GetCartItemByBookId(int bookId, string id)
         {
             var shoppingCart = this.GetShoppingCart(id);
 
@@ -46,7 +49,7 @@ namespace BookStore.Services
             shoppingCart.RemoveItemFromCart(bookId);
         }
 
-        public void RemoveFromCart(string id,int bookId)
+        public void RemoveFromCart(string id, int bookId)
         {
             var shoppingCart = this.GetShoppingCart(id);
 

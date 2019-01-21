@@ -10,11 +10,16 @@ using X.PagedList;
 using BookStore.Models.ViewModels.Books;
 using System.Threading;
 using BookStore.Models.ViewModels.Contacts;
+using BookStore.Common;
 
 namespace BookStore.Web.Controllers
 {
     public class HomeController : Controller
     {
+        private const string TempDataSuccessQuestionKey = "successQuestion";
+        private const string SuccessQuestionMessage = "You have made success request, we will conncet with you!";
+        private const string IndexSliderPartialName = "_IndexSliderPartial";
+
         private readonly IBookService bookService;
         private readonly IQuestionService questionService;
 
@@ -29,12 +34,12 @@ namespace BookStore.Web.Controllers
             return View();
         }
 
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
+        //public IActionResult About()
+        //{
+        //    ViewData["Message"] = "Your application description page.";
 
-            return View();
-        }
+        //    return View();
+        //}
 
         public IActionResult Contact()
         {
@@ -57,30 +62,10 @@ namespace BookStore.Web.Controllers
             }
 
             this.questionService.CreateQuestion(model.Email, model.Content, model.Title);
-            this.TempData["successQuestion"] = "You have made success request, we will conncet with you!";
+            this.TempData[TempDataSuccessQuestionKey] = SuccessQuestionMessage;
 
-            return Redirect("/");
+            return Redirect(GlobalConstants.IndexPath);
         }
-
-        //[HttpGet]
-        //public JsonResult GetData(int pageIndex, int pageSize)
-        //{
-        //    var list = new List<BookDisplayModel>();
-
-        //    //Thread.Sleep(2000);
-
-        //    for (int i = 0; i < 7; i++)
-        //    {
-        //        var books = this.bookService.GetAllBooks();
-
-        //        list.AddRange(books);
-        //    }
-
-        //    list=list.Skip(pageIndex * pageSize)
-        //         .Take(pageSize).ToList();
-
-        //    return Json(list);
-        //}
 
         public IActionResult Privacy()
         {
@@ -97,7 +82,7 @@ namespace BookStore.Web.Controllers
         [IgnoreAntiforgeryToken]
         public PartialViewResult SliderPictures([FromBody]BookDisplayModel[] books)
         {
-            return PartialView("_IndexSliderPartial", books);
+            return PartialView(IndexSliderPartialName, books);
         }
     }
 }

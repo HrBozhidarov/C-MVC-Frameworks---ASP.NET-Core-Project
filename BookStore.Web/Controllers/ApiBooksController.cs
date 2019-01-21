@@ -1,5 +1,6 @@
 ﻿using BookStore.Models.ViewModels.Books;
 using BookStore.Services.Contracts;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,11 @@ namespace BookStore.Web.Controllers
     public class ApiBooksController : ApiController
     {
         private const int NumberOfBooksToTake = 8;
+        private const string GetAllAuthorBooksName = "getallauthorbooks/{name}";
+        private const string GetOnlyEightBooksInDescOrderName = "desc";
+        private const string GetOnlyEightBooksInAscOrderName = "asc";
+        private const string GetOnlyEightBooksInAscOrderWithouthCurrentName = "ascWithouthCurrent";
+        private const string GetBooksName = "GetBooks";
 
         private readonly IBookService bookService;
 
@@ -19,9 +25,9 @@ namespace BookStore.Web.Controllers
             this.bookService = bookService;
         }
 
-        [HttpGet("getallauthorbooks/{name}")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
+        [HttpGet(GetAllAuthorBooksName)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<IEnumerable<BookDisplayModel>> Getallauthorbooks(string name)
         {
             var books = this.bookService.GetAllBooksByAuthorName(name);
@@ -34,9 +40,9 @@ namespace BookStore.Web.Controllers
             return books;
         }
 
-        [HttpGet("desc")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
+        [HttpGet(GetOnlyEightBooksInDescOrderName)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<IEnumerable<BookDisplayModel>> GetOnlyEightBooksInDescOrder()
         {
             var books = this.bookService.GetBooksInDescOrderByDate(NumberOfBooksToTake);
@@ -49,9 +55,9 @@ namespace BookStore.Web.Controllers
             return books;
         }
 
-        [HttpGet("asc")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
+        [HttpGet(GetOnlyEightBooksInAscOrderName)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<IEnumerable<BookDisplayModel>> GetOnlyEightBooksInAscOrder()
         {
             var books = this.bookService.GetBooksInAscOrderByDate(NumberOfBooksToTake);
@@ -64,9 +70,9 @@ namespace BookStore.Web.Controllers
             return books;
         }
 
-        [HttpGet("ascWithouthCurrent")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
+        [HttpGet(GetOnlyEightBooksInAscOrderWithouthCurrentName)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<IEnumerable<BookDisplayModel>> GetOnlyEightBooksInAscOrderWithouthCurrent(int id)
         {
             var takeBooksPlusOne = NumberOfBooksToTake + 1;
@@ -81,7 +87,21 @@ namespace BookStore.Web.Controllers
             return books;
         }
 
-        [ProducesResponseType(200)]
+        [HttpGet(GetBooksName)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public ActionResult<string[]> GetBooks(string text)
+        {
+            var books = this.bookService.GetAllBooks().Select(x => x.Title).ToArray();
+
+            if (!string.IsNullOrEmpty(text?.ToLower()))
+            {
+                books = books.Where(b => b.ToLower().Contains(text?.ToLower())).ToArray();
+            }
+
+            return books;
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<BookDisplayModel>> Search(string search)
         {
             var count = this.bookService.CountOfAllBooks();

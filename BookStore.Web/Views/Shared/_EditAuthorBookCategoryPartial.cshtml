@@ -18,7 +18,8 @@
                                   {
                                       source.Read(read =>
                                       {
-                                          read.Action(Model.Action, Model.Controller);
+                                          read.Url(Model.Url);
+                                          //read.Action(Model.Action, Model.Controller);
                                       })
                                       .ServerFiltering(false);
                                   })
@@ -37,27 +38,27 @@
     ids[1] = Model.Id;
 }
 
-@if (path == "/categories/edit")
+@if (path == "/admin/categories/edit")
 {
     ids[0] = "categoryEdit";
 
     <partial name="_ContainerDeleteEditPartial" model="ids" />
 }
-@if (path == "/authors/edit")
+@if (path == "/admin/authors/edit")
 {
     ids[0] = "authorEdit";
 
     <partial name="_ContainerDeleteEditPartial" model="ids" />
 }
 
-@if (path == "/books/books/edit")
+@if (path == "/admin/books/edit")
 {
     ids[0] = "bookEdit";
 
     <partial name="_ContainerDeleteEditPartial" model="ids" />
 }
 
-@if (path == "/books/books/delete")
+@if (path == "/admin/books/delete")
 {
     ids[0] = "bookDelete";
 

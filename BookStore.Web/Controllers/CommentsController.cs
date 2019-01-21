@@ -9,23 +9,23 @@ using System.Threading.Tasks;
 using BookStore.Services.Contracts;
 using Microsoft.AspNetCore.Identity;
 using BookStore.Models;
+using BookStore.Common;
 
 namespace BookStore.Web.Controllers
 {
     public class CommentsController : BaseController
     {
+        private const string ApprovalCommentsPartialName = "_GetApprovalCommentsPartial";
         private const string RedirectToLoginPath = "/Identity/Account/Login";
-        private const string RedirectToCurrentBookDetails = "/books/books/details";
+        private const string TempDataKeyModel = "model";
 
         private readonly ICommentsService commentsService;
         private readonly IBookService bookService;
-        private readonly UserManager<User> userManager;
 
-        public CommentsController(ICommentsService commentsService, IBookService bookService, UserManager<User> userManager)
+        public CommentsController(ICommentsService commentsService, IBookService bookService)
         {
             this.commentsService = commentsService;
             this.bookService = bookService;
-            this.userManager = userManager;
         }
 
         [HttpPost]
@@ -33,7 +33,7 @@ namespace BookStore.Web.Controllers
         {
             if (!User.Identity.IsAuthenticated)
             {
-                this.TempData.Put("model", model);
+                this.TempData.Put(TempDataKeyModel, model);
 
                 return Redirect(RedirectToLoginPath);
             }
@@ -47,90 +47,14 @@ namespace BookStore.Web.Controllers
 
             if (this.commentsService.IfCurrentUserHaveCommentToCurrentBook(username, model.BookId))
             {
-                return Redirect("/");
+                return Redirect(GlobalConstants.IndexPath);
             }
 
             this.commentsService.CreateComment(username, model.Rating, model.BookId, model.Content, model.Title);
 
-            return Redirect("/");
+            return Redirect(GlobalConstants.IndexPath);
         }
 
-        [Authorize(Roles = "Admin")]
-        public IActionResult ApprovalComments()
-        {
-            return View();
-        }
-
-        [Authorize(Roles = "Admin")]
-        public IActionResult Approve(int id, int bookId)
-        {
-            var comment = this.commentsService.GetCommentsById(id);
-
-            if (comment == null)
-            {
-                return NotFound();
-            }
-
-            if (comment.BookId != bookId)
-            {
-                return NotFound();
-            }
-
-            this.commentsService.ApproveComment(id);
-
-            return Redirect($"{RedirectToCurrentBookDetails}/{bookId}");
-        }
-
-        public IActionResult Edit(int id,int bookId)
-        {
-            if (!this.commentsService.IfCommentExists(id))
-            {
-                return NotFound();
-            }
-
-
-
-            return Redirect($"{RedirectToCurrentBookDetails}/{bookId}");
-        }
-
-        [Authorize(Roles = "Admin")]
-        public IActionResult Delete(int id, int bookId = 0)
-        {
-            var comment = this.commentsService.GetCommentsById(id);
-
-            if (comment == null)
-            {
-                return NotFound();
-            }
-
-            if (bookId != 0 && comment.BookId != bookId)
-            {
-                return NotFound();
-            }
-
-            this.commentsService.DeleteComment(comment);
-
-            if (bookId != 0)
-            {
-                return Redirect($"{RedirectToCurrentBookDetails}/{bookId}");
-            }
-
-            return RedirectToAction(nameof(ApprovalComments));
-        }
-
-        //[IgnoreAntiforgeryToken]
-        [HttpPost]
-        public PartialViewResult GetDataNotApprovalComments(int pageIndex, int pageSize)
-        {
-            var notApprovalComments = this.commentsService
-                .AllCommentsWhichAreNotApproval()
-                .Skip(pageIndex * pageSize)
-                .Take(pageSize).ToList();
-
-            return PartialView("_GetNotApprovalCommentsPartial", notApprovalComments);
-        }
-
-        //[IgnoreAntiforgeryToken]
         [HttpPost]
         public IActionResult GetDataApprovalComments(int pageIndex, int pageSize, int bookId)
         {
@@ -144,7 +68,7 @@ namespace BookStore.Web.Controllers
                 .Skip(pageIndex * pageSize)
                 .Take(pageSize).ToList();
 
-            return PartialView("_GetApprovalCommentsPartial", approvalComments);
+            return PartialView(ApprovalCommentsPartialName, approvalComments);
         }
     }
 }
